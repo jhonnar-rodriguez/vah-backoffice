@@ -1,12 +1,16 @@
-import './App.css';
+import "./App.css";
+import { Router } from "react-router-dom";
+import { createBrowserHistory } from "history";
+
+import Routes from "./app/routes";
+
+const browserHistory = createBrowserHistory();
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Vah BackOffice</p>
-      </header>
-    </div>
+    <Router history={browserHistory}>
+      <Routes />
+    </Router>
   );
 }
 

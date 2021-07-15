@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Main = () => {
+const Main: FC = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -77,7 +77,7 @@ const Main = () => {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <p>Here goes your view!</p>
+            {children}
           </Grid>
           <Box pt={4}>
             <Copyright />
