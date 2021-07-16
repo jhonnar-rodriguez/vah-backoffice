@@ -11,6 +11,7 @@ import {
   GetProductsAction,
   SetProductsAction,
   PRODUCT_ACTION_TYPES,
+  RemoveProductAction,
 } from '../../types/products/ProductTypes';
 
 export const getProductsDispatcher = (): GetProductsAction => ({
@@ -25,6 +26,11 @@ export const setProductsDispatcher = (products: IProduct[]): SetProductsAction =
 export const setProductDispatcher = (product: IProductShow): SetProductAction => ({
   type: 'SET_PRODUCT',
   payload: product,
+});
+
+export const removeProductDispatcher = (productId: string): RemoveProductAction => ({
+  type: 'REMOVE_PRODUCT',
+  payload: productId,
 });
 
 export const startGetProductsAction = () => {
@@ -59,6 +65,36 @@ export const startGetProductAction = (productId: string) => {
     try {
       const product = await ProductService.getById(productId);
       dispatch(setProductDispatcher(product));
+    } catch ({ response }) {
+      requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
+    }
+
+    dispatch(setFinishedRequestDispatcher(requestFinishedPayload));
+  }
+}
+
+export const startRemoveProductAction = (productId: string) => {
+  return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setRunningRequestDispatcher());
+    
+
+    let requestFinishedPayload: IHttpRequest = {
+      isLoading: false,
+    };
+
+    try {
+      await ProductService.remove(productId);
+
+      requestFinishedPayload = {
+        ...requestFinishedPayload,
+        success: {
+          message: "El producto ha sido eliminado satisfactoriamente.",
+          statusCode: 200,
+          statusText: "Deleted",
+        }
+      }
+
+      dispatch(removeProductDispatcher(productId));
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
     }

@@ -45,6 +45,7 @@ export interface UpdateProductAction {
 
 export interface RemoveProductAction {
   type: typeof REMOVE_PRODUCT,
+  payload: string,
 };
 
 export type PRODUCT_ACTION_TYPES =

@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink as RouterLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -16,8 +16,10 @@ import IProduct from "../../../contracts/product/IProduct";
 import columns from "./TableColumns";
 import IColumn from "../../../contracts/product/table/IColumn";
 import AppAlert from "../../../components/alert/AppAlert";
-import { IconButton } from "@material-ui/core";
-import { RemoveCircleOutline as RemoveCircleIcon } from "@material-ui/icons";
+import ConfirmationDialog from "../../../components/confirmation/ConfirmationDialog";
+import { startResetStateAction } from "../../../../store/actions/httpRequest/HttpRequestActions";
+import SnackBar from "../../../components/snackBar/SnackBar";
+import { startRemoveProductAction } from "../../../../store/actions/product/ProductActions";
 
 const useStyles = makeStyles({
   root: {
@@ -30,8 +32,12 @@ const useStyles = makeStyles({
 
 const ProductList = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const { data: products } = useSelector((state: AppState) => state.productReducer)
+  const { productReducer, httpRequestReducer } = useSelector((state: AppState) => state)
+  const { data: products } = productReducer;
+  const { success } = httpRequestReducer;
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -44,6 +50,16 @@ const ProductList = () => {
     setPage(0);
   };
 
+  const handleDeleteProductAction = (productId: string) => {
+    const dispatcher = () => dispatch(startRemoveProductAction(productId));
+    dispatcher();
+  };
+
+  const resetSuccessMessage = () => {
+    const dispatcher = () => dispatch(startResetStateAction());
+    dispatcher();
+  };
+
   const generateCellValue = (column: IColumn, product: IProduct): ReactElement => {
     const value = column.id !== "delete" ? product[column.id] : "prepare-to-delete";
 
@@ -54,15 +70,11 @@ const ProductList = () => {
       >
         {
           value === "prepare-to-delete" ?
-            <label htmlFor="delete-product">
-              <IconButton
-                color="secondary"
-                component="span"
-                aria-label={`Delete product ${product.name}`}
-              >
-                <RemoveCircleIcon />
-              </IconButton>
-            </label> :
+            <ConfirmationDialog
+              title={`Eliminar producto ${product.name}`}
+              content={`Estás seguro de eliminar el producto ${product.name}`}
+              handleOnConfirm={() => handleDeleteProductAction(product._id)}
+            /> :
             column.format && (typeof value === 'number' || typeof value === 'boolean') ?
               column.format(value) :
               column.generateLink === true ?
@@ -143,6 +155,15 @@ const ProductList = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      {
+        typeof success !== 'undefined' &&
+        success.message.length > 0 &&
+        <SnackBar
+          message={success.message}
+          onDismiss={resetSuccessMessage}
+        />
+      }
     </Paper>
   );
 }

@@ -1,9 +1,12 @@
 import {
   GET_PRODUCT,
   SET_PRODUCT,
+  GET_PRODUCTS,
+  SET_PRODUCTS,
+  REMOVE_PRODUCT,
+  PRODUCT_ACTION_TYPES,
 } from './../../types/products/ProductTypes';
 import IProduct from "../../../app/contracts/product/IProduct";
-import { GET_PRODUCTS, PRODUCT_ACTION_TYPES, SET_PRODUCTS } from "../../types/products/ProductTypes";
 import IProductShow from '../../../app/contracts/product/IProductShow';
 
 interface IProductList {
@@ -54,6 +57,14 @@ const productReducer = (state = initialState, action: PRODUCT_ACTION_TYPES): IPr
         productToDisplay: {
           ...action.payload,
         },
+      }
+
+    case REMOVE_PRODUCT:
+      return {
+        ...state,
+        data: [
+          ...state.data.filter((product: IProduct) => product._id !== action.payload),
+        ],
       }
 
     default:

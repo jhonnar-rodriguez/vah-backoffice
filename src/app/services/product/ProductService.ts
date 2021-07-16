@@ -14,6 +14,10 @@ class ProductService {
 
     return xhr;
   }
+
+  public static async remove(id: string): Promise<void> {
+    await httpClient.delete(`/product/${id}`);
+  }
 }
 
 export default ProductService;
