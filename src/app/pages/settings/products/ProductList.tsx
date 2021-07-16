@@ -20,15 +20,26 @@ import ConfirmationDialog from "../../../components/confirmation/ConfirmationDia
 import { startResetStateAction } from "../../../../store/actions/httpRequest/HttpRequestActions";
 import SnackBar from "../../../components/snackBar/SnackBar";
 import { startRemoveProductAction } from "../../../../store/actions/product/ProductActions";
+import { Button } from "@material-ui/core";
+import ProductForm from "./partials/ProductForm";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
   container: {
     maxHeight: 440,
   },
-});
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  button: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+  },
+}));
 
 const ProductList = () => {
   const classes = useStyles();
@@ -38,8 +49,10 @@ const ProductList = () => {
   const { data: products } = productReducer;
   const { success } = httpRequestReducer;
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [openForm, setOpenForm] = useState<boolean>(false);
+  const [formAction] = useState<string>('Crear');
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -102,69 +115,92 @@ const ProductList = () => {
     </TableRow>
   );
 
+  const handleFormClose = () => {
+    setOpenForm(false);
+  }
+
   useLoadProducts();
 
   return (
-    <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {
-                columns
-                  .map((column: IColumn) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))
-              }
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              products.length === 0 ?
-                displayNoProductsAvailable() :
-                products
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((product: IProduct) => {
-                    return (
-                      <TableRow
-                        key={product._id}
-                        hover
-                        tabIndex={-1}
+    <>
+      <Paper className={classes.root}>
+        <TableContainer className={classes.container}>
+          <div className={classes.buttonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpenForm(true)}
+              className={classes.button}
+            >
+              Crear
+            </Button>
+          </div>
+
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {
+                  columns
+                    .map((column: IColumn) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
                       >
-                        {columns.map((column: IColumn) => generateCellValue(column, product))}
-                      </TableRow>
-                    );
-                  })
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
+                        {column.label}
+                      </TableCell>
+                    ))
+                }
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {
+                products.length === 0 ?
+                  displayNoProductsAvailable() :
+                  products
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((product: IProduct) => {
+                      return (
+                        <TableRow
+                          key={product._id}
+                          hover
+                          tabIndex={-1}
+                        >
+                          {columns.map((column: IColumn) => generateCellValue(column, product))}
+                        </TableRow>
+                      );
+                    })
+              }
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 100]}
-        component="div"
-        count={products.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-
-      {
-        typeof success !== 'undefined' &&
-        success.message.length > 0 &&
-        <SnackBar
-          message={success.message}
-          onDismiss={resetSuccessMessage}
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 100]}
+          component="div"
+          count={products.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      }
-    </Paper>
+
+        {
+          typeof success !== 'undefined' &&
+          success.message.length > 0 &&
+          <SnackBar
+            message={success.message}
+            onDismiss={resetSuccessMessage}
+          />
+        }
+      </Paper>
+
+      <ProductForm
+        open={openForm}
+        action={formAction}
+        handleClose={handleFormClose}
+      />
+    </>
   );
 }
 
