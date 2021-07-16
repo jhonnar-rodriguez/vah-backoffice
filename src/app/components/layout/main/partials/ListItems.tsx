@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -8,7 +9,11 @@ import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 
 export const MainListItems = (
   <div>
-    <ListItem button>
+    <ListItem
+      to="/dashboard"
+      button
+      component={Link}
+    >
       <ListItemIcon>
         <AssessmentOutlinedIcon />
       </ListItemIcon>
@@ -27,11 +32,15 @@ export const SecondaryListItems = (
       <ListItemText primary="Clientes" />
     </ListItem>
 
-    <ListItem button>
+    <ListItem
+      to="/settings/products"
+      button
+      component={Link}
+    >
       <ListItemIcon>
         <ListAltOutlinedIcon />
       </ListItemIcon>
       <ListItemText primary="Productos" />
     </ListItem>
-  </div >
+  </div>
 );

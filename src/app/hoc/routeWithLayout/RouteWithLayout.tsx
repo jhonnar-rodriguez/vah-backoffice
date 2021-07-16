@@ -1,6 +1,8 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
 import { FC } from 'react';
+import { useSelector } from "react-redux";
+import { Route } from 'react-router-dom';
+import { AppState } from '../../../store';
+import Loading from "../../components/loading/Loading";
 
 type RouteWithLayoutProps = {
   path: string,
@@ -17,12 +19,15 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
   pageTitle,
   exact = true,
 }) => {
+  const { isLoading } = useSelector((state: AppState) => state.httpRequestReducer);
+
   return (
     <Route
       path={path}
       exact={exact}
       render={(matchProps: any) => (
         <Layout>
+          {isLoading && <Loading />}
           <Component {...matchProps} pageTitle={pageTitle} />
         </Layout>
       )}
