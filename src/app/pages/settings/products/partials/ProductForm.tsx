@@ -65,11 +65,13 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
     if (open) {
       if (action === "Crear") {
         reset(productInitialState);
+        setDisableSubmitButtonForm(true);
+      } else if (action === "Actualizar") {
+        setDisableSubmitButtonForm(false);
       }
 
       clearErrors();
       fetchCategories();
-      setDisableSubmitButtonForm(false);
     };
   }, [open, action, reset, clearErrors, fetchCategories]);
 
