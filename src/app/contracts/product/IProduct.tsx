@@ -1,3 +1,5 @@
+import ICategory from "../category/ICategory";
+
 interface IProduct {
   _id: string,
   sku: string,
@@ -8,7 +10,7 @@ interface IProduct {
   discount: number,
   quantity: number,
   urlImage: string,
-  category: string,
+  category: ICategory,
   stockStatus: boolean,
   totalDiscount: number,
   description?: string,

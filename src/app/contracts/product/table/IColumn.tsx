@@ -1,5 +1,5 @@
 interface IColumn {
-  id: "name" | "sku" | "summary" | "price" | "quantity" | "stockStatus" | "delete";
+  id: "name" | "sku" | "summary" | "price" | "quantity" | "stockStatus" | "actions";
   label: string;
   minWidth?: number;
   align?: "right";

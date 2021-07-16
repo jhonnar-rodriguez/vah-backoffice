@@ -1,5 +1,4 @@
 import IProduct from '../../../app/contracts/product/IProduct';
-import IProductShow from '../../../app/contracts/product/IProductShow';
 
 export const GET_PRODUCT = 'GET_PRODUCT';
 export const SET_PRODUCT = 'SET_PRODUCT';
@@ -28,7 +27,7 @@ export interface GetProductAction {
 
 export interface SetProductAction {
   type: typeof SET_PRODUCT,
-  payload: IProductShow,
+  payload: IProduct,
 }
 
 export interface CreateProductAction {
@@ -42,6 +41,7 @@ export interface ReadProductAction {
 
 export interface UpdateProductAction {
   type: typeof UPDATE_PRODUCT,
+  payload: IProduct,
 };
 
 export interface RemoveProductAction {

@@ -19,16 +19,18 @@ import AppAlert from "../../../components/alert/AppAlert";
 import ConfirmationDialog from "../../../components/confirmation/ConfirmationDialog";
 import { startResetStateAction } from "../../../../store/actions/httpRequest/HttpRequestActions";
 import SnackBar from "../../../components/snackBar/SnackBar";
-import { startCreateProductAction, startRemoveProductAction } from "../../../../store/actions/product/ProductActions";
-import { Button } from "@material-ui/core";
+import { startCreateProductAction, startRemoveProductAction, startUpdateProductAction } from "../../../../store/actions/product/ProductActions";
+import { Button, Grid, IconButton } from "@material-ui/core";
 import ProductForm from "./partials/ProductForm";
+import { EditOutlined as EditOutlinedIcon } from "@material-ui/icons";
+import { productInitialState } from "../../../data/products";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   container: {
-    maxHeight: 440,
+    maxHeight: "75vh",
   },
   buttonContainer: {
     display: "flex",
@@ -52,7 +54,8 @@ const ProductList = () => {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [openForm, setOpenForm] = useState<boolean>(false);
-  const [formAction] = useState<string>('Crear');
+  const [createProduct, setCreateProduct] = useState<boolean>(true);
+  const [productToUpdate, setProductToUpdate] = useState<IProduct>(productInitialState);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -73,8 +76,37 @@ const ProductList = () => {
     dispatcher();
   };
 
+  const generateActionButtons = (product: IProduct) => (
+    <Grid container>
+      <Grid
+        item
+        xs={6}
+      >
+        <IconButton
+          color="primary"
+          onClick={() => handleEditProductForm(product)}
+          component="span"
+          aria-label="Edit product"
+        >
+          <EditOutlinedIcon />
+        </IconButton>
+      </Grid>
+
+      <Grid
+        item
+        xs={6}
+      >
+        <ConfirmationDialog
+          title={`Eliminar producto ${product.name}`}
+          content={`Estás seguro de eliminar el producto ${product.name}`}
+          handleOnConfirm={() => handleDeleteProductAction(product._id)}
+        />
+      </Grid>
+    </Grid>
+  );
+
   const generateCellValue = (column: IColumn, product: IProduct): ReactElement => {
-    const value = column.id !== "delete" ? product[column.id] : "prepare-to-delete";
+    const value = column.id !== "actions" ? product[column.id] : "generate-action-buttons";
 
     return (
       <TableCell
@@ -82,16 +114,16 @@ const ProductList = () => {
         align={column.align}
       >
         {
-          value === "prepare-to-delete" ?
-            <ConfirmationDialog
-              title={`Eliminar producto ${product.name}`}
-              content={`Estás seguro de eliminar el producto ${product.name}`}
-              handleOnConfirm={() => handleDeleteProductAction(product._id)}
-            /> :
-            column.format && (typeof value === 'number' || typeof value === 'boolean') ?
+          value === "generate-action-buttons" ?
+            generateActionButtons(product)
+            :
+            column.format && (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'string') ?
               column.format(value) :
               column.generateLink === true ?
-                <RouterLink to={`/settings/products/${product.sku.toLowerCase()}`}>
+                <RouterLink
+                  to="#"
+                  onClick={() => handleEditProductForm(product)}
+                >
                   {value}
                 </RouterLink> :
                 value
@@ -117,14 +149,27 @@ const ProductList = () => {
 
   const handleFormClose = (data?: IProduct) => {
     setOpenForm(false);
+    setCreateProduct(true);
+    setProductToUpdate(productInitialState);
 
     if (typeof data?.category === "undefined") {
       return;
     }
 
-    const dispatcher = () => dispatch(startCreateProductAction(data));
+    let dispatcher = () => dispatch(startCreateProductAction(data));
+
+    if (!createProduct) {
+      dispatcher = () => dispatch(startUpdateProductAction(data));
+    }
+
     dispatcher();
   };
+
+  const handleEditProductForm = (product: IProduct) => {
+    setCreateProduct(false);
+    setProductToUpdate(product);
+    setOpenForm(true);
+  }
 
   useLoadProducts();
 
@@ -183,12 +228,12 @@ const ProductList = () => {
         </TableContainer>
 
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 100]}
-          component="div"
-          count={products.length}
-          rowsPerPage={rowsPerPage}
           page={page}
+          count={products.length}
+          component="div"
+          rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
+          rowsPerPageOptions={[5, 10, 25, 100]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
 
@@ -204,8 +249,9 @@ const ProductList = () => {
 
       <ProductForm
         open={openForm}
-        action={formAction}
+        action={createProduct ? "Crear" : "Actualizar"}
         handleClose={handleFormClose}
+        productToUpdate={productToUpdate}
       />
     </>
   );

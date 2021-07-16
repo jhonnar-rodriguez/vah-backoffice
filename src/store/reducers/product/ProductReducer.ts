@@ -6,34 +6,19 @@ import {
   REMOVE_PRODUCT,
   PRODUCT_ACTION_TYPES,
   CREATE_PRODUCT,
+  UPDATE_PRODUCT,
 } from './../../types/products/ProductTypes';
 import IProduct from "../../../app/contracts/product/IProduct";
-import IProductShow from '../../../app/contracts/product/IProductShow';
+import { productInitialState } from '../../../app/data/products';
 
 interface IProductList {
   data: IProduct[],
-  productToDisplay: IProductShow,
+  productToDisplay: IProduct,
 };
 
 const initialState: IProductList = {
   data: [],
-  productToDisplay: {
-    _id: '',
-    name: '',
-    summary: '',
-    description: '',
-    sku: '',
-    price: 0,
-    quantity: 0,
-    stockStatus: false,
-    lowStockAlert: false,
-    urlImage: '',
-    urlImageMiniature: '',
-    isVirtual: false,
-    active: false,
-    discount: 0,
-    totalDiscount: 0,
-  },
+  productToDisplay: productInitialState,
 };
 
 const productReducer = (state = initialState, action: PRODUCT_ACTION_TYPES): IProductList => {
@@ -77,6 +62,16 @@ const productReducer = (state = initialState, action: PRODUCT_ACTION_TYPES): IPr
             ...action.payload,
           },
         ],
+      }
+
+    case UPDATE_PRODUCT:
+      let updatedElementIndex = state.data.findIndex((product: IProduct) => product._id === action.payload._id);
+      let updatedProducts = [...state.data];
+      updatedProducts[updatedElementIndex] = { ...action.payload };
+
+      return {
+        ...state,
+        data: updatedProducts,
       }
 
     default:

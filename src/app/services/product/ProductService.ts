@@ -1,6 +1,5 @@
 import httpClient from "../../../config/axios";
 import IProduct from "../../contracts/product/IProduct";
-import IProductShow from "../../contracts/product/IProductShow";
 
 class ProductService {
   public static async getAll(): Promise<IProduct[]> {
@@ -9,7 +8,7 @@ class ProductService {
     return xhr;
   }
 
-  public static async getById(productId: string): Promise<IProductShow> {
+  public static async getById(productId: string): Promise<IProduct> {
     const xhr = await httpClient.get(`product/${productId}`).then(({ data }) => data.product);
 
     return xhr;
@@ -17,6 +16,12 @@ class ProductService {
 
   public static async store(product: IProduct): Promise<IProduct> {
     const xhr = await httpClient.post("product", { ...product }).then(({ data }) => data.product);
+
+    return xhr;
+  }
+
+  public static async update(product: IProduct): Promise<IProduct> {
+    const xhr = await httpClient.put(`product/${product._id}`, { ...product }).then(({ data }) => data.product);
 
     return xhr;
   }

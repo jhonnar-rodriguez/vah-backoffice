@@ -1,5 +1,5 @@
 import IColumn from "../../../contracts/product/table/IColumn";
-import { CurrencyHelper } from "../../../helpers";
+import { CurrencyHelper, GeneralHelper } from "../../../helpers";
 
 const columns: IColumn[] = [
   {
@@ -17,6 +17,7 @@ const columns: IColumn[] = [
     id: 'summary',
     label: 'Descripción',
     minWidth: 170,
+    format: (value: string) => GeneralHelper.strLimit(value),
   },
   {
     id: 'price',
@@ -31,10 +32,9 @@ const columns: IColumn[] = [
     format: (value: boolean) => value === true ? 'Si' : 'No',
   },
   {
-    id: 'delete',
-    label: 'Eliminar',
-    minWidth: 170,
-    format: (value: boolean) => value === true ? 'Si' : 'No',
+    id: 'actions',
+    label: 'Acciones',
+    minWidth: 50,
   },
 ];
 

@@ -5,7 +5,6 @@ import IHttpRequest from '../../../app/contracts/httpRequest/IHttpRequest';
 import { HttpHelper } from '../../../app/helpers';
 import IProduct from '../../../app/contracts/product/IProduct';
 import ProductService from '../../../app/services/product/ProductService';
-import IProductShow from '../../../app/contracts/product/IProductShow';
 import {
   SetProductAction,
   GetProductsAction,
@@ -13,6 +12,7 @@ import {
   PRODUCT_ACTION_TYPES,
   RemoveProductAction,
   CreateProductAction,
+  UpdateProductAction,
 } from '../../types/products/ProductTypes';
 
 export const getProductsDispatcher = (): GetProductsAction => ({
@@ -24,13 +24,18 @@ export const setProductsDispatcher = (products: IProduct[]): SetProductsAction =
   payload: products,
 });
 
-export const setProductDispatcher = (product: IProductShow): SetProductAction => ({
+export const setProductDispatcher = (product: IProduct): SetProductAction => ({
   type: 'SET_PRODUCT',
   payload: product,
 });
 
 export const createProductDispatcher = (product: IProduct): CreateProductAction => ({
   type: 'CREATE_PRODUCT',
+  payload: product,
+});
+
+export const updateProductDispatcher = (product: IProduct): UpdateProductAction => ({
+  type: 'UPDATE_PRODUCT',
   payload: product,
 });
 
@@ -111,7 +116,7 @@ export const startCreateProductAction = (product: IProduct) => {
 export const startRemoveProductAction = (productId: string) => {
   return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(setRunningRequestDispatcher());
-    
+
 
     let requestFinishedPayload: IHttpRequest = {
       isLoading: false,
@@ -135,5 +140,40 @@ export const startRemoveProductAction = (productId: string) => {
     }
 
     dispatch(setFinishedRequestDispatcher(requestFinishedPayload));
+  }
+}
+
+export const startUpdateProductAction = (product: IProduct) => {
+  return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setRunningRequestDispatcher());
+
+    let requestFinishedPayload: IHttpRequest = {
+      isLoading: false,
+    };
+
+    try {
+      const updatedProduct = await ProductService.update(product);
+
+      requestFinishedPayload = {
+        ...requestFinishedPayload,
+        success: {
+          message: "El producto ha sido actualizado satisfactoriamente.",
+          statusCode: 200,
+          statusText: "Created",
+        }
+      }
+
+      dispatch(updateProductDispatcher(updatedProduct));
+    } catch ({ response }) {
+      requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
+    }
+
+    dispatch(setFinishedRequestDispatcher(requestFinishedPayload));
+  }
+}
+
+export const startSetProductAction = (product: IProduct) => {
+  return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setProductDispatcher(product));
   }
 }
