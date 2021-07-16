@@ -7,7 +7,7 @@ interface IProduct {
   summary: string,
   discount: number,
   quantity: number,
-  urlImage: boolean,
+  urlImage: string,
   category: string,
   stockStatus: boolean,
   totalDiscount: number,

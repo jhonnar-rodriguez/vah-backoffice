@@ -5,6 +5,7 @@ import {
   SET_PRODUCTS,
   REMOVE_PRODUCT,
   PRODUCT_ACTION_TYPES,
+  CREATE_PRODUCT,
 } from './../../types/products/ProductTypes';
 import IProduct from "../../../app/contracts/product/IProduct";
 import IProductShow from '../../../app/contracts/product/IProductShow';
@@ -64,6 +65,17 @@ const productReducer = (state = initialState, action: PRODUCT_ACTION_TYPES): IPr
         ...state,
         data: [
           ...state.data.filter((product: IProduct) => product._id !== action.payload),
+        ],
+      }
+
+    case CREATE_PRODUCT:
+      return {
+        ...state,
+        data: [
+          ...state.data,
+          {
+            ...action.payload,
+          },
         ],
       }
 

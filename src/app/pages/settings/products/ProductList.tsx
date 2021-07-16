@@ -19,7 +19,7 @@ import AppAlert from "../../../components/alert/AppAlert";
 import ConfirmationDialog from "../../../components/confirmation/ConfirmationDialog";
 import { startResetStateAction } from "../../../../store/actions/httpRequest/HttpRequestActions";
 import SnackBar from "../../../components/snackBar/SnackBar";
-import { startRemoveProductAction } from "../../../../store/actions/product/ProductActions";
+import { startCreateProductAction, startRemoveProductAction } from "../../../../store/actions/product/ProductActions";
 import { Button } from "@material-ui/core";
 import ProductForm from "./partials/ProductForm";
 
@@ -98,7 +98,7 @@ const ProductList = () => {
         }
       </TableCell>
     );
-  }
+  };
 
   const displayNoProductsAvailable = (): ReactElement => (
     <TableRow>
@@ -115,9 +115,16 @@ const ProductList = () => {
     </TableRow>
   );
 
-  const handleFormClose = () => {
+  const handleFormClose = (data?: IProduct) => {
     setOpenForm(false);
-  }
+
+    if (typeof data?.category === "undefined") {
+      return;
+    }
+
+    const dispatcher = () => dispatch(startCreateProductAction(data));
+    dispatcher();
+  };
 
   useLoadProducts();
 

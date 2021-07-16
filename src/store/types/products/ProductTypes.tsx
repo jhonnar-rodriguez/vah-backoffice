@@ -33,6 +33,7 @@ export interface SetProductAction {
 
 export interface CreateProductAction {
   type: typeof CREATE_PRODUCT,
+  payload: IProduct,
 };
 
 export interface ReadProductAction {

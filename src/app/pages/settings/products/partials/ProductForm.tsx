@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../../../store';
 import ICategory from '../../../../contracts/category/ICategory';
 import FormErrors from '../../../../components/Form/FormErrors';
+import IProduct from '../../../../contracts/product/IProduct';
+import { useState } from 'react';
 
 type ProductFormProps = {
   open: boolean,
@@ -35,9 +37,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose }) => {
   const classes = useStyles();
+  const [disableSubmitButtonForm, setDisableSubmitButtonForm] = useState<boolean>(false);
   const { categoryReducer } = useSelector((state: AppState) => state);
 
   const defaultValues = {
+    _id: "",
     name: "",
     category: " ",
     sku: "",
@@ -46,16 +50,23 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose }) => {
     urlImage: "",
     price: 1,
     quantity: 1,
+    image: "",
+    discount: 0,
+    stockStatus: true,
+    totalDiscount: 0,
   };
 
-  const { handleSubmit, formState: { errors, isValid }, reset, clearErrors, control } = useForm({
+  const { handleSubmit, formState: { errors, isValid }, reset, clearErrors, control } = useForm<IProduct>({
     defaultValues,
     mode: 'all',
   });
 
   const { list: categories } = categoryReducer;
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: IProduct) => {
+    setDisableSubmitButtonForm(true);
+    handleClose(data);
+  };
 
   const [fetchCategories] = useLoadCategories();
 
@@ -64,6 +75,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose }) => {
       reset();
       clearErrors();
       fetchCategories();
+      setDisableSubmitButtonForm(false);
     }
   }, [open, reset, clearErrors, fetchCategories]);
 
@@ -315,7 +327,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose }) => {
             color="primary"
             variant="contained"
             onClick={handleSubmit(onSubmit)}
-            disabled={!isValid}
+            disabled={!isValid || disableSubmitButtonForm}
           >
             {action}
           </Button>

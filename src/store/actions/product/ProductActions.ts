@@ -12,6 +12,7 @@ import {
   SetProductsAction,
   PRODUCT_ACTION_TYPES,
   RemoveProductAction,
+  CreateProductAction,
 } from '../../types/products/ProductTypes';
 
 export const getProductsDispatcher = (): GetProductsAction => ({
@@ -25,6 +26,11 @@ export const setProductsDispatcher = (products: IProduct[]): SetProductsAction =
 
 export const setProductDispatcher = (product: IProductShow): SetProductAction => ({
   type: 'SET_PRODUCT',
+  payload: product,
+});
+
+export const createProductDispatcher = (product: IProduct): CreateProductAction => ({
+  type: 'CREATE_PRODUCT',
   payload: product,
 });
 
@@ -65,6 +71,35 @@ export const startGetProductAction = (productId: string) => {
     try {
       const product = await ProductService.getById(productId);
       dispatch(setProductDispatcher(product));
+    } catch ({ response }) {
+      requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
+    }
+
+    dispatch(setFinishedRequestDispatcher(requestFinishedPayload));
+  }
+}
+
+export const startCreateProductAction = (product: IProduct) => {
+  return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setRunningRequestDispatcher());
+
+    let requestFinishedPayload: IHttpRequest = {
+      isLoading: false,
+    };
+
+    try {
+      const productResponse = await ProductService.store(product);
+
+      requestFinishedPayload = {
+        ...requestFinishedPayload,
+        success: {
+          message: "El producto ha sido creado satisfactoriamente.",
+          statusCode: 201,
+          statusText: "Created",
+        }
+      }
+
+      dispatch(createProductDispatcher(productResponse));
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
     }

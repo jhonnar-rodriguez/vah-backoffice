@@ -15,6 +15,12 @@ class ProductService {
     return xhr;
   }
 
+  public static async store(product: IProduct): Promise<IProduct> {
+    const xhr = await httpClient.post("product", { ...product }).then(({ data }) => data.product);
+
+    return xhr;
+  }
+
   public static async remove(id: string): Promise<void> {
     await httpClient.delete(`/product/${id}`);
   }
