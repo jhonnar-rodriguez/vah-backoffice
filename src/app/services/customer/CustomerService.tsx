@@ -13,6 +13,10 @@ class CustomerService {
 
     return xhr;
   }
+
+  public static async remove(customerId: string): Promise<void> {
+    await httpClient.delete(`/customer/${customerId}`);
+  }
 }
 
 export default CustomerService;

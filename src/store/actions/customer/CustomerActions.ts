@@ -7,6 +7,7 @@ import {
   CreateCustomerAction,
   CUSTOMER_ACTION_TYPES,
   GetCustomersAction,
+  RemoveCustomerAction,
   SetCustomersAction,
 } from './../../types/customer/CustomerTypes';
 import CustomerService from '../../../app/services/customer/CustomerService';
@@ -25,6 +26,11 @@ export const createCustomerDispatcher = (customer: ICustomer): CreateCustomerAct
   payload: customer,
 });
 
+export const removeCustomerDispatcher = (customerId: string): RemoveCustomerAction => ({
+  type: 'REMOVE_CUSTOMER',
+  payload: customerId,
+});
+
 export const startGetCustomersAction = () => {
   return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getCustomersDispatcher());
@@ -37,9 +43,9 @@ export const startGetCustomersAction = () => {
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
-    };
-  };
-};
+    }
+  }
+}
 
 export const startCreateCustomerAction = (customer: ICustomer) => {
   return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
@@ -49,9 +55,24 @@ export const startCreateCustomerAction = (customer: ICustomer) => {
       const createdCustomer = await CustomerService.store(customer);
 
       dispatch(createCustomerDispatcher(createdCustomer));
-      dispatch(setFinishedRequestDispatcher(HttpHelper.generateSuccessResponse()));
+      dispatch(setFinishedRequestDispatcher(HttpHelper.generateSuccessResponse({ statusCode: 201 })));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
-    };
-  };
-};
+    }
+  }
+}
+
+export const startRemoveCustomerAction = (customerId: string) => {
+  return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setRunningRequestDispatcher());
+
+    try {
+      await CustomerService.remove(customerId);
+
+      dispatch(removeCustomerDispatcher(customerId));
+      dispatch(setFinishedRequestDispatcher(HttpHelper.generateSuccessResponse({ action: "eliminado" })));
+    } catch ({ response }) {
+      dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
+    }
+  }
+}

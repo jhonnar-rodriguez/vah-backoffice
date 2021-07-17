@@ -13,7 +13,19 @@ interface IErrorResponse {
   statusText: string,
 }
 
+interface ISuccessResponse {
+  action?: string,
+  statusCode?: number,
+  startMessage?: string,
+}
+
 class HttpHelper {
+  public static generateBaseResponse(): IHttpRequest {
+    return {
+      isLoading: false,
+    };
+  };
+
   public static formatRequestFinishedResponse(response: IErrorResponse): IHttpRequest {
     if (typeof response === 'undefined') {
       return {
@@ -42,19 +54,15 @@ class HttpHelper {
     }
   };
 
-  public static generateBaseResponse(): IHttpRequest {
-    return {
-      isLoading: false,
-    };
-  };
+  public static generateSuccessResponse(successResponse: ISuccessResponse): IHttpRequest {
+    const { action = "creado", statusCode = 200, startMessage = "El registro" } = successResponse;
 
-  public static generateSuccessResponse(startMessage: string = "El registro"): IHttpRequest {
     return {
       isLoading: false,
       success: {
-        message: `${startMessage} ha sido creado satisfactoriamente`,
-        statusCode: 201,
-        statusText: "Created",
+        message: `${startMessage} ha sido ${action} satisfactoriamente`,
+        statusCode,
+        statusText: action,
       },
     };
   };
