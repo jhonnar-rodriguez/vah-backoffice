@@ -25,7 +25,11 @@ export const MainListItems = (
 export const SecondaryListItems = (
   <div>
     <ListSubheader inset>Configuración</ListSubheader>
-    <ListItem button>
+    <ListItem
+      to="/settings/customers"
+      button
+      component={Link}
+    >
       <ListItemIcon>
         <GroupAddIcon />
       </ListItemIcon>

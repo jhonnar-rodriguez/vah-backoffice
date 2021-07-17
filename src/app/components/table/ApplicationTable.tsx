@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, ReactElement, useState } from "react";
+import { ChangeEvent, FC, ReactElement, useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -13,8 +13,10 @@ import ConfirmationDialog from "../confirmation/ConfirmationDialog";
 import IColumn from "../../contracts/product/table/IColumn";
 import AppAlert from "../alert/AppAlert";
 import Pagination from "./partials/Pagination";
+import ICustomerColumns from "../../contracts/customer/table/ICustomerColumns";
+import IBaseTableColumns from "../../contracts/table/IBaseTableColumns";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
   },
@@ -23,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+type IApplicationTableColumns = IColumn[] | ICustomerColumns[];
+
 type ApplicationTableProps = {
-  columns: IColumn[],
+  columns: IApplicationTableColumns,
   elementType?: any,
   elements: any,
   handleEditAction: any,
@@ -79,7 +83,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
     </Grid>
   );
 
-  const generateCellValue = (column: IColumn, element: any): ReactElement => {
+  const generateCellValue = (column: IBaseTableColumns, element: any): ReactElement => {
     const value = column.id !== "actions" ? element[column.id] : "generate-action-buttons";
 
     return (
@@ -129,7 +133,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
             <TableRow>
               {
                 columns
-                  .map((column: IColumn) => (
+                  .map((column: IBaseTableColumns) => (
                     <TableCell
                       key={column.id}
                       align={column.align}
@@ -154,7 +158,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
                         hover
                         tabIndex={-1}
                       >
-                        {columns.map((column: IColumn) => generateCellValue(column, element))}
+                        {columns.map((column: IBaseTableColumns) => generateCellValue(column, element))}
                       </TableRow>
                     );
                   })
