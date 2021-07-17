@@ -11,6 +11,8 @@ import IHeader from '../../../../contracts/layouts/IHeader';
 import AccountCircleIcon from '@material-ui/icons/AccountCircleOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, Menu, MenuItem } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../../store';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +64,7 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const { title } = useSelector((state: AppState) => state.navigationReducer)
 
   const menuId = 'primary-search-account-menu';
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -161,7 +164,7 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
             component="h1"
             className={classes.title}
           >
-            Tablero
+            {title || "Por definir"}
           </Typography>
 
           <div className={classes.sectionDesktop}>

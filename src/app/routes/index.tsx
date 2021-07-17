@@ -23,7 +23,7 @@ const Routes = () => {
         path="/settings/products"
         layout={MainLayout}
         component={ProductListPage}
-        pageTitle="Listado de Productos"
+        pageTitle="Productos"
       />
     </Switch>
   );

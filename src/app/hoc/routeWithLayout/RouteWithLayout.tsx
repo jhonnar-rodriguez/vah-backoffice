@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Route } from 'react-router-dom';
 import { AppState } from '../../../store';
 import Loading from "../../components/loading/Loading";
+import useSetNavigation from '../../hooks/navigation/useSetNavigation';
 
 type RouteWithLayoutProps = {
   path: string,
@@ -20,6 +21,7 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
   exact = true,
 }) => {
   const { isLoading } = useSelector((state: AppState) => state.httpRequestReducer);
+  useSetNavigation(pageTitle);
 
   return (
     <Route
