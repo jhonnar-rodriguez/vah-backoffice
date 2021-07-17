@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Paper, Typography } from "@material-ui/core";
 import { AppState } from '../../../../store';
@@ -8,6 +8,8 @@ import ApplicationTable from "../../../components/table/ApplicationTable";
 import useLoadCustomers from "../../../hooks/settings/customers/useLoadCustomers";
 import ICustomer from "../../../contracts/customer/ICustomer";
 import { customerInitialState } from "../../../data/customers";
+import CustomerForm from "./partials/CustomerForm";
+import { startCreateCustomerAction } from "../../../../store/actions/customer/CustomerActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomerList = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const { customerReducer } = useSelector((state: AppState) => state)
   const { list: customers } = customerReducer;
@@ -36,6 +39,21 @@ const CustomerList = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createCustomer, setCreateCustomer] = useState<boolean>(true);
   const [customerToUpdate, setCustomerToUpdate] = useState<ICustomer>(customerInitialState);
+
+  const handleFormClose = (customer?: ICustomer) => {
+    setCreateCustomer(true);
+    setCustomerToUpdate(customerInitialState);
+
+    if (typeof customer?.name === "undefined") {
+      setOpenForm(false);
+      return;
+    }
+
+    let dispatcher = () => dispatch(startCreateCustomerAction(customer));
+
+    dispatcher();
+    setOpenForm(false);
+  };
 
   const handleDeleteCustomer = (customerId: string) => {
   };
@@ -73,6 +91,16 @@ const CustomerList = () => {
           handleConfirmDeleteAction={handleDeleteCustomer}
         />
       </Paper>
+
+      {
+        openForm &&
+        <CustomerForm
+          open={true}
+          action={createCustomer ? "Crear" : "Actualizar"}
+          handleClose={handleFormClose}
+          elementToUpdate={customerToUpdate}
+        />
+      }
     </>
   );
 };

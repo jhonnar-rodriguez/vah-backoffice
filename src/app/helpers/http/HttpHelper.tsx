@@ -40,7 +40,24 @@ class HttpHelper {
         statusCode,
       }
     }
-  }
+  };
+
+  public static generateBaseResponse(): IHttpRequest {
+    return {
+      isLoading: false,
+    };
+  };
+
+  public static generateSuccessResponse(startMessage: string = "El registro"): IHttpRequest {
+    return {
+      isLoading: false,
+      success: {
+        message: `${startMessage} ha sido creado satisfactoriamente`,
+        statusCode: 201,
+        statusText: "Created",
+      },
+    };
+  };
 }
 
 export default HttpHelper;

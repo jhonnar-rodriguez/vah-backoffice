@@ -7,6 +7,12 @@ class CustomerService {
 
     return xhr;
   }
+
+  public static async store(customer: ICustomer): Promise<ICustomer> {
+    const xhr = await httpClient.post("/customer", { ...customer }).then(({ data }) => data.customer);
+
+    return xhr;
+  }
 }
 
 export default CustomerService;

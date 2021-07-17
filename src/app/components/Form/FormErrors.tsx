@@ -1,28 +1,44 @@
 import { FC } from "react";
-import { List } from "@material-ui/core";
+import { List, ListItem, makeStyles, Theme } from "@material-ui/core";
 import { FieldErrors, FieldError } from "react-hook-form";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  listContainer: {
+    padding: theme.spacing(.5),
+  },
+  listItem: {
+    color: "red",
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+}));
 
 type FormErrorsProps = {
   errors: FieldErrors,
-}
+};
 
 const FormErrors: FC<FormErrorsProps> = ({ errors }) => {
+  const classes = useStyles();
+
   return (
-    <List style={{padding: "5px"}}>
+    <List className={classes.listContainer}>
       {
         Object
           .values(errors).length ?
           Object
             .values(errors)
             .map((error: FieldError, i) =>
-              <li key={i} style={{ color: "red" }}>
+              <ListItem
+                key={i}
+                className={classes.listItem}
+              >
                 {error.message}
-              </li>
+              </ListItem>
             ) :
           ''
       }
     </List>
   )
-}
+};
 
 export default FormErrors;
