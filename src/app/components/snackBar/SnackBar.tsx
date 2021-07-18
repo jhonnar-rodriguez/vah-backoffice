@@ -9,7 +9,7 @@ type SnackBarProps = {
   onDismiss?: Function,
 };
 
-const SnackBar: FC<SnackBarProps> = ({ message, onDismiss, severity = "success", duration = 5000, }) => {
+const SnackBar: FC<SnackBarProps> = ({ message, onDismiss, severity = "success", duration = 5000 }) => {
   return (
     <Snackbar
       open={true}
@@ -17,7 +17,7 @@ const SnackBar: FC<SnackBarProps> = ({ message, onDismiss, severity = "success",
       autoHideDuration={duration}
     >
       <Alert
-        onClose={() => typeof onDismiss === 'function' ? onDismiss() : ''}
+        variant="filled"
         severity={severity}
       >
         {message}

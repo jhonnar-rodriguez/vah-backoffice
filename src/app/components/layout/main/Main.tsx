@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -8,6 +8,10 @@ import Header from './partials/Header';
 import Sidebar from './partials/Sidebar';
 import Copyright from './partials/Copyright';
 import { useMediaQuery, useTheme } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../../../store';
+import SnackBar from '../../snackBar/SnackBar';
+import { startResetStateAction } from '../../../../store/actions/httpRequest/HttpRequestActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 const Main: FC = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const { success } = useSelector((state: AppState) => state.httpRequestReducer)
 
   const [open, setOpen] = useState(true);
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
@@ -58,6 +64,21 @@ const Main: FC = ({ children }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const resetSuccessMessage = () => {
+    const dispatcher = () => dispatch(startResetStateAction());
+    dispatcher();
+  };
+
+  const handleSuccessMessages = (): ReactElement => {
+    return typeof success !== 'undefined' &&
+      success.message.length > 0 ?
+      <SnackBar
+        message={success.message}
+        onDismiss={resetSuccessMessage}
+      /> :
+      <></>
+  }
 
   return (
     <div className={classes.root}>
@@ -82,6 +103,8 @@ const Main: FC = ({ children }) => {
           <Box pt={4}>
             <Copyright />
           </Box>
+
+          {handleSuccessMessages()}
         </Container>
       </main>
     </div>

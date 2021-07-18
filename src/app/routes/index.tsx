@@ -2,7 +2,11 @@ import { Switch, Redirect } from "react-router-dom";
 import RouteWithLayout from "../hoc/routeWithLayout/RouteWithLayout";
 import MainLayout from "../components/layout/main/Main";
 
-import { DashboardPage, ProductListPage } from "../pages"
+import {
+  CustomersPage,
+  DashboardPage,
+  ProductListPage,
+} from "../pages"
 
 const Routes = () => {
   return (
@@ -24,6 +28,13 @@ const Routes = () => {
         layout={MainLayout}
         component={ProductListPage}
         pageTitle="Productos"
+      />
+
+      <RouteWithLayout
+        path="/settings/customers"
+        layout={MainLayout}
+        component={CustomersPage}
+        pageTitle="Clientes"
       />
     </Switch>
   );

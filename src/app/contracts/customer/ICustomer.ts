@@ -6,7 +6,13 @@ interface ICustomer {
   mobile: string,
   document: string,
   surname: string,
-  documentType: string,
+  documentType: IDocumentType,
 }
+
+export interface IDocumentType {
+  name: string,
+  value: string,
+  pattern: string,
+};
 
 export default ICustomer;
