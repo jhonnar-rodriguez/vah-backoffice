@@ -14,6 +14,12 @@ class CustomerService {
     return xhr;
   }
 
+  public static async update(customer: ICustomer): Promise<ICustomer> {
+    const xhr = await httpClient.put(`/customer/${customer._id}`, { ...customer }).then(({ data }) => data.customer);
+
+    return xhr;
+  }
+
   public static async remove(customerId: string): Promise<void> {
     await httpClient.delete(`/customer/${customerId}`);
   }

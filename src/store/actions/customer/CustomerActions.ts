@@ -9,6 +9,7 @@ import {
   GetCustomersAction,
   RemoveCustomerAction,
   SetCustomersAction,
+  UpdateCustomerAction,
 } from './../../types/customer/CustomerTypes';
 import CustomerService from '../../../app/services/customer/CustomerService';
 
@@ -23,6 +24,11 @@ export const setCustomersDispatcher = (customers: ICustomer[]): SetCustomersActi
 
 export const createCustomerDispatcher = (customer: ICustomer): CreateCustomerAction => ({
   type: 'CREATE_CUSTOMER',
+  payload: customer,
+});
+
+export const updateCustomerDispatcher = (customer: ICustomer): UpdateCustomerAction => ({
+  type: 'UPDATE_CUSTOMER',
   payload: customer,
 });
 
@@ -56,6 +62,21 @@ export const startCreateCustomerAction = (customer: ICustomer) => {
 
       dispatch(createCustomerDispatcher(createdCustomer));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateSuccessResponse({ statusCode: 201 })));
+    } catch ({ response }) {
+      dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
+    }
+  }
+}
+
+export const startUpdateCustomerAction = (customer: ICustomer) => {
+  return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setRunningRequestDispatcher());
+
+    try {
+      const updatedCustomer = await CustomerService.update(customer);
+
+      dispatch(updateCustomerDispatcher(updatedCustomer));
+      dispatch(setFinishedRequestDispatcher(HttpHelper.generateSuccessResponse({ action: "actualizado" })));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
     }

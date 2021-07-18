@@ -39,8 +39,9 @@ const documentTypeInitialRules = {
 const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToUpdate }) => {
   const classes = useStyles();
   const [documentRules, setDocumentRules] = useState<RegisterOptions>(documentTypeInitialRules);
+  const [creatingCustomer] = useState<boolean>(action === "Crear");
 
-  const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control, setValue } = useForm<ICustomer>({
+  const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control, setValue, trigger } = useForm<ICustomer>({
     defaultValues: useMemo(() => {
       return {
         ...elementToUpdate,
@@ -54,11 +55,15 @@ const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementT
   };
 
   const callOnCreateForm = [
-    () => reset(customerInitialState),
+    () => reset(customerInitialState, { keepDirty: true, keepIsValid: true }),
     () => setDocumentRules(documentTypeInitialRules),
   ];
 
-  useResetModalForm(open, action, clearErrors, callOnCreateForm);
+  const callOnUpdate = [
+    () => trigger(),
+  ];
+
+  useResetModalForm(open, action, clearErrors, callOnCreateForm, callOnUpdate);
 
   const handleDocumentTypeSelection = (event: ChangeEvent<{ name?: string | undefined; value: unknown; }>, onChange: Function) => {
     const selectedDocumentType = event.target.value;
@@ -245,12 +250,16 @@ const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementT
                 value: true,
                 message: 'El tipo documento es requerido.',
               },
+              minLength: {
+                value: 2,
+                message: 'El tipo documento es requerido.',
+              },
             }}
             render={({ field: { onChange, value } }) => {
               return (
                 <Select
                   name="documentType"
-                  value={typeof value.value === "string" ? value.value : value}
+                  value={typeof value.value === "string" ? value.value : String(value).toLowerCase()}
                   onChange={(event) => handleDocumentTypeSelection(event, onChange)}
                 >
                   <MenuItem value=" ">
@@ -308,7 +317,7 @@ const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementT
           color="primary"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
-          disabled={!isDirty || !isValid}
+          disabled={(creatingCustomer && !isDirty) || !isValid}
         >
           {action}
         </Button>

@@ -9,7 +9,7 @@ import useLoadCustomers from "../../../hooks/settings/customers/useLoadCustomers
 import ICustomer from "../../../contracts/customer/ICustomer";
 import { customerInitialState } from "../../../data/customers";
 import CustomerForm from "./partials/CustomerForm";
-import { startCreateCustomerAction, startRemoveCustomerAction } from "../../../../store/actions/customer/CustomerActions";
+import { startCreateCustomerAction, startRemoveCustomerAction, startUpdateCustomerAction } from "../../../../store/actions/customer/CustomerActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +50,10 @@ const CustomerList = () => {
     }
 
     let dispatcher = () => dispatch(startCreateCustomerAction(customer));
+
+    if (!createCustomer) {
+      dispatcher = () => dispatch(startUpdateCustomerAction(customer));
+    }
 
     dispatcher();
     setOpenForm(false);
