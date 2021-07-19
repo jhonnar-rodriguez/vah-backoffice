@@ -14,11 +14,11 @@ import {
   COUPON_ACTION_TYPES,
 } from '../../types/coupon/CouponTypes';
 
-export const getCouponDispatcher = (): GetCouponsAction => ({
+export const getCouponsDispatcher = (): GetCouponsAction => ({
   type: 'GET_COUPONS',
 });
 
-export const setCouponDispatcher = (coupons: ICoupon[]): SetCouponsAction => ({
+export const setCouponsDispatcher = (coupons: ICoupon[]): SetCouponsAction => ({
   type: 'SET_COUPONS',
   payload: coupons,
 });
@@ -38,15 +38,15 @@ export const removeCouponDispatcher = (couponId: string): RemoveCouponAction => 
   payload: couponId,
 });
 
-export const startGetCouponAction = () => {
+export const startGetCouponsAction = () => {
   return async (dispatch: Dispatch<COUPON_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
-    dispatch(getCouponDispatcher());
+    dispatch(getCouponsDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
       const coupons = await CouponService.getAll();
 
-      dispatch(setCouponDispatcher(coupons));
+      dispatch(setCouponsDispatcher(coupons));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
@@ -84,7 +84,7 @@ export const startUpdateCouponAction = (coupon: ICoupon) => {
   }
 }
 
-export const startRemoveCustomerAction = (couponId: string) => {
+export const startRemoveCouponAction = (couponId: string) => {
   return async (dispatch: Dispatch<COUPON_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(setRunningRequestDispatcher());
 
