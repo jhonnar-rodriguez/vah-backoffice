@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import GroupAddIcon from '@material-ui/icons/GroupAddOutlined';
 import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+import TheatersIcon from '@material-ui/icons/Theaters';
 
 export const MainListItems = (
   <div>
@@ -34,6 +35,17 @@ export const SecondaryListItems = (
         <GroupAddIcon />
       </ListItemIcon>
       <ListItemText primary="Clientes" />
+    </ListItem>
+
+    <ListItem
+      to="/settings/coupons"
+      button
+      component={Link}
+    >
+      <ListItemIcon>
+        <TheatersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Cupones" />
     </ListItem>
 
     <ListItem

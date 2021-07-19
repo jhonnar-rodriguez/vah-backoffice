@@ -15,6 +15,7 @@ import AppAlert from "../alert/AppAlert";
 import Pagination from "./partials/Pagination";
 import ICustomerColumns from "../../contracts/customer/table/ICustomerColumns";
 import IBaseTableColumns from "../../contracts/table/IBaseTableColumns";
+import ICouponTableColumns from "../../contracts/coupon/table/ICouponTableColumns";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type IApplicationTableColumns = IColumn[] | ICustomerColumns[];
+type IApplicationTableColumns = IColumn[] | ICustomerColumns[] | ICouponTableColumns[];
 
 type ApplicationTableProps = {
   columns: IApplicationTableColumns,
