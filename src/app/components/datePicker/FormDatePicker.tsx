@@ -12,9 +12,11 @@ type DatePickerProps = {
   label: string,
   onChange: any,
   format?: string,
+  disabled?: boolean,
+  disablePast?: boolean,
 }
 
-const FormDatePicker: FC<DatePickerProps> = ({ value, onChange, label, format = "dd/MM/yyyy" }) => {
+const FormDatePicker: FC<DatePickerProps> = ({ value, onChange, label, format = "dd/MM/yyyy", disabled = false, disablePast = false }) => {
   return (
     <>
       <MuiPickersUtilsProvider
@@ -32,7 +34,8 @@ const FormDatePicker: FC<DatePickerProps> = ({ value, onChange, label, format = 
           clearable
           placeholder={format}
           cancelLabel={false}
-          disablePast
+          disabled={disabled}
+          disablePast={disablePast}
           disableToolbar
           showTodayButton
           InputLabelProps={{

@@ -15,6 +15,7 @@ import { memo } from 'react';
 import ICoupon from '../../../../contracts/coupon/ICoupon';
 import { couponInitialState } from '../../../../data/coupons';
 import FormDatePicker from '../../../../components/datePicker/FormDatePicker';
+import { moment } from '../../../../../config';
 
 const useStyles = makeStyles((theme: Theme) => ({
   formControl: {
@@ -39,7 +40,7 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
   const classes = useStyles();
   const [creatingCustomer] = useState<boolean>(action === "Crear");
 
-  const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control, trigger } = useForm<ICoupon>({
+  const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control, trigger, getValues, setError, setValue } = useForm<ICoupon>({
     defaultValues: useMemo(() => {
       return {
         ...elementToUpdate,
@@ -51,6 +52,29 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
   const onSubmit = (data: ICustomer) => {
     handleClose(data);
   };
+
+  const handleEndDateSelection = (date: string, onChange: Function) => {
+    const startDate = moment(getValues("startDate"));
+
+    if (!startDate.isValid()) {
+      setError("startDate", { message: "Por favor introduzca una fecha de inicio válida." });
+      return;
+    }
+
+    const endDate = moment(date);
+
+    if (!endDate.isSameOrAfter(startDate)) {
+      setError("endDate", {
+        message: "La fecha de finalización debe ser igual o superior a la fecha de inicio."
+      });
+
+      setValue("endDate", "");
+
+      return;
+    }
+
+    onChange(date);
+  }
 
   const callOnCreateForm = [
     () => reset(couponInitialState),
@@ -66,11 +90,11 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="customers-form"
       fullWidth
+      aria-labelledby="coupons-form"
     >
-      <DialogTitle id="customers-form">
-        {`${action} Cliente`}
+      <DialogTitle id="coupons-form">
+        {`${action} Cupón`}
       </DialogTitle>
 
       <FormErrors errors={errors} />
@@ -150,7 +174,7 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
             render={({ field: { onChange, value } }) => (
               <Input
                 type="number"
-                value={value === 0 ? 1 : value}
+                value={value}
                 onChange={onChange}
                 autoComplete="off"
                 aria-labelledby="limit"
@@ -167,10 +191,6 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
               required: {
                 value: true,
                 message: 'La fecha de inicio es requerida.',
-              },
-              pattern: {
-                value: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/,
-                message: 'Por favor introduzca una fecha de inicio válida.',
               },
             }}
             render={({ field: { onChange, value } }) => (
@@ -192,16 +212,12 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
                 value: true,
                 message: 'La fecha de finalización es requerida.',
               },
-              pattern: {
-                value: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/,
-                message: 'Por favor introduzca una fecha de finalización válida.',
-              },
             }}
             render={({ field: { onChange, value } }) => (
               <FormDatePicker
                 value={value}
                 label="Fecha de finalización"
-                onChange={onChange}
+                onChange={(date: string) => handleEndDateSelection(date, onChange)}
               />
             )}
           />

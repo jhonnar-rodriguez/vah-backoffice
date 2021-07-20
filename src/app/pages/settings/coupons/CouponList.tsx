@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Paper, Typography } from "@material-ui/core";
 import { AppState } from '../../../../store';
 import ApplicationTable from "../../../components/table/ApplicationTable";
@@ -15,7 +15,7 @@ import {
 import useLoadCoupons from "../../../hooks/settings/coupons/useLoadCoupons";
 import CouponForm from "./partials/CouponForm";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: "100%",
   },
@@ -53,6 +53,10 @@ const CouponList = () => {
     }
 
     let dispatcher = () => dispatch(startCreateCouponAction(coupon));
+
+    if (!createCoupon) {
+      dispatcher = () => dispatch(startUpdateCouponAction(coupon));
+    }
 
     dispatcher();
     setOpenForm(false);
