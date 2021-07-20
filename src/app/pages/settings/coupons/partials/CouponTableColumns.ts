@@ -34,7 +34,7 @@ const CouponTableColumns: ICouponTableColumns[] = [
   },
   {
     id: 'isFirst',
-    label: '¿Es Primero?',
+    label: '¿Es de Primera Compra?',
     minWidth: 170,
     format: (value: boolean) => value ? "Si" : "No",
   },

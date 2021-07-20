@@ -1,9 +1,5 @@
-import axios from 'axios';
+import httpClient from '../../../config/axios';
 import ICoupon from '../../contracts/coupon/ICoupon';
-
-const httpClient = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND,
-});
 
 class CouponService {
   public static async getAll(): Promise<ICoupon[]> {

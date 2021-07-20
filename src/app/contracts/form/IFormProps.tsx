@@ -1,7 +1,8 @@
+import ICoupon from "../coupon/ICoupon";
 import ICustomer from "../customer/ICustomer";
 import IProduct from "../product/IProduct";
 
-export type IElementToUpdate = IProduct | ICustomer;
+export type IElementToUpdate = IProduct | ICustomer | ICoupon;
 
 interface IFormProps {
   open: boolean,

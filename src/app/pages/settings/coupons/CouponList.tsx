@@ -8,9 +8,12 @@ import CouponTableColumns from "./partials/CouponTableColumns";
 import ICoupon from "../../../contracts/coupon/ICoupon";
 import { couponInitialState } from "../../../data/coupons";
 import {
+  startCreateCouponAction,
   startRemoveCouponAction,
+  startUpdateCouponAction,
 } from "../../../../store/actions/coupon/CouponActions";
 import useLoadCoupons from "../../../hooks/settings/coupons/useLoadCoupons";
+import CouponForm from "./partials/CouponForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +42,21 @@ const CouponList = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createCoupon, setCreateCoupon] = useState<boolean>(true);
   const [couponToUpdate, setCouponToUpdate] = useState<ICoupon>(couponInitialState);
+
+  const handleFormClose = (coupon?: ICoupon) => {
+    setCreateCoupon(true);
+    setCouponToUpdate(couponInitialState);
+
+    if (typeof coupon?.code === "undefined") {
+      setOpenForm(false);
+      return;
+    }
+
+    let dispatcher = () => dispatch(startCreateCouponAction(coupon));
+
+    dispatcher();
+    setOpenForm(false);
+  };
 
   const handleDeleteCoupon = (couponId: string) => {
     const dispatcher = () => dispatch(startRemoveCouponAction(couponId));
@@ -78,6 +96,16 @@ const CouponList = () => {
           handleConfirmDeleteAction={handleDeleteCoupon}
         />
       </Paper>
+
+      {
+        openForm &&
+        <CouponForm
+          open={true}
+          action={createCoupon ? "Crear" : "Actualizar"}
+          handleClose={handleFormClose}
+          elementToUpdate={couponToUpdate}
+        />
+      }
     </>
   );
 };
