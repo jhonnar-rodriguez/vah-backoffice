@@ -1,4 +1,4 @@
-import IAllowedClient from "../../../app/contracts/allowedClient/IAllowedClient";
+import IAllowedClient from "../../../app/contracts/security/allowedClient/IAllowedClient";
 
 export const GET_CLIENTS = 'GET_CLIENTS';
 export const SET_CLIENTS = 'SET_CLIENTS';

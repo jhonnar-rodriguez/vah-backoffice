@@ -29,7 +29,7 @@ export const storeMenuOptions: MenuOption[] = [
 export const securityMenuOptions: MenuOption[] = [
   {
     id: uuid(),
-    route: "/settings/apps",
+    route: "/settings/security/apps",
     icon: AppsIcon,
     label: "Aplicaciones",
   },

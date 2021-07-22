@@ -16,6 +16,7 @@ import Pagination from "./partials/Pagination";
 import ICustomerColumns from "../../contracts/customer/table/ICustomerColumns";
 import IBaseTableColumns from "../../contracts/table/IBaseTableColumns";
 import ICouponTableColumns from "../../contracts/coupon/table/ICouponTableColumns";
+import IAllowedClientTableColumns from "../../contracts/security/allowedClient/table/IAllowedClientTableColumns";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type IApplicationTableColumns = IColumn[] | ICustomerColumns[] | ICouponTableColumns[];
+type IApplicationTableColumns = IColumn[] | ICustomerColumns[] | ICouponTableColumns[] | IAllowedClientTableColumns[];
 
 type ApplicationTableProps = {
   columns: IApplicationTableColumns,

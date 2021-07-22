@@ -1,4 +1,4 @@
-import IAllowedClient from '../../../app/contracts/allowedClient/IAllowedClient';
+import IAllowedClient from '../../../app/contracts/security/allowedClient/IAllowedClient';
 import {
   SET_CLIENTS,
   GET_CLIENTS,

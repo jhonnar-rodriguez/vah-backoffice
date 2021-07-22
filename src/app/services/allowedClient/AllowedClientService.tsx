@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { BACKEND_URL } from '../../../config/app';
-import IAllowedClient from '../../contracts/allowedClient/IAllowedClient';
+import IAllowedClient from '../../contracts/security/allowedClient/IAllowedClient';
 
 const httpClient = axios.create({
-  baseURL: BACKEND_URL,
+  baseURL: process.env.REACT_APP_BACKEND,
 });
 
 class AllowedClientService {

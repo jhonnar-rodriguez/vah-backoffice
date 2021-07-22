@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { HTTP_REQUEST_ACTION_TYPES } from '../../types/httpRequest/HttpRequestTypes';
 import { setRunningRequestDispatcher, setFinishedRequestDispatcher } from '../httpRequest/HttpRequestActions';
 import { HttpHelper } from '../../../app/helpers';
-import IAllowedClient from '../../../app/contracts/allowedClient/IAllowedClient';
+import IAllowedClient from '../../../app/contracts/security/allowedClient/IAllowedClient';
 import {
   GetClientsAction,
   SetClientsAction,
