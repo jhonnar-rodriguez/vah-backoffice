@@ -1,12 +1,22 @@
 import { Link } from 'react-router-dom';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import GroupAddIcon from '@material-ui/icons/GroupAddOutlined';
-import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-import TheatersIcon from '@material-ui/icons/Theaters';
+import SecurityIcon from '@material-ui/icons/SecurityOutlined';
+import ExpandLessIcon from '@material-ui/icons/ExpandLessOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreOutlined';
+import StorefrontIcon from '@material-ui/icons/StorefrontOutlined';
+
+import {
+  List,
+  SvgIcon,
+  Divider,
+  Collapse,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+} from '@material-ui/core';
+import { securityMenuOptions, storeMenuOptions } from '../../../../data/sidebar';
+import MenuOption from '../../../../contracts/menuOption/IMenuOption';
 
 export const MainListItems = (
   <div>
@@ -23,40 +33,105 @@ export const MainListItems = (
   </div>
 );
 
-export const SecondaryListItems = (
+
+type SecondaryListItemsProps = {
+  hideIcons: boolean,
+  openNestedStore: boolean,
+  openNestedSecurity: boolean,
+  handleNestedStoreClick: any,
+  handleNestedSecurityClick: any,
+}
+
+export const SecondaryListItems = ({
+  hideIcons,
+  openNestedStore,
+  openNestedSecurity,
+  handleNestedStoreClick,
+  handleNestedSecurityClick,
+}: SecondaryListItemsProps) => (
   <div>
     <ListSubheader inset>Configuración</ListSubheader>
     <ListItem
-      to="/settings/customers"
       button
-      component={Link}
+      onClick={handleNestedStoreClick}
     >
       <ListItemIcon>
-        <GroupAddIcon />
+        <StorefrontIcon />
       </ListItemIcon>
-      <ListItemText primary="Clientes" />
+      <ListItemText
+        primary="Tienda"
+        style={{ marginRight: "0", paddingRight: "0" }}
+      />
+      {openNestedStore ? <ExpandLessIcon /> : <ExpandMoreIcon />}
     </ListItem>
 
-    <ListItem
-      to="/settings/coupons"
-      button
-      component={Link}
+    <Collapse
+      in={openNestedStore}
+      timeout="auto"
+      unmountOnExit
     >
-      <ListItemIcon>
-        <TheatersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Cupones" />
-    </ListItem>
+      <Divider />
+      <List
+        component="div"
+        style={{ padding: !hideIcons ? "10px" : "5px" }}
+      >
+        {
+          storeMenuOptions
+            .map((menu: MenuOption) => (
+              <ListItem
+                key={menu.id}
+                to={menu.route}
+                button
+                component={Link}
+              >
+                <ListItemIcon>
+                  <SvgIcon component={menu.icon} />
+                </ListItemIcon>
+                <ListItemText primary={menu.label} />
+              </ListItem>
+            ))
+        }
+      </List>
+    </Collapse>
 
     <ListItem
-      to="/settings/products"
       button
-      component={Link}
+      onClick={handleNestedSecurityClick}
     >
       <ListItemIcon>
-        <ListAltOutlinedIcon />
+        <SecurityIcon />
       </ListItemIcon>
-      <ListItemText primary="Productos" />
+      <ListItemText primary="Seguridad" style={{ marginRight: "0", paddingRight: "0" }} />
+      {openNestedSecurity ? <ExpandLessIcon /> : <ExpandMoreIcon />}
     </ListItem>
-  </div>
+
+    <Collapse
+      in={openNestedSecurity}
+      timeout="auto"
+      unmountOnExit
+    >
+      <Divider />
+      <List
+        component="div"
+        style={{ padding: !hideIcons ? "10px" : "5px" }}
+      >
+        {
+          securityMenuOptions
+            .map((menu: MenuOption) => (
+              <ListItem
+                key={menu.id}
+                to={menu.route}
+                button
+                component={Link}
+              >
+                <ListItemIcon>
+                  <SvgIcon component={menu.icon} />
+                </ListItemIcon>
+                <ListItemText primary={menu.label} />
+              </ListItem>
+            ))
+        }
+      </List>
+    </Collapse>
+  </div >
 );

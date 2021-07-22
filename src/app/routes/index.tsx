@@ -7,6 +7,7 @@ import {
   CustomersPage,
   DashboardPage,
   ProductListPage,
+  AllowedClientPage,
 } from "../pages"
 
 const Routes = () => {
@@ -43,6 +44,13 @@ const Routes = () => {
         layout={MainLayout}
         component={CouponsPage}
         pageTitle="Cupones"
+      />
+
+      <RouteWithLayout
+        path="/settings/security/apps"
+        layout={MainLayout}
+        component={AllowedClientPage}
+        pageTitle="Aplicaciones Permitidas"
       />
     </Switch>
   );

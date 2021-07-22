@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -42,6 +42,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
   const classes = useStyles();
+  const [openNestedStore, setOpenNestedStore] = useState(false);
+  const [openNestedSecurity, setOpenNestedSecurity] = useState(false);
+
+  const handleNestedStoreClick = () => {
+    setOpenNestedStore(!openNestedStore)
+  }
+
+  const handleNestedSecurityClick = () => {
+    setOpenNestedSecurity(!openNestedSecurity)
+  }
 
   return (
     <Drawer
@@ -62,8 +72,17 @@ const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
 
       <List>{MainListItems}</List>
       <Divider />
-      <List>{SecondaryListItems}</List>
-
+      <List>
+        {
+          SecondaryListItems({
+            hideIcons: !open,
+            openNestedStore,
+            openNestedSecurity,
+            handleNestedStoreClick,
+            handleNestedSecurityClick,
+          })
+        }
+      </List>
     </Drawer>
   )
 }
