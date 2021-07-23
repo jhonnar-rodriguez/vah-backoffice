@@ -38,7 +38,7 @@ const CustomerList = () => {
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createCustomer, setCreateCustomer] = useState<boolean>(true);
-  const [customerToUpdate, setCustomerToUpdate] = useState<ICustomer>(customerInitialState);
+  const [customerToUpdate, setCustomerToUpdate] = useState<any>(customerInitialState);
 
   const handleFormClose = (customer?: ICustomer) => {
     setCreateCustomer(true);
@@ -65,8 +65,19 @@ const CustomerList = () => {
   };
 
   const handleEditCustomer = (customer: ICustomer) => {
+    let customerToUpdate = {
+      _id: customer._id,
+      name: customer.name || "",
+      code: customer.code || "",
+      email: customer.email || "",
+      mobile: customer.mobile || "",
+      document: customer.document || "",
+      surname: customer.surname || "",
+      documentType: typeof customer.documentType !== "undefined" ? String(customer.documentType) : " ",
+    };
+
     setCreateCustomer(false);
-    setCustomerToUpdate(customer);
+    setCustomerToUpdate(customerToUpdate);
     setOpenForm(true);
   }
 

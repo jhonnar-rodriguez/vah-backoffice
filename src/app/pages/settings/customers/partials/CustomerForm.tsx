@@ -259,7 +259,7 @@ const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementT
               return (
                 <Select
                   name="documentType"
-                  value={typeof value.value === "string" ? value.value : String(value).toLowerCase()}
+                  value={typeof value.value === "string" ? value.value : String(value)}
                   onChange={(event) => handleDocumentTypeSelection(event, onChange)}
                 >
                   <MenuItem value=" ">

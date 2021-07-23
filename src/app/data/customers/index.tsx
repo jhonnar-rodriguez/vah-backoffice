@@ -18,22 +18,22 @@ export const customerInitialState: ICustomer = {
 export const documentTypes: IDocumentType[] = [
   {
     name: "DNI",
-    value: "dni",
+    value: "DNI",
     pattern: "^\\d{8}$",
   },
   {
     name: "RUC",
-    value: "ruc",
+    value: "RUC",
     pattern: "^\\d{13}$",
   },
   {
     name: "Carné de Extranjería",
-    value: "ext",
+    value: "EXT",
     pattern: "^([a-zA-Z]{1,5})?[1-9][0-9]{3,7}$",
   },
   {
     name: "Pasaporte",
-    value: "ppn",
+    value: "TYPE_PPN",
     pattern: "^[a-zA-Z0-9_]{4,16}$",
   },
 ];
