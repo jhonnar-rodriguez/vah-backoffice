@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import SecurityIcon from '@material-ui/icons/SecurityOutlined';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreOutlined';
@@ -15,21 +14,27 @@ import {
   ListItemText,
   ListSubheader,
 } from '@material-ui/core';
-import { securityMenuOptions, storeMenuOptions } from '../../../../data/sidebar';
+import { generalMenuOptions, securityMenuOptions, storeMenuOptions } from '../../../../data/sidebar';
 import MenuOption from '../../../../contracts/menuOption/IMenuOption';
 
 export const MainListItems = (
   <div>
-    <ListItem
-      to="/dashboard"
-      button
-      component={Link}
-    >
-      <ListItemIcon>
-        <AssessmentOutlinedIcon />
-      </ListItemIcon>
-      <ListItemText primary="Tablero" />
-    </ListItem>
+    {
+      generalMenuOptions
+        .map((menu: MenuOption) => (
+          <ListItem
+            key={menu.id}
+            to={menu.route}
+            button
+            component={Link}
+          >
+            <ListItemIcon>
+              <SvgIcon component={menu.icon} />
+            </ListItemIcon>
+            <ListItemText primary={menu.label} />
+          </ListItem>
+        ))
+    }
   </div>
 );
 

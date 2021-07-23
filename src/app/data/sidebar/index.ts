@@ -4,6 +4,23 @@ import NewReleasesIcon from '@material-ui/icons/NewReleasesOutlined';
 import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
 import AppsIcon from '@material-ui/icons/AppsOutlined';
 import MenuOption from '../../contracts/menuOption/IMenuOption';
+import AssessmentIcon from '@material-ui/icons/AssessmentOutlined';
+import LocalMallIcon from '@material-ui/icons/LocalMallOutlined';
+
+export const generalMenuOptions: MenuOption[] = [
+  {
+    id: uuid(),
+    route: "/dashboard",
+    icon: AssessmentIcon,
+    label: "Tablero",
+  },
+  {
+    id: uuid(),
+    route: "/orders",
+    icon: LocalMallIcon,
+    label: "Pedidos",
+  },
+];
 
 export const storeMenuOptions: MenuOption[] = [
   {

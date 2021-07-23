@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import { RemoveCircleOutline as RemoveCircleIcon } from "@material-ui/icons";
 
 export type ConfirmationDialogProps = {
@@ -32,14 +32,16 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({ title, content, handl
   return (
     <div>
       <label htmlFor="delete-product">
-        <IconButton
-          color="secondary"
-          component="span"
-          aria-label={title}
-          onClick={handleOpen}
-        >
-          <RemoveCircleIcon />
-        </IconButton>
+        <Tooltip title="Eliminar">
+          <IconButton
+            color="secondary"
+            component="span"
+            aria-label={title}
+            onClick={handleOpen}
+          >
+            <RemoveCircleIcon />
+          </IconButton>
+        </Tooltip>
       </label>
       <Dialog
         fullScreen={fullScreen}
