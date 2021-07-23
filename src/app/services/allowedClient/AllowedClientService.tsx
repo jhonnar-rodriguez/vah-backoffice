@@ -1,9 +1,5 @@
-import axios from 'axios';
+import httpClient from '../../../config/axios';
 import IAllowedClient from '../../contracts/security/allowedClient/IAllowedClient';
-
-const httpClient = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND,
-});
 
 class AllowedClientService {
   public static async getAll(): Promise<IAllowedClient[]> {

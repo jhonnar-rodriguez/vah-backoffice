@@ -8,7 +8,7 @@ import { CurrencyHelper, GeneralHelper } from "../../../../helpers";
 const OrderTableColumns: IOrderTableColumns[] = [
   {
     id: 'customer',
-    label: 'Client',
+    label: 'Cliente',
     minWidth: 170,
     format: (value: ICustomer) => `${value.name} ${value.surname}`,
   },
