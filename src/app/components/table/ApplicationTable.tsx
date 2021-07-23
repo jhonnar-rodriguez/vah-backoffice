@@ -17,6 +17,7 @@ import ICustomerColumns from "../../contracts/customer/table/ICustomerColumns";
 import IBaseTableColumns from "../../contracts/table/IBaseTableColumns";
 import ICouponTableColumns from "../../contracts/coupon/table/ICouponTableColumns";
 import IAllowedClientTableColumns from "../../contracts/security/allowedClient/table/IAllowedClientTableColumns";
+import IOrderTableColumns from "../../contracts/general/order/table/IOrderTableColumns";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,14 +28,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type IApplicationTableColumns = IColumn[] | ICustomerColumns[] | ICouponTableColumns[] | IAllowedClientTableColumns[];
+type IApplicationTableColumns = IColumn[] | ICustomerColumns[] | ICouponTableColumns[] | IAllowedClientTableColumns[] | IOrderTableColumns[];
 
 type ApplicationTableProps = {
   columns: IApplicationTableColumns,
   elementType?: any,
   elements: any,
-  handleEditAction: any,
-  handleConfirmDeleteAction: any,
+  handleViewAction?: any,
+  handleEditAction?: any,
+  handleConfirmDeleteAction?: any,
 }
 
 const ApplicationTable: FC<ApplicationTableProps> = ({
@@ -97,7 +99,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
           value === "generate-action-buttons" ?
             generateActionButtons(element)
             :
-            column.format && (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'string') ?
+            column.format ?
               column.format(value) :
               column.generateLink === true ?
                 <RouterLink

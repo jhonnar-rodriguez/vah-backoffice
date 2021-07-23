@@ -3,6 +3,7 @@ import RouteWithLayout from "../hoc/routeWithLayout/RouteWithLayout";
 import MainLayout from "../components/layout/main/Main";
 
 import {
+  OrdersPage,
   CouponsPage,
   CustomersPage,
   DashboardPage,
@@ -51,6 +52,13 @@ const Routes = () => {
         layout={MainLayout}
         component={AllowedClientPage}
         pageTitle="Aplicaciones Permitidas"
+      />
+
+      <RouteWithLayout
+        path="/orders"
+        layout={MainLayout}
+        component={OrdersPage}
+        pageTitle="Pedidos"
       />
     </Switch>
   );

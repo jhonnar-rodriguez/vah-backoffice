@@ -1,10 +1,19 @@
+import ICustomer from "../../customer/ICustomer";
+import IAddress from "../address/IAddress";
+import ICart from "../cart/ICart";
+
 interface IOrder {
-  _id?: string;
-  date: Date;
-  total: number;
+  _id: string;
+  customer: ICustomer;
+  cart: ICart;
   status: string;
-  shipping: string;
-  authorization: string;
+  shipping: IAddress;
+  address: IAddress;
+  paymentMethod: string;
+  provider: string;
+  deliveryDate: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default IOrder;
