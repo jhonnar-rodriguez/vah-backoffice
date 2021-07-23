@@ -1,3 +1,5 @@
+import ICustomer from "../../contracts/customer/ICustomer";
+
 class GeneralHelper {
   public static strLimit(text: string, length: number = 30): string {
     return text.length > length ? `${text.substring(0, length)} ...` : text;
@@ -10,7 +12,7 @@ class GeneralHelper {
       case "success":
         translation = "Exitosa";
         break;
-      
+
       case "pending":
         translation = "Pendiente";
         break;
@@ -29,6 +31,16 @@ class GeneralHelper {
     }
 
     return translation;
+  }
+
+  public static getFullNameFromCustomer(customer: ICustomer): string {
+    const { name, surname } = customer;
+
+    if (!name || !surname) {
+      return "Inválido";
+    }
+
+    return `${name} ${surname}`;
   }
 }
 

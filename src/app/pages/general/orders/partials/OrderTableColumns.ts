@@ -10,13 +10,13 @@ const OrderTableColumns: IOrderTableColumns[] = [
     id: 'customer',
     label: 'Cliente',
     minWidth: 170,
-    format: (value: ICustomer) => `${value.name} ${value.surname}`,
+    format: (value: ICustomer) => GeneralHelper.getFullNameFromCustomer(value),
   },
   {
     id: 'address',
     label: 'Dirección de Entrega',
     minWidth: 100,
-    format: (value: IAddress) => GeneralHelper.strLimit(value.addressName),
+    format: (value: IAddress) => value !== null && value.hasOwnProperty("addressName") ? GeneralHelper.strLimit(value.addressName) : "S/I",
   },
   {
     id: 'createdAt',
