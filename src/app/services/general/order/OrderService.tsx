@@ -3,7 +3,7 @@ import IOrder from "../../../contracts/general/order/IOrder";
 
 class OrderService {
   public static async getAll(): Promise<IOrder[]> {
-    const xhr = await httpClient.get('/coupon').then(({ data }) => data.orders);
+    const xhr = await httpClient.get('/order').then(({ data }) => data.orders);
 
     return xhr;
   }

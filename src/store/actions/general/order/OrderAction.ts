@@ -25,7 +25,7 @@ export const setOrderDispatcher = (order: IOrder): SetOrderAction => ({
   payload: order,
 });
 
-export const startGetOrders = () => {
+export const startGetOrdersAction = () => {
   return async (dispatch: Dispatch<ORDER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getOrdersDispatcher());
     dispatch(setRunningRequestDispatcher());
