@@ -1,5 +1,6 @@
 import httpClient from "../../../../config/axios";
 import IOrder from "../../../contracts/general/order/IOrder";
+import IOrderChangeStatus from "../../../contracts/general/order/IOrderChangeStatus";
 
 class OrderService {
   public static async getAll(): Promise<IOrder[]> {
@@ -14,7 +15,7 @@ class OrderService {
     return xhr;
   }
 
-  public static async update(order: IOrder): Promise<IOrder> {
+  public static async update(order: IOrderChangeStatus): Promise<IOrder> {
     const xhr = await httpClient.put(`/order/${order._id}`, { ...order }).then(({ data }) => data.order);
 
     return xhr;

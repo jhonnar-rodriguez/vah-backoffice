@@ -1,3 +1,13 @@
+import { PropTypes } from "@material-ui/core";
+import { SvgIconComponent } from "@material-ui/icons";
+
+export interface IBaseActionColumn {
+  name: string,
+  color: PropTypes.Color,
+  icon: SvgIconComponent,
+  onClick: any,
+}
+
 interface IBaseTableColumns {
   id: string;
   label: string;

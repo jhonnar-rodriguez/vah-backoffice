@@ -1,5 +1,8 @@
+import { v4 as uuid } from 'uuid';
 import { couponInitialState } from './../../coupons/index';
 import IOrder from "../../../contracts/general/order/IOrder";
+import IOrderChangeStatus from '../../../contracts/general/order/IOrderChangeStatus';
+import IOrderAvailableStatus from '../../../contracts/general/order/IOrderAvailableStatus';
 
 export const orderInitialState: IOrder = {
   _id: "",
@@ -59,3 +62,32 @@ export const orderInitialState: IOrder = {
   createdAt: "",
   updatedAt: "",
 };
+
+export const orderStatusInitialState: IOrderChangeStatus = {
+  _id: "",
+  status: " ",
+  description: "",
+}
+
+export const orderAvailableStatuses: IOrderAvailableStatus[] = [
+  {
+    id: uuid(),
+    label: "Exitosa",
+    value: "success",
+  },
+  {
+    id: uuid(),
+    label: "Pending",
+    value: "pending",
+  },
+  {
+    id: uuid(),
+    label: "Cancelada",
+    value: "cancelled",
+  },
+  {
+    id: uuid(),
+    label: "Rechazada",
+    value: "rejected",
+  },
+];

@@ -5,6 +5,7 @@ import {
   SET_ORDERS,
   GET_ORDERS,
   ORDER_ACTION_TYPES,
+  UPDATE_ORDER,
 } from '../../../types/general/order/OrderTypes';
 
 interface IOrderReducer {
@@ -36,6 +37,16 @@ const OrderReducer = (state = initialState, action: ORDER_ACTION_TYPES): IOrderR
       return {
         ...state,
         orderToUpdate: { ...action.payload },
+      }
+
+    case UPDATE_ORDER:
+      let updatedElementIndex = state.list.findIndex((order: IOrder) => order._id === action.payload._id);
+      let updatedOrder = [...state.list];
+      updatedOrder[updatedElementIndex] = { ...action.payload };
+
+      return {
+        ...state,
+        list: updatedOrder,
       }
 
     default:

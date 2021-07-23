@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import IOrder from '../../../../app/contracts/general/order/IOrder';
+import IOrderChangeStatus from '../../../../app/contracts/general/order/IOrderChangeStatus';
 import { HttpHelper } from '../../../../app/helpers';
 import OrderService from '../../../../app/services/general/order/OrderService';
 import { GetOrdersAction, ORDER_ACTION_TYPES, SetOrderAction, SetOrdersAction, UpdateOrderAction } from '../../../types/general/order/OrderTypes';
@@ -41,7 +42,7 @@ export const startGetOrdersAction = () => {
   }
 }
 
-export const startUpdateOrderAction = (order: IOrder) => {
+export const startUpdateOrderAction = (order: IOrderChangeStatus) => {
   return async (dispatch: Dispatch<ORDER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(setRunningRequestDispatcher());
 
