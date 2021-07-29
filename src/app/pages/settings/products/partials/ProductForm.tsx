@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productToUpdate }) => {
   const classes = useStyles();
-  const [disableSubmitButtonForm, setDisableSubmitButtonForm] = useState<boolean>(false);
+  const [creatingProduct] = useState<boolean>(action === "Crear");
   const { categoryReducer, httpRequestReducer } = useSelector((state: AppState) => state);
 
-  const { handleSubmit, formState: { errors, isValid }, reset, clearErrors, control } = useForm<IProduct>({
+  const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control } = useForm<IProduct>({
     defaultValues: useMemo(() => {
       return {
         ...productToUpdate,
@@ -55,7 +55,6 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
   const { isLoading } = httpRequestReducer;
 
   const onSubmit = (data: IProduct) => {
-    setDisableSubmitButtonForm(true);
     handleClose(data);
   };
 
@@ -65,9 +64,6 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
     if (open) {
       if (action === "Crear") {
         reset(productInitialState);
-        setDisableSubmitButtonForm(true);
-      } else if (action === "Actualizar") {
-        setDisableSubmitButtonForm(false);
       }
 
       clearErrors();
@@ -209,14 +205,45 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
                 value: true,
                 message: 'El precio es requerido.',
               },
+              pattern: {
+                value: /^[0-9]+(\.[0-9]{2})?$/,
+                message: 'Por favor introduzca un precio válido.',
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
-                onChange={(event) => onChange(Number(event.target.value))}
+                onChange={onChange}
                 autoComplete="off"
                 aria-labelledby="price"
                 type="number"
+              />
+            )}
+          />
+        </FormControl>
+
+        <FormControl className={classes.formControl} fullWidth>
+          <InputLabel id="discount">Descuento</InputLabel>
+          <Controller
+            name="discount"
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'El descuento es requerido.',
+              },
+              pattern: {
+                value: /^[0-9]+(\.[0-9]{2})?$/,
+                message: 'Por favor introduzca un descuento válido.',
+              },
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                type="number"
+                value={value}
+                onChange={onChange}
+                autoComplete="off"
+                aria-labelledby="discount"
               />
             )}
           />
@@ -232,11 +259,15 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
                 value: true,
                 message: 'La cantidad es requerida.',
               },
+              pattern: {
+                value: /^[0-9]+$/,
+                message: 'Por favor introduzca una cantidad válida.',
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
-                onChange={(event) => onChange(Number(event.target.value))}
+                onChange={onChange}
                 autoComplete="off"
                 aria-labelledby="quantity"
                 type="number"
@@ -320,7 +351,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
           color="primary"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
-          disabled={!isValid || disableSubmitButtonForm}
+          disabled={(creatingProduct && !isDirty) || !isValid}
         >
           {action}
         </Button>

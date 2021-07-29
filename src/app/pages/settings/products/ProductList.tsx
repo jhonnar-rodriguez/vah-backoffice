@@ -43,7 +43,6 @@ const ProductList = () => {
   const [createProduct, setCreateProduct] = useState<boolean>(true);
   const [productToUpdate, setProductToUpdate] = useState<IProduct>(productInitialState);
 
-
   const handleDeleteProductAction = (productId: string) => {
     const dispatcher = () => dispatch(startRemoveProductAction(productId));
     dispatcher();
@@ -63,10 +62,17 @@ const ProductList = () => {
       return;
     }
 
-    let dispatcher = () => dispatch(startCreateProductAction(data));
+    const formattedData: IProduct = {
+      ...data,
+      price: Number(data.price),
+      discount: Number(data.discount),
+      quantity: Number(data.quantity),
+    }
+
+    let dispatcher = () => dispatch(startCreateProductAction(formattedData));
 
     if (!createProduct) {
-      dispatcher = () => dispatch(startUpdateProductAction(data));
+      dispatcher = () => dispatch(startUpdateProductAction(formattedData));
     }
 
     dispatcher();
