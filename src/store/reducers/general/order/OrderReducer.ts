@@ -10,12 +10,12 @@ import {
 
 interface IOrderReducer {
   list: IOrder[],
-  orderToUpdate: IOrder,
+  orderToDisplay: IOrder,
 };
 
 const initialState: IOrderReducer = {
   list: [],
-  orderToUpdate: orderInitialState,
+  orderToDisplay: orderInitialState,
 };
 
 const OrderReducer = (state = initialState, action: ORDER_ACTION_TYPES): IOrderReducer => {
@@ -36,7 +36,7 @@ const OrderReducer = (state = initialState, action: ORDER_ACTION_TYPES): IOrderR
     case SET_ORDER:
       return {
         ...state,
-        orderToUpdate: { ...action.payload },
+        orderToDisplay: { ...action.payload },
       }
 
     case UPDATE_ORDER:

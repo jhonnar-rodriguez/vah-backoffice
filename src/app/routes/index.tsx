@@ -5,9 +5,11 @@ import MainLayout from "../components/layout/main/Main";
 import {
   OrdersPage,
   CouponsPage,
+  NotFoundPage,
   CustomersPage,
   DashboardPage,
   ProductListPage,
+  OrderDetailPage,
   AllowedClientPage,
 } from "../pages"
 
@@ -21,6 +23,7 @@ const Routes = () => {
       />
       <RouteWithLayout
         path="/dashboard"
+        exact={true}
         layout={MainLayout}
         component={DashboardPage}
         pageTitle="Tablero"
@@ -28,6 +31,7 @@ const Routes = () => {
 
       <RouteWithLayout
         path="/settings/products"
+        exact={true}
         layout={MainLayout}
         component={ProductListPage}
         pageTitle="Productos"
@@ -35,6 +39,7 @@ const Routes = () => {
 
       <RouteWithLayout
         path="/settings/customers"
+        exact={true}
         layout={MainLayout}
         component={CustomersPage}
         pageTitle="Clientes"
@@ -42,6 +47,7 @@ const Routes = () => {
 
       <RouteWithLayout
         path="/settings/coupons"
+        exact={true}
         layout={MainLayout}
         component={CouponsPage}
         pageTitle="Cupones"
@@ -49,6 +55,7 @@ const Routes = () => {
 
       <RouteWithLayout
         path="/settings/security/apps"
+        exact={true}
         layout={MainLayout}
         component={AllowedClientPage}
         pageTitle="Aplicaciones Permitidas"
@@ -56,10 +63,29 @@ const Routes = () => {
 
       <RouteWithLayout
         path="/orders"
+        exact={true}
         layout={MainLayout}
         component={OrdersPage}
         pageTitle="Pedidos"
       />
+
+      <RouteWithLayout
+        path="/orders/:orderId/detail"
+        exact={true}
+        layout={MainLayout}
+        component={OrderDetailPage}
+        pageTitle="Detalle de Pedido"
+      />
+
+      <RouteWithLayout
+        path="/404"
+        exact={true}
+        layout={MainLayout}
+        component={NotFoundPage}
+        pageTitle="Página no Encontrada"
+      />
+
+      <Redirect to="/404" />
     </Switch>
   );
 };

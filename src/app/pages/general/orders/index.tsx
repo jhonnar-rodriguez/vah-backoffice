@@ -11,6 +11,7 @@ import ChangeOrderStatusForm from "./partials/ChangeOrderStatusForm";
 import IOrderChangeStatus from "../../../contracts/general/order/IOrderChangeStatus";
 import IOrder from "../../../contracts/general/order/IOrder";
 import { startUpdateOrderAction } from "../../../../store/actions/general/order/OrderAction";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -32,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const OrderList = () => {
   const classes = useStyles();
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const { list: orders } = useSelector((state: AppState) => state.orderReducer);
 
@@ -65,6 +67,10 @@ const dispatch = useDispatch();
     setOpenForm(true);
   }
 
+  const handleViewOrderAction = (order: IOrder) => {
+    history.push(`/orders/${order._id}/detail`);
+  }
+
   useLoadOrders();
 
   return (
@@ -79,6 +85,7 @@ const dispatch = useDispatch();
         <ApplicationTable
           columns={OrderTableColumns}
           elements={orders}
+          handleViewAction={handleViewOrderAction}
           handleEditAction={handleEditOrderAction}
         />
 

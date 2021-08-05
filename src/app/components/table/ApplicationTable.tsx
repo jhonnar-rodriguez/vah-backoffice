@@ -2,13 +2,20 @@ import { ChangeEvent, FC, ReactElement, useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { Grid, IconButton, Tooltip } from "@material-ui/core";
-import { EditOutlined as EditOutlinedIcon } from "@material-ui/icons";
+import {
+  Grid,
+  Tooltip,
+  TableRow,
+  TableBody,
+  TableCell,
+  TableHead,
+  IconButton,
+  TableContainer,
+} from "@material-ui/core";
+import {
+  EditOutlined as EditOutlinedIcon,
+  VisibilityOutlined as VisibilityIcon,
+} from "@material-ui/icons";
 import ConfirmationDialog from "../confirmation/ConfirmationDialog";
 import IColumn from "../../contracts/product/table/IColumn";
 import AppAlert from "../alert/AppAlert";
@@ -18,7 +25,6 @@ import IBaseTableColumns, { IBaseActionColumn } from "../../contracts/table/IBas
 import ICouponTableColumns from "../../contracts/coupon/table/ICouponTableColumns";
 import IAllowedClientTableColumns from "../../contracts/security/allowedClient/table/IAllowedClientTableColumns";
 import IOrderTableColumns from "../../contracts/general/order/table/IOrderTableColumns";
-import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -26,6 +32,9 @@ const useStyles = makeStyles(() => ({
   },
   container: {
     maxHeight: "75vh",
+  },
+  noFlexBasis: {
+    flexBasis: "0",
   },
 }));
 
@@ -69,6 +78,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         <Grid
           item
           xs={6}
+          className={classes.noFlexBasis}
         >
           <Tooltip title="Editar">
             <IconButton
@@ -88,6 +98,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         <Grid
           item
           xs={6}
+          className={classes.noFlexBasis}
         >
           <ConfirmationDialog
             title={`Eliminar registro ${element.name}`}
@@ -102,10 +113,11 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         <Grid
           item
           xs={6}
+          className={classes.noFlexBasis}
         >
           <Tooltip title="Ver Detale">
             <IconButton
-              color="primary"
+              color="secondary"
               onClick={() => handleViewAction(element)}
               component="span"
               aria-label="View"
