@@ -1,6 +1,6 @@
 import IAddress from "../../contracts/general/address/IAddress";
 
-class GeneralHelper {
+class AddressHelper {
   public static getDescription(address: IAddress): string {
     const { description } = address;
 
@@ -22,4 +22,4 @@ class GeneralHelper {
   }
 }
 
-export default GeneralHelper;
+export default AddressHelper;

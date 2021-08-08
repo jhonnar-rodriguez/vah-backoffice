@@ -9,6 +9,7 @@ export interface IProductInCart {
   discount: number,
   quantity: number,
   total: number,
+  sku: string,
 };
 
 interface ICart {

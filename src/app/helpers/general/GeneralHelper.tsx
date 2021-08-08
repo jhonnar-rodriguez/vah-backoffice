@@ -42,6 +42,16 @@ class GeneralHelper {
 
     return `${name} ${surname}`;
   }
+
+  public static getDNIForCustomer(customer: ICustomer): string {
+    const { document, documentType } = customer;
+
+    if (!document || !documentType) {
+      return "Inválido";
+    }
+
+    return `${documentType} ${document}`
+  }
 }
 
 export default GeneralHelper;
