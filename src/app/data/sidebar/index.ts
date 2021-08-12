@@ -6,6 +6,7 @@ import AppsIcon from '@material-ui/icons/AppsOutlined';
 import MenuOption from '../../contracts/menuOption/IMenuOption';
 import AssessmentIcon from '@material-ui/icons/AssessmentOutlined';
 import LocalMallIcon from '@material-ui/icons/LocalMallOutlined';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUserOutlined';
 
 export const generalMenuOptions: MenuOption[] = [
   {
@@ -49,5 +50,11 @@ export const securityMenuOptions: MenuOption[] = [
     route: "/settings/security/apps",
     icon: AppsIcon,
     label: "Aplicaciones",
+  },
+  {
+    id: uuid(),
+    route: "/settings/security/users",
+    icon: VerifiedUserIcon,
+    label: "Usuarios",
   },
 ];

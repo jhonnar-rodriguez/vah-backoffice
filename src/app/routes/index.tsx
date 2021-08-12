@@ -3,6 +3,7 @@ import RouteWithLayout from "../hoc/routeWithLayout/RouteWithLayout";
 import MainLayout from "../components/layout/main/Main";
 
 import {
+  UsersPage,
   OrdersPage,
   CouponsPage,
   NotFoundPage,
@@ -59,6 +60,14 @@ const Routes = () => {
         layout={MainLayout}
         component={AllowedClientPage}
         pageTitle="Aplicaciones Permitidas"
+      />
+
+      <RouteWithLayout
+        path="/settings/security/users"
+        exact={true}
+        layout={MainLayout}
+        component={UsersPage}
+        pageTitle="Usuarios"
       />
 
       <RouteWithLayout

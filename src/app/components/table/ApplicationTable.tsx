@@ -25,6 +25,7 @@ import IBaseTableColumns, { IBaseActionColumn } from "../../contracts/table/IBas
 import ICouponTableColumns from "../../contracts/coupon/table/ICouponTableColumns";
 import IAllowedClientTableColumns from "../../contracts/security/allowedClient/table/IAllowedClientTableColumns";
 import IOrderTableColumns from "../../contracts/general/order/table/IOrderTableColumns";
+import IUserTableColumns from "../../contracts/security/user/table/IUserTableColumns";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -38,7 +39,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type IApplicationTableColumns = IColumn[] | ICustomerColumns[] | ICouponTableColumns[] | IAllowedClientTableColumns[] | IOrderTableColumns[];
+type IApplicationTableColumns = IColumn[] |
+  ICustomerColumns[] |
+  ICouponTableColumns[] |
+  IAllowedClientTableColumns[] |
+  IOrderTableColumns[] |
+  IUserTableColumns[];
 
 type ApplicationTableProps = {
   columns: IApplicationTableColumns,

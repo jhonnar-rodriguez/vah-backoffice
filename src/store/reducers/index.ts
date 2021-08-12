@@ -7,8 +7,12 @@ import navigationReducer from './navigation/NavigationReducer';
 import httpRequestReducer from './httpRequest/HttpRequestReducer';
 import allowedClientReducer from './allowedClient/AllowedClientReducer';
 import orderReducer from './general/order/OrderReducer';
+import userReducer from './settings/security/user/UserReducer';
+import roleReducer from './settings/security/role/RoleReducer';
 
 export default combineReducers({
+  userReducer,
+  roleReducer,
   orderReducer,
   couponReducer,
   productReducer,

@@ -3,8 +3,9 @@ import ICustomer from "../customer/ICustomer";
 import IOrderChangeStatus from "../general/order/IOrderChangeStatus";
 import IProduct from "../product/IProduct";
 import IAllowedClient from "../security/allowedClient/IAllowedClient";
+import IUser from "../security/user/IUser";
 
-export type IElementToUpdate = IProduct | ICustomer | ICoupon | IAllowedClient | IOrderChangeStatus;
+export type IElementToUpdate = IProduct | ICustomer | ICoupon | IAllowedClient | IOrderChangeStatus | IUser;
 
 interface IFormProps {
   open: boolean,
