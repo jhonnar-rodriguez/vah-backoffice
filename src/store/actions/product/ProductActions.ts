@@ -44,7 +44,7 @@ export const removeProductDispatcher = (productId: string): RemoveProductAction 
   payload: productId,
 });
 
-export const startGetProductsAction = () => {
+export const startGetProductsAction = (q?: string) => {
   return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(setRunningRequestDispatcher());
     dispatch(getProductsDispatcher());
@@ -54,7 +54,7 @@ export const startGetProductsAction = () => {
     };
 
     try {
-      const products = await ProductService.getAll();
+      const products = await ProductService.getAll(q);
       dispatch(setProductsDispatcher(products));
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);

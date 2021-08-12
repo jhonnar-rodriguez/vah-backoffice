@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
 import SnackBar from '../../snackBar/SnackBar';
 import { startResetStateAction } from '../../../../store/actions/httpRequest/HttpRequestActions';
+import ErrorHandler from '../../errorHandler/ErrorHandler';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +83,8 @@ const Main: FC = ({ children }) => {
 
   return (
     <div className={classes.root}>
+      <ErrorHandler />
+
       <CssBaseline />
 
       <Header

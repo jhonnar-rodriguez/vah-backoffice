@@ -6,8 +6,8 @@ const useLoadProducts = () => {
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(
-    () => {
-      const productsDispatcher = () => dispatch(startGetProductsAction());
+    (q?: string) => {
+      const productsDispatcher = () => dispatch(startGetProductsAction(q));
       productsDispatcher();
     },
     [dispatch],
@@ -17,7 +17,7 @@ const useLoadProducts = () => {
     loadProducts();
   }, [loadProducts]);
 
-  return [];
+  return [loadProducts];
 }
 
 export default useLoadProducts;

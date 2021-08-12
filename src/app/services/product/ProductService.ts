@@ -1,9 +1,35 @@
 import httpClient from "../../../config/axios";
 import IProduct from "../../contracts/product/IProduct";
 
+interface ProductParamSearch {
+  sku?: string,
+  name?: string,
+  price?: number,
+  description?: string,
+}
+
 class ProductService {
-  public static async getAll(): Promise<IProduct[]> {
-    const xhr = await httpClient.get('/product').then(({ data }) => data.products);
+  public static async getAll(q?: string): Promise<IProduct[]> {
+
+    let params: ProductParamSearch = {};
+
+    if (typeof q !== 'undefined' && q?.length > 0) {
+      const priceFilter = parseInt(q);
+      const filter = q.toLowerCase();
+
+      params = {
+        name: filter,
+        sku: filter,
+        price: priceFilter,
+        description: filter,
+      }
+
+      if (isNaN(priceFilter)) {
+        delete params.price;
+      }
+    }
+
+    const xhr = await httpClient.get('/product', { params }).then(({ data }) => data.products);
 
     return xhr;
   }

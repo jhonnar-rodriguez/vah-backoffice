@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Paper, Typography } from "@material-ui/core";
@@ -12,6 +12,7 @@ import { startCreateProductAction, startRemoveProductAction, startUpdateProductA
 import ProductForm from "./partials/ProductForm";
 import { productInitialState } from "../../../data/products";
 import ApplicationTable from "../../../components/table/ApplicationTable";
+import SearchBar from "../../../components/searchBar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +85,13 @@ const ProductList = () => {
     setOpenForm(true);
   }
 
-  useLoadProducts();
+  const [loadProducts] = useLoadProducts();
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>, search: string): void => {
+    event.preventDefault();
+
+    loadProducts(search);
+  }
 
   return (
     <>
@@ -103,6 +110,8 @@ const ProductList = () => {
             Crear
           </Button>
         </div>
+
+        <SearchBar onSubmit={handleSearchSubmit} />
 
         <ApplicationTable
           columns={columns}
