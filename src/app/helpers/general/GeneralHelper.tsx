@@ -2,7 +2,7 @@ import ICustomer from "../../contracts/customer/ICustomer";
 
 class GeneralHelper {
   public static strLimit(text: string, length: number = 30): string {
-    return text.length > length ? `${text.substring(0, length)} ...` : text;
+    return typeof text !== "undefined" && text.length > length ? `${text.substring(0, length)} ...` : text;
   }
 
   public static getStatusInSpanish(baseStatus: string): string {

@@ -47,7 +47,7 @@ const OrderDetail: FC = (): ReactElement => {
   }, [getOrderDetail]);
 
   const renderAddressInMap = () => {
-    if (typeof orderToDisplay.shipping.coordinates !== "undefined" &&
+    if (orderToDisplay.shipping !== null && typeof orderToDisplay.shipping.coordinates !== "undefined" &&
       Math.abs(orderToDisplay.shipping.coordinates?.latitude || 0) > 0) {
       return <MapContainer
         label={orderToDisplay.shipping.addressName}
