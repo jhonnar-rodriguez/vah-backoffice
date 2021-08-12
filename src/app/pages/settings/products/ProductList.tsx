@@ -10,9 +10,10 @@ import { startResetStateAction } from "../../../../store/actions/httpRequest/Htt
 import SnackBar from "../../../components/snackBar/SnackBar";
 import { startCreateProductAction, startRemoveProductAction, startUpdateProductAction } from "../../../../store/actions/product/ProductActions";
 import ProductForm from "./partials/ProductForm";
-import { productInitialState } from "../../../data/products";
+import { productInitialState, productsFilterableOptions } from "../../../data/products";
 import ApplicationTable from "../../../components/table/ApplicationTable";
 import SearchBar from "../../../components/searchBar/SearchBar";
+import IProcessFilter from "../../../contracts/filter/IProcessFilter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,10 +88,18 @@ const ProductList = () => {
 
   const [loadProducts] = useLoadProducts();
 
-  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>, search: string): void => {
-    event.preventDefault();
+  const handleSearchSubmit = (filter: IProcessFilter, event?: FormEvent<HTMLFormElement>, resetFilters: boolean = false): void => {
+    if (resetFilters) {
+      loadProducts();
 
-    loadProducts(search);
+      return;
+    }
+
+    if (typeof event !== "undefined") {
+      event.preventDefault();
+    }
+
+    loadProducts(filter);
   }
 
   return (
@@ -111,7 +120,10 @@ const ProductList = () => {
           </Button>
         </div>
 
-        <SearchBar onSubmit={handleSearchSubmit} />
+        <SearchBar
+          onSubmit={handleSearchSubmit}
+          optionsToFilter={productsFilterableOptions}
+        />
 
         <ApplicationTable
           columns={columns}

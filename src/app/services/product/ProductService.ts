@@ -1,4 +1,5 @@
 import httpClient from "../../../config/axios";
+import IProcessFilter from "../../contracts/filter/IProcessFilter";
 import IProduct from "../../contracts/product/IProduct";
 
 interface IProductParamSearch {
@@ -9,23 +10,14 @@ interface IProductParamSearch {
 }
 
 class ProductService {
-  public static async getAll(q?: string): Promise<IProduct[]> {
-
+  public static async getAll(filter?: IProcessFilter): Promise<IProduct[]> {
     let params: IProductParamSearch = {};
 
-    if (typeof q !== 'undefined' && q?.length > 0) {
-      const priceFilter = parseInt(q);
-      const filter = q.toLowerCase();
+    if (typeof filter?.value !== 'undefined' && filter.value?.length > 0) {
+      const query = filter.filterBy === "price" ? parseFloat(filter.value) : filter.value.toLowerCase();
 
       params = {
-        name: filter,
-        sku: filter,
-        price: priceFilter,
-        description: filter,
-      }
-
-      if (isNaN(priceFilter)) {
-        delete params.price;
+        [filter.filterBy]: query,
       }
     }
 

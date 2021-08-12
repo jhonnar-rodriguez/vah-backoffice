@@ -14,6 +14,7 @@ import {
   CreateProductAction,
   UpdateProductAction,
 } from '../../types/products/ProductTypes';
+import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
 
 export const getProductsDispatcher = (): GetProductsAction => ({
   type: 'GET_PRODUCTS',
@@ -44,7 +45,7 @@ export const removeProductDispatcher = (productId: string): RemoveProductAction 
   payload: productId,
 });
 
-export const startGetProductsAction = (q?: string) => {
+export const startGetProductsAction = (filter?: IProcessFilter) => {
   return async (dispatch: Dispatch<PRODUCT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(setRunningRequestDispatcher());
     dispatch(getProductsDispatcher());
@@ -54,7 +55,7 @@ export const startGetProductsAction = (q?: string) => {
     };
 
     try {
-      const products = await ProductService.getAll(q);
+      const products = await ProductService.getAll(filter);
       dispatch(setProductsDispatcher(products));
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);

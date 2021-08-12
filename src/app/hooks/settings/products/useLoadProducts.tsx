@@ -1,13 +1,14 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { startGetProductsAction } from "../../../../store/actions/product/ProductActions";
+import IProcessFilter from "../../../contracts/filter/IProcessFilter";
 
 const useLoadProducts = () => {
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(
-    (q?: string) => {
-      const productsDispatcher = () => dispatch(startGetProductsAction(q));
+    (filter?: IProcessFilter) => {
+      const productsDispatcher = () => dispatch(startGetProductsAction(filter));
       productsDispatcher();
     },
     [dispatch],
