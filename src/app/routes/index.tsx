@@ -1,4 +1,4 @@
-import { Switch, Redirect } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import RouteWithLayout from "../hoc/routeWithLayout/RouteWithLayout";
 import MainLayout from "../components/layout/main/Main";
 
@@ -12,6 +12,7 @@ import {
   ProductListPage,
   OrderDetailPage,
   AllowedClientPage,
+  LoginPage,
 } from "../pages"
 
 const Routes = () => {
@@ -92,6 +93,12 @@ const Routes = () => {
         layout={MainLayout}
         component={NotFoundPage}
         pageTitle="Página no Encontrada"
+      />
+
+      <Route
+        path="/auth/login"
+        exact={true}
+        component={LoginPage}
       />
 
       <Redirect to="/404" />

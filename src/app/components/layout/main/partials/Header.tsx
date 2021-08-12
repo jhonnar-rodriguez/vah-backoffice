@@ -11,8 +11,9 @@ import IHeader from '../../../../contracts/layouts/IHeader';
 import AccountCircleIcon from '@material-ui/icons/AccountCircleOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, Menu, MenuItem } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../../store';
+import { startLogoutAction } from '../../../../../store/actions/auth/AuthActions';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -59,12 +60,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
   const classes = useStyles();
-  const [isLoggedIn] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const { title } = useSelector((state: AppState) => state.navigationReducer)
+  const { navigationReducer, authReducer } = useSelector((state: AppState) => state)
+
+  const { title } = navigationReducer;
+  const { isAuthenticated, auth } = authReducer;
 
   const menuId = 'primary-search-account-menu';
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -86,6 +90,11 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = (): void => {
+    const dispatcher = () => dispatch(startLogoutAction());
+    dispatcher();
+  }
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -97,7 +106,7 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
-      <MenuItem onClick={() => console.log('Close session!')}>Cerrar Sesión</MenuItem>
+      <MenuItem onClick={() => handleLogout()}>Cerrar Sesión</MenuItem>
     </Menu>
   );
 
@@ -130,7 +139,7 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
         </IconButton>
         <p>Perfil</p>
       </MenuItem>
-      <MenuItem onClick={() => console.log('Close session')}>
+      <MenuItem onClick={() => handleLogout()}>
         <IconButton
           aria-label="logout current user"
           aria-controls="primary-search-account-menu"
@@ -182,7 +191,7 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
               color="inherit"
             >
               <Typography variant="subtitle2">
-                Hola, {isLoggedIn ? 'Jhonnar' : 'Default'}
+                Hola, {isAuthenticated ? auth.user.name : 'Default'}
               </Typography>
 
               <AccountCircleIcon style={{ marginLeft: '5px' }} />

@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { useSelector } from "react-redux";
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { AppState } from '../../../store';
 import Loading from "../../components/loading/Loading";
+import useLoadAuthentication from '../../hooks/auth/useLoadAuthentication';
 import useSetNavigation from '../../hooks/navigation/useSetNavigation';
 
 type RouteWithLayoutProps = {
@@ -20,7 +21,12 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
   pageTitle,
   exact = true,
 }) => {
-  const { isLoading } = useSelector((state: AppState) => state.httpRequestReducer);
+  const { httpRequestReducer, authReducer } = useSelector((state: AppState) => state);
+
+  const { isAuthenticated, loadingUser } = authReducer;
+  const { isLoading } = httpRequestReducer;
+
+  useLoadAuthentication();
   useSetNavigation(pageTitle);
 
   return (
@@ -28,10 +34,12 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
       path={path}
       exact={exact}
       render={(matchProps: any) => (
-        <Layout>
-          {isLoading && <Loading />}
-          <Component {...matchProps} pageTitle={pageTitle} />
-        </Layout>
+        !loadingUser && !isAuthenticated ?
+          <Redirect to="/auth/login" /> :
+          <Layout>
+            {isLoading && <Loading />}
+            <Component {...matchProps} pageTitle={pageTitle} />
+          </Layout>
       )}
     />
   );

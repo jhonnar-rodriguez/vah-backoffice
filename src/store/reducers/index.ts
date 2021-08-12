@@ -9,8 +9,10 @@ import allowedClientReducer from './allowedClient/AllowedClientReducer';
 import orderReducer from './general/order/OrderReducer';
 import userReducer from './settings/security/user/UserReducer';
 import roleReducer from './settings/security/role/RoleReducer';
+import authReducer from './auth/AuthReducer';
 
 export default combineReducers({
+  authReducer,
   userReducer,
   roleReducer,
   orderReducer,
