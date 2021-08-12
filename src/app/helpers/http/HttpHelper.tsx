@@ -41,7 +41,7 @@ class HttpHelper {
     const { data, status: statusCode, statusText } = response;
 
     const message = typeof data !== 'undefined' && data.hasOwnProperty('status') ?
-      data.status.message :
+      'Ha ocurrido un error al procesar la petición, por favor intenta de nuevo más tarde' :
       'Ha ocurrido un error al procesar la petición, por favor intenta de nuevo más tarde';
 
     return {
