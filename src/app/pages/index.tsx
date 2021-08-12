@@ -7,8 +7,11 @@ import OrdersPage from "./general/orders";
 import OrderDetailPage from "./general/orders/OrderDetail";
 import NotFoundPage from "./errors/notFound";
 import UsersPage from "./settings/security/users";
+import LoginPage from "./auth/login/Login";
+import UnauthorizedPage from "./errors/unauthorized";
 
 export {
+  LoginPage,
   UsersPage,
   OrdersPage,
   CouponsPage,
@@ -17,5 +20,6 @@ export {
   CustomersPage,
   ProductListPage,
   OrderDetailPage,
+  UnauthorizedPage,
   AllowedClientPage,
 };

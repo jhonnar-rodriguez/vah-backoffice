@@ -27,6 +27,7 @@ const HttpRequestReducer = (state = initialState, action: HTTP_REQUEST_ACTION_TY
     case HTTP_RESET_STATE:
       return {
         ...state,
+        isLoading: false,
         error: {
           message: '',
           statusCode: 0,

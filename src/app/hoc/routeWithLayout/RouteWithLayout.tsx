@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { useSelector } from "react-redux";
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { AppState } from '../../../store';
 import Loading from "../../components/loading/Loading";
+import useLoadAuthentication from '../../hooks/auth/useLoadAuthentication';
 import useSetNavigation from '../../hooks/navigation/useSetNavigation';
 
 type RouteWithLayoutProps = {
@@ -11,6 +12,7 @@ type RouteWithLayoutProps = {
   layout: FC,
   component: FC,
   pageTitle: string,
+  forRoles?: string[],
 }
 
 const RouteWithLayout: FC<RouteWithLayoutProps> = ({
@@ -19,19 +21,43 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
   component: Component,
   pageTitle,
   exact = true,
+  forRoles = [],
 }) => {
-  const { isLoading } = useSelector((state: AppState) => state.httpRequestReducer);
+  const { httpRequestReducer, authReducer } = useSelector((state: AppState) => state);
+
+  const { isAuthenticated, loadingUser, auth } = authReducer;
+  const { isLoading } = httpRequestReducer;
+
+  useLoadAuthentication();
   useSetNavigation(pageTitle);
+
+  const userCanViewPage = (): boolean => {
+    if (forRoles.length > 0) {
+      const roleName = typeof auth.user.role === "string" ? auth.user.role : auth.user.role.name;
+
+      return forRoles.includes(roleName.toLowerCase());
+    }
+
+    return true;
+  }
 
   return (
     <Route
       path={path}
       exact={exact}
       render={(matchProps: any) => (
-        <Layout>
-          {isLoading && <Loading />}
-          <Component {...matchProps} pageTitle={pageTitle} />
-        </Layout>
+        !loadingUser && !isAuthenticated ?
+          <Redirect to="/auth/login" /> :
+          <>
+            {
+              !userCanViewPage() ?
+                <Redirect to="/unauthorized" /> :
+                <Layout>
+                  {isLoading && <Loading />}
+                  <Component {...matchProps} pageTitle={pageTitle} />
+                </Layout >
+            }
+          </>
       )}
     />
   );

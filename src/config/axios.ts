@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { LocalStorageHelper } from '../app/helpers';
 import { BACKEND_URL } from './app';
 
 const httpClient = axios.create({
@@ -9,11 +10,10 @@ httpClient
   .interceptors
   .request
   .use((config: AxiosRequestConfig) => {
-    const auth = localStorage.getItem('auth');
+    const token = LocalStorageHelper.getToken();
 
-    if (auth !== null) {
-      const authData = JSON.parse(auth);
-      config.headers.Authorization = auth !== null ? `Bearer ${authData.token}` : '';
+    if (token !== null) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;

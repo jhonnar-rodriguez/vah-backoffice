@@ -1,8 +1,9 @@
-import { Switch, Redirect } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import RouteWithLayout from "../hoc/routeWithLayout/RouteWithLayout";
 import MainLayout from "../components/layout/main/Main";
 
 import {
+  LoginPage,
   UsersPage,
   OrdersPage,
   CouponsPage,
@@ -11,6 +12,7 @@ import {
   DashboardPage,
   ProductListPage,
   OrderDetailPage,
+  UnauthorizedPage,
   AllowedClientPage,
 } from "../pages"
 
@@ -60,6 +62,7 @@ const Routes = () => {
         layout={MainLayout}
         component={AllowedClientPage}
         pageTitle="Aplicaciones Permitidas"
+        forRoles={["admin"]}
       />
 
       <RouteWithLayout
@@ -68,6 +71,7 @@ const Routes = () => {
         layout={MainLayout}
         component={UsersPage}
         pageTitle="Usuarios"
+        forRoles={["admin"]}
       />
 
       <RouteWithLayout
@@ -92,6 +96,20 @@ const Routes = () => {
         layout={MainLayout}
         component={NotFoundPage}
         pageTitle="Página no Encontrada"
+      />
+
+      <RouteWithLayout
+        path="/unauthorized"
+        exact={true}
+        layout={MainLayout}
+        component={UnauthorizedPage}
+        pageTitle="Sin Autorización"
+      />
+
+      <Route
+        path="/auth/login"
+        exact={true}
+        component={LoginPage}
       />
 
       <Redirect to="/404" />
