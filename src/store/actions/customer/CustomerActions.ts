@@ -37,13 +37,13 @@ export const removeCustomerDispatcher = (customerId: string): RemoveCustomerActi
   payload: customerId,
 });
 
-export const startGetCustomersAction = () => {
+export const startGetCustomersAction = (q?: string) => {
   return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getCustomersDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const customers = await CustomerService.getAll();
+      const customers = await CustomerService.getAll(q);
 
       dispatch(setCustomersDispatcher(customers));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));

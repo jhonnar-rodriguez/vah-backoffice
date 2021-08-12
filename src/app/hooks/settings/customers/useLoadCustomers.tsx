@@ -6,8 +6,8 @@ const useLoadCustomers = () => {
   const dispatch = useDispatch();
 
   const loadCustomers = useCallback(
-    () => {
-      const dispatcher = () => dispatch(startGetCustomersAction());
+    (q?: string) => {
+      const dispatcher = () => dispatch(startGetCustomersAction(q));
       dispatcher();
     },
     [dispatch],
@@ -17,7 +17,7 @@ const useLoadCustomers = () => {
     loadCustomers();
   }, [loadCustomers]);
 
-  return [];
+  return [loadCustomers];
 }
 
 export default useLoadCustomers;

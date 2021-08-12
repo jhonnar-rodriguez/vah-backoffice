@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Paper, Typography } from "@material-ui/core";
@@ -10,6 +10,7 @@ import ICustomer from "../../../contracts/customer/ICustomer";
 import { customerInitialState } from "../../../data/customers";
 import CustomerForm from "./partials/CustomerForm";
 import { startCreateCustomerAction, startRemoveCustomerAction, startUpdateCustomerAction } from "../../../../store/actions/customer/CustomerActions";
+import SearchBar from "../../../components/searchBar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,7 +82,13 @@ const CustomerList = () => {
     setOpenForm(true);
   }
 
-  useLoadCustomers();
+  const [loadCustomers] = useLoadCustomers();
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>, search: string): void => {
+    event.preventDefault();
+
+    loadCustomers(search);
+  }
 
   return (
     <>
@@ -100,6 +107,8 @@ const CustomerList = () => {
             Crear
           </Button>
         </div>
+
+        <SearchBar onSubmit={handleSearchSubmit} />
 
         <ApplicationTable
           columns={columns}

@@ -1,7 +1,7 @@
 import httpClient from "../../../config/axios";
 import IProduct from "../../contracts/product/IProduct";
 
-interface ProductParamSearch {
+interface IProductParamSearch {
   sku?: string,
   name?: string,
   price?: number,
@@ -11,7 +11,7 @@ interface ProductParamSearch {
 class ProductService {
   public static async getAll(q?: string): Promise<IProduct[]> {
 
-    let params: ProductParamSearch = {};
+    let params: IProductParamSearch = {};
 
     if (typeof q !== 'undefined' && q?.length > 0) {
       const priceFilter = parseInt(q);
