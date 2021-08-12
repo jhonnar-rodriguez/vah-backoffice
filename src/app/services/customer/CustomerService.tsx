@@ -1,5 +1,6 @@
 import httpClient from "../../../config/axios";
 import ICustomer from "../../contracts/customer/ICustomer";
+import IProcessFilter from "../../contracts/filter/IProcessFilter";
 
 interface ICustomerParamSearch {
   name?: string,
@@ -11,20 +12,15 @@ interface ICustomerParamSearch {
 }
 
 class CustomerService {
-  public static async getAll(q?: string): Promise<ICustomer[]> {
+  public static async getAll(filter?: IProcessFilter): Promise<ICustomer[]> {
 
     let params: ICustomerParamSearch = {};
 
-    if (typeof q !== 'undefined' && q?.length > 0) {
-      const filter = q.toLowerCase();
+    if (typeof filter?.value !== 'undefined' && filter.value?.length > 0) {
+      const query = filter.value.toLowerCase();
 
       params = {
-        name: filter,
-        code: filter,
-        email: filter,
-        mobile: filter,
-        document: filter,
-        surname: filter,
+        [filter.filterBy]: query,
       }
     }
 

@@ -1,4 +1,6 @@
+import { v4 as uuid } from "uuid";
 import ICustomer, { IDocumentType } from "../../contracts/customer/ICustomer";
+import IFilter from '../../contracts/filter/IFilter';
 
 export const customerInitialState: ICustomer = {
   _id: "",
@@ -35,5 +37,34 @@ export const documentTypes: IDocumentType[] = [
     name: "Pasaporte",
     value: "TYPE_PPN",
     pattern: "^[a-zA-Z0-9_]{4,16}$",
+  },
+];
+
+
+export const customersFilterableOptions: IFilter[] = [
+  {
+    id: uuid(),
+    value: "name",
+    label: "Nombre",
+  },
+  {
+    id: uuid(),
+    value: "surname",
+    label: "Apellido",
+  },
+  {
+    id: uuid(),
+    value: "code",
+    label: "Código",
+  },
+  {
+    id: uuid(),
+    value: "email",
+    label: "Correo",
+  },
+  {
+    id: uuid(),
+    value: "document",
+    label: "Documento",
   },
 ];

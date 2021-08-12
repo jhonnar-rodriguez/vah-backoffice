@@ -7,10 +7,11 @@ import columns from "./TableColumns";
 import ApplicationTable from "../../../components/table/ApplicationTable";
 import useLoadCustomers from "../../../hooks/settings/customers/useLoadCustomers";
 import ICustomer from "../../../contracts/customer/ICustomer";
-import { customerInitialState } from "../../../data/customers";
+import { customerInitialState, customersFilterableOptions } from "../../../data/customers";
 import CustomerForm from "./partials/CustomerForm";
 import { startCreateCustomerAction, startRemoveCustomerAction, startUpdateCustomerAction } from "../../../../store/actions/customer/CustomerActions";
 import SearchBar from "../../../components/searchBar/SearchBar";
+import IProcessFilter from "../../../contracts/filter/IProcessFilter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,10 +85,18 @@ const CustomerList = () => {
 
   const [loadCustomers] = useLoadCustomers();
 
-  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>, search: string): void => {
-    event.preventDefault();
+  const handleSearchSubmit = (filter: IProcessFilter, event?: FormEvent<HTMLFormElement>, resetFilters: boolean = false): void => {
+    if (resetFilters) {
+      loadCustomers();
 
-    loadCustomers(search);
+      return;
+    }
+
+    if (typeof event !== "undefined") {
+      event.preventDefault();
+    }
+
+    loadCustomers(filter);
   }
 
   return (
@@ -108,7 +117,10 @@ const CustomerList = () => {
           </Button>
         </div>
 
-        <SearchBar onSubmit={handleSearchSubmit} />
+        <SearchBar
+          onSubmit={handleSearchSubmit}
+          optionsToFilter={customersFilterableOptions}
+        />
 
         <ApplicationTable
           columns={columns}

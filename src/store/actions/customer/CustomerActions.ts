@@ -12,6 +12,7 @@ import {
   UpdateCustomerAction,
 } from './../../types/customer/CustomerTypes';
 import CustomerService from '../../../app/services/customer/CustomerService';
+import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
 
 export const getCustomersDispatcher = (): GetCustomersAction => ({
   type: 'GET_CUSTOMERS',
@@ -37,13 +38,13 @@ export const removeCustomerDispatcher = (customerId: string): RemoveCustomerActi
   payload: customerId,
 });
 
-export const startGetCustomersAction = (q?: string) => {
+export const startGetCustomersAction = (filter?: IProcessFilter) => {
   return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getCustomersDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const customers = await CustomerService.getAll(q);
+      const customers = await CustomerService.getAll(filter);
 
       dispatch(setCustomersDispatcher(customers));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));

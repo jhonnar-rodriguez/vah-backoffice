@@ -1,8 +1,6 @@
-import { ChangeEvent, FC, ReactElement, useState } from "react";
+import { FC, FormEvent, ReactElement, useState } from "react";
 import { Button, makeStyles, MenuItem, Select, TextField, Theme } from "@material-ui/core";
 import IFilter from "../../contracts/filter/IFilter";
-import { FormEventHandler } from "react";
-import { FormEvent } from "react";
 import SnackBar from "../snackBar/SnackBar";
 
 const useStyles = makeStyles((theme: Theme) => ({
