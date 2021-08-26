@@ -59,6 +59,11 @@ export const customersFilterableOptions: IFilter[] = [
   },
   {
     id: uuid(),
+    value: "mobile",
+    label: "Celular",
+  },
+  {
+    id: uuid(),
     value: "email",
     label: "Correo",
   },

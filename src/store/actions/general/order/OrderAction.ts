@@ -35,7 +35,7 @@ export const startGetOrdersAction = () => {
     try {
       const orders = await OrderService.getAll();
 
-      dispatch(setOrdersDispatcher(orders));
+      dispatch(setOrdersDispatcher(orders.filter((order: IOrder) => order.status.toLowerCase() === 'pending')));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));

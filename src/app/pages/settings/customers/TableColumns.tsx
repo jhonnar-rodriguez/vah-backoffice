@@ -28,6 +28,11 @@ const columns: ICustomerColumns[] = [
     minWidth: 170,
   },
   {
+    id: 'mobile',
+    label: 'Celular',
+    minWidth: 100,
+  },
+  {
     id: 'actions',
     label: 'Acciones',
     minWidth: 50,
