@@ -5,16 +5,20 @@ import { createBrowserHistory } from "history";
 import store from "./store";
 
 import Routes from "./app/routes";
+import { ThemeProvider } from "@material-ui/core";
+import theme from "./app/theme";
 
 const browserHistory = createBrowserHistory();
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Router history={browserHistory}>
-        <Routes />
-      </Router>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Router history={browserHistory}>
+          <Routes />
+        </Router>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

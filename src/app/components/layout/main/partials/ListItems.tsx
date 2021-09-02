@@ -29,7 +29,7 @@ export const MainListItems = (
             component={Link}
           >
             <ListItemIcon>
-              <SvgIcon component={menu.icon} />
+              <SvgIcon component={menu.icon} style={{ color: 'white' }} />
             </ListItemIcon>
             <ListItemText primary={menu.label} />
           </ListItem>
@@ -55,13 +55,13 @@ export const SecondaryListItems = ({
   handleNestedSecurityClick,
 }: SecondaryListItemsProps) => (
   <div>
-    <ListSubheader inset>Configuración</ListSubheader>
+    <ListSubheader inset style={{ color: 'white' }}>Configuración</ListSubheader>
     <ListItem
       button
       onClick={handleNestedStoreClick}
     >
       <ListItemIcon>
-        <StorefrontIcon />
+        <StorefrontIcon style={{ color: 'white' }} />
       </ListItemIcon>
       <ListItemText
         primary="Tienda"
@@ -90,7 +90,7 @@ export const SecondaryListItems = ({
                 component={Link}
               >
                 <ListItemIcon>
-                  <SvgIcon component={menu.icon} />
+                  <SvgIcon component={menu.icon} style={{ color: 'white' }} />
                 </ListItemIcon>
                 <ListItemText primary={menu.label} />
               </ListItem>
@@ -104,7 +104,7 @@ export const SecondaryListItems = ({
       onClick={handleNestedSecurityClick}
     >
       <ListItemIcon>
-        <SecurityIcon />
+        <SecurityIcon style={{ color: 'white' }} />
       </ListItemIcon>
       <ListItemText primary="Seguridad" style={{ marginRight: "0", paddingRight: "0" }} />
       {openNestedSecurity ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -130,7 +130,7 @@ export const SecondaryListItems = ({
                 component={Link}
               >
                 <ListItemIcon>
-                  <SvgIcon component={menu.icon} />
+                  <SvgIcon component={menu.icon} style={{ color: 'white' }} />
                 </ListItemIcon>
                 <ListItemText primary={menu.label} />
               </ListItem>

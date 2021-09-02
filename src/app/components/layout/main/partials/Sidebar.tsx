@@ -8,6 +8,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { MainListItems, SecondaryListItems } from './ListItems';
 import IHeader from '../../../../contracts/layouts/IHeader';
 import { makeStyles } from '@material-ui/core';
+import logo from '../../../../../assets/logo.png';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -33,10 +34,16 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarIcon: {
     display: 'flex',
+    height: '5vh',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    // justifyContent: 'space-between',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  background: {
+    color: theme.palette.common.white,
+    height: 'calc(100vh - 5vh)',
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
@@ -62,27 +69,35 @@ const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
       open={open}
     >
       <div className={classes.toolbarIcon}>
-        <IconButton
-          onClick={() => handleDrawerClose()}
-        >
-          <ChevronLeftIcon />
-        </IconButton>
+        <div style={{ display: 'flex', flexGrow: 1, justifyContent: 'end' }}>
+          <img src={logo} alt="Application Logo" style={{ width: '50px', height: '50px' }} />
+        </div>
+        <div style={{ display: 'flex', flexGrow: 1 }}>
+          <IconButton
+            onClick={() => handleDrawerClose()}
+            style={{ justifyContent: 'end', flexGrow: 1 }}
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
       </div>
       <Divider />
 
-      <List>{MainListItems}</List>
-      <Divider />
-      <List>
-        {
-          SecondaryListItems({
-            hideIcons: !open,
-            openNestedStore,
-            openNestedSecurity,
-            handleNestedStoreClick,
-            handleNestedSecurityClick,
-          })
-        }
-      </List>
+      <div className={classes.background}>
+        <List>{MainListItems}</List>
+        <Divider />
+        <List>
+          {
+            SecondaryListItems({
+              hideIcons: !open,
+              openNestedStore,
+              openNestedSecurity,
+              handleNestedStoreClick,
+              handleNestedSecurityClick,
+            })
+          }
+        </List>
+      </div>
     </Drawer>
   )
 }

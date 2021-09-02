@@ -10,19 +10,20 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import IHeader from '../../../../contracts/layouts/IHeader';
 import AccountCircleIcon from '@material-ui/icons/AccountCircleOutlined';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { makeStyles, Menu, MenuItem } from '@material-ui/core';
+import { makeStyles, Menu, MenuItem, Theme } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../../store';
 import { startLogoutAction } from '../../../../../store/actions/auth/AuthActions';
 
 const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: theme.palette.secondary.main,
   },
   appBarShift: {
     marginLeft: drawerWidth,
