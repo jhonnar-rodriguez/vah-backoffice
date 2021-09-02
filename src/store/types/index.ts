@@ -6,11 +6,13 @@ import { ORDER_ACTION_TYPES } from "./general/order/OrderTypes"
 import { USER_ACTION_TYPES } from "./settings/security/user/UserTypes"
 import { ROLE_ACTION_TYPES } from "./settings/security/role/RoleTypes"
 import { AUTH_ACTION_TYPES } from "./auth/AuthTypes"
+import { TRACE_ACTION_TYPES } from "./general/trace/TraceTypes"
 
 export type AppTypes = CUSTOMER_ACTION_TYPES |
   AUTH_ACTION_TYPES |
   USER_ACTION_TYPES |
   ROLE_ACTION_TYPES |
+  TRACE_ACTION_TYPES |
   ORDER_ACTION_TYPES |
   PRODUCT_ACTION_TYPES |
   CATEGORY_ACTION_TYPES |

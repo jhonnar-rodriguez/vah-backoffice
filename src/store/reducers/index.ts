@@ -10,12 +10,14 @@ import orderReducer from './general/order/OrderReducer';
 import userReducer from './settings/security/user/UserReducer';
 import roleReducer from './settings/security/role/RoleReducer';
 import authReducer from './auth/AuthReducer';
+import traceReducer from './general/trace/TraceReducer';
 
 export default combineReducers({
   authReducer,
   userReducer,
   roleReducer,
   orderReducer,
+  traceReducer,
   couponReducer,
   productReducer,
   customerReducer,
