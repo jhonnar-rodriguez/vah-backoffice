@@ -3,7 +3,7 @@ import SecurityIcon from '@material-ui/icons/SecurityOutlined';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreOutlined';
 import StorefrontIcon from '@material-ui/icons/StorefrontOutlined';
-
+import SubjectIcon from '@material-ui/icons/SubjectOutlined';
 import {
   List,
   SvgIcon,
@@ -14,10 +14,18 @@ import {
   ListItemText,
   ListSubheader,
 } from '@material-ui/core';
-import { generalMenuOptions, securityMenuOptions, storeMenuOptions } from '../../../../data/sidebar';
+import { generalMenuOptions, reportMenuOptions, securityMenuOptions, storeMenuOptions } from '../../../../data/sidebar';
 import MenuOption from '../../../../contracts/menuOption/IMenuOption';
 
-export const MainListItems = (
+type MainListItemsProps = {
+  hideIcons: boolean,
+  openNestedReports: boolean,
+  handleNestedReportClick: any,
+}
+export const MainListItems = ({ hideIcons,
+  openNestedReports,
+  handleNestedReportClick,
+}: MainListItemsProps) => (
   <div>
     {
       generalMenuOptions
@@ -35,9 +43,51 @@ export const MainListItems = (
           </ListItem>
         ))
     }
+
+    <ListItem
+      button
+      onClick={handleNestedReportClick}
+    >
+      <ListItemIcon>
+        <SubjectIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+      <ListItemText
+        primary="Reportes"
+        style={{ marginRight: "0", paddingRight: "0" }}
+      />
+      {openNestedReports ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+    </ListItem>
+
+    <Collapse
+      in={openNestedReports}
+      timeout="auto"
+      unmountOnExit
+    >
+      <Divider />
+      <List
+        component="div"
+        style={{ padding: !hideIcons ? "10px" : "5px" }}
+      >
+        {
+          reportMenuOptions
+            .map((menu: MenuOption) => (
+              <ListItem
+                key={menu.id}
+                to={menu.route}
+                button
+                component={Link}
+              >
+                <ListItemIcon>
+                  <SvgIcon component={menu.icon} style={{ color: 'white' }} />
+                </ListItemIcon>
+                <ListItemText primary={menu.label} />
+              </ListItem>
+            ))
+        }
+      </List>
+    </Collapse>
   </div>
 );
-
 
 type SecondaryListItemsProps = {
   hideIcons: boolean,

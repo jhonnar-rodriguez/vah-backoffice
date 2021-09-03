@@ -49,8 +49,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
   const classes = useStyles();
+  const [openNestedReports, setOpenNestedReports] = useState(false);
   const [openNestedStore, setOpenNestedStore] = useState(false);
   const [openNestedSecurity, setOpenNestedSecurity] = useState(false);
+
+  const handleNestedReportClick = () => {
+    setOpenNestedReports(!openNestedReports)
+  }
 
   const handleNestedStoreClick = () => {
     setOpenNestedStore(!openNestedStore)
@@ -84,7 +89,15 @@ const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
       <Divider />
 
       <div className={classes.background}>
-        <List>{MainListItems}</List>
+        <List>
+          {
+            MainListItems({
+              hideIcons: !open,
+              openNestedReports,
+              handleNestedReportClick,
+            })
+          }
+        </List>
         <Divider />
         <List>
           {

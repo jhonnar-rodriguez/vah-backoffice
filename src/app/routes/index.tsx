@@ -14,6 +14,7 @@ import {
   OrderDetailPage,
   UnauthorizedPage,
   AllowedClientPage,
+  SalesByProductPage,
 } from "../pages"
 
 const Routes = () => {
@@ -88,6 +89,15 @@ const Routes = () => {
         layout={MainLayout}
         component={OrderDetailPage}
         pageTitle="Detalle de Pedido"
+      />
+
+      <RouteWithLayout
+        path="/reports/sales-by-product"
+        exact={true}
+        layout={MainLayout}
+        component={SalesByProductPage}
+        pageTitle="Ventas por producto"
+        forRoles={["admin"]}
       />
 
       <RouteWithLayout

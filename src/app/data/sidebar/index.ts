@@ -7,6 +7,8 @@ import MenuOption from '../../contracts/menuOption/IMenuOption';
 import AssessmentIcon from '@material-ui/icons/AssessmentOutlined';
 import LocalMallIcon from '@material-ui/icons/LocalMallOutlined';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUserOutlined';
+import PeopleIcon from '@material-ui/icons/PeopleOutline';
+import ExtensionIcon from '@material-ui/icons/ExtensionOutlined';
 
 export const generalMenuOptions: MenuOption[] = [
   {
@@ -20,6 +22,21 @@ export const generalMenuOptions: MenuOption[] = [
     route: "/orders",
     icon: LocalMallIcon,
     label: "Pedidos",
+  },
+];
+
+export const reportMenuOptions: MenuOption[] = [
+  {
+    id: uuid(),
+    route: "/reports/sales-by-product",
+    icon: ExtensionIcon,
+    label: "Ventas por producto",
+  },
+  {
+    id: uuid(),
+    route: "/reports/sales-by-customer",
+    icon: PeopleIcon,
+    label: "Ventas por cliente",
   },
 ];
 

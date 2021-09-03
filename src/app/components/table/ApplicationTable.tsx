@@ -26,6 +26,8 @@ import ICouponTableColumns from "../../contracts/coupon/table/ICouponTableColumn
 import IAllowedClientTableColumns from "../../contracts/security/allowedClient/table/IAllowedClientTableColumns";
 import IOrderTableColumns from "../../contracts/general/order/table/IOrderTableColumns";
 import IUserTableColumns from "../../contracts/security/user/table/IUserTableColumns";
+import ISaleByProductTableColumn from "../../contracts/report/tables/ISaleByProductTable";
+
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,7 +46,8 @@ type IApplicationTableColumns = IColumn[] |
   ICouponTableColumns[] |
   IAllowedClientTableColumns[] |
   IOrderTableColumns[] |
-  IUserTableColumns[];
+  IUserTableColumns[] |
+  ISaleByProductTableColumn[];
 
 type ApplicationTableProps = {
   columns: IApplicationTableColumns,
@@ -68,16 +71,16 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-  const generateActionButtons = (element: any) => (
+  const generateActionButtons = (element: any): ReactElement => (
     <Grid container>
       {
         typeof handleEditAction === "function" &&
@@ -214,17 +217,15 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
                 displayNoProductsAvailable() :
                 elements
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((element: any) => {
-                    return (
-                      <TableRow
-                        key={element._id}
-                        hover
-                        tabIndex={-1}
-                      >
-                        {columns.map((column: IBaseTableColumns) => generateCellValue(column, element))}
-                      </TableRow>
-                    );
-                  })
+                  .map((element: any) => (
+                    <TableRow
+                      key={element._id}
+                      hover
+                      tabIndex={-1}
+                    >
+                      {columns.map((column: IBaseTableColumns) => generateCellValue(column, element))}
+                    </TableRow>
+                  ))
             }
           </TableBody>
         </Table>

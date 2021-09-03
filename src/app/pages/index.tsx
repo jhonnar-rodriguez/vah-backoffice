@@ -9,6 +9,7 @@ import NotFoundPage from "./errors/notFound";
 import UsersPage from "./settings/security/users";
 import LoginPage from "./auth/login/Login";
 import UnauthorizedPage from "./errors/unauthorized";
+import { SalesByProductPage } from "./reports/salesByProduct";
 
 export {
   LoginPage,
@@ -22,4 +23,5 @@ export {
   OrderDetailPage,
   UnauthorizedPage,
   AllowedClientPage,
+  SalesByProductPage,
 };
