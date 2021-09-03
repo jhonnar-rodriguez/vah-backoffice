@@ -27,6 +27,7 @@ import IAllowedClientTableColumns from "../../contracts/security/allowedClient/t
 import IOrderTableColumns from "../../contracts/general/order/table/IOrderTableColumns";
 import IUserTableColumns from "../../contracts/security/user/table/IUserTableColumns";
 import ISaleByProductTableColumn from "../../contracts/report/tables/ISaleByProductTable";
+import ISaleByCustomerTableColumn from "../../contracts/report/tables/ISaleByCustomerTableColumn";
 
 
 const useStyles = makeStyles(() => ({
@@ -47,7 +48,8 @@ type IApplicationTableColumns = IColumn[] |
   IAllowedClientTableColumns[] |
   IOrderTableColumns[] |
   IUserTableColumns[] |
-  ISaleByProductTableColumn[];
+  ISaleByProductTableColumn[] |
+  ISaleByCustomerTableColumn[];
 
 type ApplicationTableProps = {
   columns: IApplicationTableColumns,

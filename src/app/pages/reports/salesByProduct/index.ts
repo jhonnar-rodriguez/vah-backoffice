@@ -1,5 +1,4 @@
 import SalesByProductPage from "./SalesByProduct";
 
-export {
-  SalesByProductPage,
-}
+export default SalesByProductPage;
+

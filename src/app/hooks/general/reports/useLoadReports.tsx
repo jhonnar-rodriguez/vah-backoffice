@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { startGetSalesByProductAction } from "../../../../store/actions/report/ReportActions";
+import { startGetSalesByCustomerAction, startGetSalesByProductAction } from "../../../../store/actions/report/ReportActions";
 
 const useLoadReports = () => {
   const dispatch = useDispatch();
@@ -13,8 +13,17 @@ const useLoadReports = () => {
     [dispatch],
   );
 
+  const loadSalesByCustomer = useCallback(
+    () => {
+      const dispatcher = () => dispatch(startGetSalesByCustomerAction());
+      dispatcher();
+    },
+    [dispatch],
+  );
+
   return {
     loadSalesByProduct,
+    loadSalesByCustomer,
   };
 }
 

@@ -1,3 +1,4 @@
+import ISaleByCustomer from "../../../app/contracts/report/ISaleByCustomer";
 import ISaleByProduct from "../../../app/contracts/report/ISaleByProduct";
 
 export const GET_SALES_BY_PRODUCT = 'GET_SALES_BY_PRODUCT';
@@ -16,9 +17,23 @@ export interface SetSalesByProductAction {
   payload: ISaleByProduct[],
 };
 
+export interface GetSalesByCustomerAction {
+  type: typeof GET_SALES_BY_CUSTOMER,
+};
+
+export interface SetSalesByCustomerAction {
+  type: typeof SET_SALES_BY_CUSTOMER,
+  payload: ISaleByCustomer[],
+};
+
 export interface DownloadSalesByProductReportAction {
   type: typeof DOWNLOAD_SALES_BY_PRODUCT_REPORT,
 };
 
 
-export type REPORT_ACTION_TYPES = GetSalesByProductAction | SetSalesByProductAction | DownloadSalesByProductReportAction;
+export type REPORT_ACTION_TYPES =
+  GetSalesByProductAction |
+  SetSalesByProductAction |
+  GetSalesByCustomerAction |
+  SetSalesByCustomerAction |
+  DownloadSalesByProductReportAction;

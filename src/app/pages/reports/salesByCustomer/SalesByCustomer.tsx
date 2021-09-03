@@ -7,8 +7,8 @@ import columns from "./TableColumns";
 import ApplicationTable from "../../../components/table/ApplicationTable";
 import useLoadReports from "../../../hooks/general/reports/useLoadReports";
 import ISaleByProduct from "../../../contracts/report/ISaleByProduct";
-import { startDownloadSaleReportByName } from "../../../../store/actions/report/ReportActions";
 import SnackBar from "../../../components/snackBar/SnackBar";
+import { startDownloadSaleReportByName } from "../../../../store/actions/report/ReportActions";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -28,23 +28,23 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SalesByProduct = (): ReactElement => {
+const SalesByCustomer = (): ReactElement => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { salesByProduct } = useSelector((state: AppState) => state.reportReducer);
+  const { salesByCustomer } = useSelector((state: AppState) => state.reportReducer);
   const [displayEmailMessage, setDisplayEmailMessage] = useState<boolean>(false);
-  const { loadSalesByProduct } = useLoadReports();
+  const { loadSalesByCustomer } = useLoadReports();
 
   const handleViewOrderAction = (sale: ISaleByProduct): Window | null => window.open(`/orders/${sale.order}/detail`, '_blank');
 
   useEffect(() => {
-    loadSalesByProduct();
-  }, [loadSalesByProduct]);
+    loadSalesByCustomer();
+  }, [loadSalesByCustomer]);
 
   const handleDownloadReportAction = (): void => {
     setDisplayEmailMessage(true);
-    const dispatcher = () => dispatch(startDownloadSaleReportByName('product'));
+    const dispatcher = () => dispatch(startDownloadSaleReportByName('customer'));
     dispatcher();
   }
 
@@ -52,7 +52,7 @@ const SalesByProduct = (): ReactElement => {
     <Paper className={classes.root}>
       <div className={classes.buttonContainer}>
         <Typography variant="h4" style={{ padding: "5px" }}>
-          Ventas por producto
+          Ventas por cliente
         </Typography>
 
         <Button
@@ -67,7 +67,7 @@ const SalesByProduct = (): ReactElement => {
 
       <ApplicationTable
         columns={columns}
-        elements={salesByProduct}
+        elements={salesByCustomer}
         handleEditAction={handleViewOrderAction}
       />
 
@@ -82,4 +82,4 @@ const SalesByProduct = (): ReactElement => {
   );
 };
 
-export default SalesByProduct;
+export default SalesByCustomer;
