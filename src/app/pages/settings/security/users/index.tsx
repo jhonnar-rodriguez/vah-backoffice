@@ -54,10 +54,17 @@ const UserList = () => {
     }));
 
     if (!createUser) {
-      dispatcher = () => dispatch(startUpdateUserAction({
-        ...user,
-        active: true,
-      }));
+      const updatedUser = {
+        _id: user?._id,
+        name: user?.name,
+        lastname: user?.lastname,
+        email: user.email,
+        mobile: user?.mobile,
+        username: user?.username,
+        role: user?.role,
+        active: true
+      };
+      dispatcher = () => dispatch(startUpdateUserAction(updatedUser));
     }
 
     dispatcher();

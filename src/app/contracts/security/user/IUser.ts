@@ -7,7 +7,7 @@ interface IUser {
   email: string;
   mobile: string;
   username: string;
-  password: string;
+  password?: string;
   password_confirmation?: string,
   role: IRole;
   active: boolean;
