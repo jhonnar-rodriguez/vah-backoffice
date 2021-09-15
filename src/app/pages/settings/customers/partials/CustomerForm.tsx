@@ -222,10 +222,10 @@ const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementT
               },
               maxLength: {
                 value: 20,
-                message: 'La teléfono no puede superar los 100 caracteres.',
+                message: 'La teléfono no puede superar los 20 caracteres.',
               },
               pattern: {
-                value: /^([2-9])(\d{2})(-?|\040?)(\d{4})( ?|\040?)(\d{1,4}?|\040?)$/,
+                value: /^([2-9])([0-9])(\d{2})(-?|\040?)(\d{4})( ?|\040?)(\d{1,4}?|\040?)$/,
                 message: "Por favor introduzca un teléfono válido."
               },
             }}
