@@ -14,8 +14,10 @@ import {
   CreateUserAction,
   RemoveUserAction,
   USER_ACTION_TYPES,
+  ChangeUserPasswordAction,
 } from '../../../../types/settings/security/user/UserTypes';
 import IHttpRequestHandler from '../../../../../app/contracts/httpRequest/IHttpRequest';
+import IChangeUserPassword from '../../../../../app/contracts/security/user/IChangeUserPassword';
 
 export const getUsersDispatcher = (): GetUsersAction => ({
   type: 'GET_USERS',
@@ -44,6 +46,10 @@ export const removeUserDispatcher = (userId: string): RemoveUserAction => ({
 export const setUserAction = (user: IUser): SetUserAction => ({
   type: 'SET_USER',
   payload: user,
+});
+
+export const changeUserPasswordDispatcher = (): ChangeUserPasswordAction => ({
+  type: 'CHANGE_USER_PASSWORD',
 });
 
 export const startGetUsersAction = () => {
@@ -147,6 +153,45 @@ export const startGetUserAction = (userId: string) => {
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setUserAction(usersInitialState));
+      dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
+    }
+  }
+}
+
+export const startChangeUserPasswordAction = (user: IChangeUserPassword) => {
+  return async (dispatch: Dispatch<USER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(setRunningRequestDispatcher());
+
+    let requestFinishedPayload: IHttpRequestHandler = {
+      isLoading: false,
+    };
+
+    try {
+      const response = await UserService.changePassword(user);
+
+      let message = 'Ha ocurrido un error al realizar la petición, por favor intente de nuevo.';
+      let statusCode = 422;
+      let statusText = 'Error';
+      let responseKey = 'success';
+
+      if (response.status === 'OK') {
+        message = "La contraseña se ha actualizado satisfactoriamente.";
+        statusCode = 200;
+        statusText = "Actualizado";
+      }
+
+      requestFinishedPayload = {
+        ...requestFinishedPayload,
+        [responseKey]: {
+          message,
+          statusCode,
+          statusText,
+        }
+      }
+
+      dispatch(changeUserPasswordDispatcher());
+      dispatch(setFinishedRequestDispatcher(requestFinishedPayload));
+    } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
     }
   }

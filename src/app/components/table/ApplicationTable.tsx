@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import {
   EditOutlined as EditOutlinedIcon,
+  LockOpenOutlined as LockOpenIcon,
   VisibilityOutlined as VisibilityIcon,
 } from "@material-ui/icons";
 import ConfirmationDialog from "../confirmation/ConfirmationDialog";
@@ -55,10 +56,11 @@ type ApplicationTableProps = {
   columns: IApplicationTableColumns,
   elementType?: any,
   elements: any,
+  actionButtons?: IBaseActionColumn[],
   handleViewAction?: any,
   handleEditAction?: any,
   handleConfirmDeleteAction?: any,
-  actionButtons?: IBaseActionColumn[],
+  handleChangePasswordAction?: any,
 }
 
 const ApplicationTable: FC<ApplicationTableProps> = ({
@@ -68,6 +70,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
   handleEditAction,
   handleViewAction,
   handleConfirmDeleteAction,
+  handleChangePasswordAction,
 }) => {
   const classes = useStyles();
   const [page, setPage] = useState<number>(0);
@@ -105,21 +108,6 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
       }
 
       {
-        typeof handleConfirmDeleteAction === "function" &&
-        <Grid
-          item
-          xs={6}
-          className={classes.noFlexBasis}
-        >
-          <ConfirmationDialog
-            title={`Eliminar registro ${element.name}`}
-            content={`Estás seguro de eliminar el registro ${element.name}`}
-            handleOnConfirm={() => handleConfirmDeleteAction(element._id)}
-          />
-        </Grid>
-      }
-
-      {
         typeof handleViewAction === "function" &&
         <Grid
           item
@@ -136,6 +124,41 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
               <VisibilityIcon />
             </IconButton>
           </Tooltip>
+        </Grid>
+      }
+
+      {
+        typeof handleChangePasswordAction === "function" &&
+        <Grid
+          item
+          xs={6}
+          className={classes.noFlexBasis}
+        >
+          <Tooltip title="Cambiar Contraseña">
+            <IconButton
+              style={{ color: '#889EAF' }}
+              onClick={() => handleChangePasswordAction(element)}
+              component="span"
+              aria-label="Cambiar contraseña"
+            >
+              <LockOpenIcon />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      }
+
+      {
+        typeof handleConfirmDeleteAction === "function" &&
+        <Grid
+          item
+          xs={6}
+          className={classes.noFlexBasis}
+        >
+          <ConfirmationDialog
+            title={`Eliminar registro ${element.name}`}
+            content={`Estás seguro de eliminar el registro ${element.name}`}
+            handleOnConfirm={() => handleConfirmDeleteAction(element._id)}
+          />
         </Grid>
       }
     </Grid>

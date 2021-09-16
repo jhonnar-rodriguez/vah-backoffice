@@ -1,4 +1,6 @@
 import httpClient from "../../../../../config/axios";
+import IHttpResponseStatus from "../../../../contracts/httpRequest/IHttpResponseStatus";
+import IChangeUserPassword from "../../../../contracts/security/user/IChangeUserPassword";
 import IUser from "../../../../contracts/security/user/IUser";
 
 class UserService {
@@ -28,6 +30,14 @@ class UserService {
 
   public static async remove(id: string): Promise<void> {
     await httpClient.delete(`/user/${id}`);
+  }
+
+  public static async changePassword(user: IChangeUserPassword): Promise<IHttpResponseStatus> {
+    delete user.name;
+
+    const xhr = await httpClient.put(`/user/${user._id}/password`, { ...user }).then(({ data }) => data.status);
+
+    return xhr;
   }
 }
 

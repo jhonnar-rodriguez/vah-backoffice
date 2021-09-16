@@ -4,12 +4,19 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Paper, Typography } from "@material-ui/core";
 import ApplicationTable from "../../../../components/table/ApplicationTable";
 import IUser from "../../../../contracts/security/user/IUser";
-import { usersInitialState } from "../../../../data/security/user";
-import { startCreateUserAction, startRemoveUserAction, startUpdateUserAction } from "../../../../../store/actions/settings/security/user/UserActions";
+import { changeUserPasswordInitialState, usersInitialState } from "../../../../data/security/user";
+import {
+  startChangeUserPasswordAction,
+  startCreateUserAction,
+  startRemoveUserAction,
+  startUpdateUserAction,
+} from "../../../../../store/actions/settings/security/user/UserActions";
 import UserForm from "./partials/UserForm";
 import UserTableColumns from "./partials/UserTableColumns";
 import { AppState } from "../../../../../store";
 import useLoadUsers from "../../../../hooks/settings/security/users/useLoadUsers";
+import ChangeUserPasswordForm from "./partials/ChangeUserPasswordForm";
+import IChangeUserPassword from "../../../../contracts/security/user/IChangeUserPassword";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -38,6 +45,9 @@ const UserList = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createUser, setCreateUser] = useState<boolean>(true);
   const [userToUpdate, setUserToUpdate] = useState<IUser>(usersInitialState);
+
+  const [changeUserPassword, setChangeUserPassword] = useState<boolean>(false);
+  const [userToChangePassword, setUserToChangePassword] = useState<IChangeUserPassword>(changeUserPasswordInitialState);
 
   const handleFormClose = (user?: IUser) => {
     setUserToUpdate(usersInitialState);
@@ -83,6 +93,31 @@ const UserList = () => {
     setOpenForm(true);
   }
 
+  const handleChangePasswordClick = (user: IChangeUserPassword) => {
+    setUserToChangePassword({
+      _id: user._id,
+      name: user.name,
+      password: '',
+      password_confirmation: '',
+    });
+
+    setChangeUserPassword(true);
+  }
+
+  const handleChangePasswordClose = (user?: IChangeUserPassword) => {
+    setUserToChangePassword(changeUserPasswordInitialState);
+
+    if (typeof user === 'undefined' || typeof user._id === 'undefined' || user._id.length === 0 || typeof user.password === 'undefined' || user.password.length === 0) {
+      setChangeUserPassword(false);
+      return;
+    }
+
+    let dispatcher = () => dispatch(startChangeUserPasswordAction(user));
+
+    dispatcher();
+    setChangeUserPassword(false);
+  };
+
   useLoadUsers();
 
   return (
@@ -108,6 +143,7 @@ const UserList = () => {
           elements={users}
           handleEditAction={handleEditUser}
           handleConfirmDeleteAction={handleDeleteUser}
+          handleChangePasswordAction={handleChangePasswordClick}
         />
       </Paper>
 
@@ -118,6 +154,16 @@ const UserList = () => {
           action={createUser ? "Crear" : "Actualizar"}
           handleClose={handleFormClose}
           elementToUpdate={userToUpdate}
+        />
+      }
+
+      {
+        changeUserPassword &&
+        <ChangeUserPasswordForm
+          open={true}
+          action="Actualizar"
+          handleClose={handleChangePasswordClose}
+          elementToUpdate={userToChangePassword}
         />
       }
     </>

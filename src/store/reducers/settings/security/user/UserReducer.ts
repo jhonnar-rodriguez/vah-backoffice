@@ -1,13 +1,14 @@
 import IUser from '../../../../../app/contracts/security/user/IUser';
 import { usersInitialState } from '../../../../../app/data/security/user';
 import {
-  GET_USERS,
   SET_USER,
+  GET_USERS,
   SET_USERS,
   CREATE_USER,
   UPDATE_USER,
   REMOVE_USER,
   USER_ACTION_TYPES,
+  CHANGE_USER_PASSWORD,
 } from '../../../../types/settings/security/user/UserTypes';
 
 interface IUserReducer {
@@ -23,6 +24,7 @@ const initialState: IUserReducer = {
 const UserReducer = (state = initialState, action: USER_ACTION_TYPES): IUserReducer => {
   switch (action.type) {
     case GET_USERS:
+    case CHANGE_USER_PASSWORD:
       return {
         ...state,
       }

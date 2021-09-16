@@ -1,3 +1,4 @@
+import IChangeUserPassword from "../../../contracts/security/user/IChangeUserPassword";
 import IUser from "../../../contracts/security/user/IUser";
 
 export const usersInitialState: IUser = {
@@ -14,4 +15,11 @@ export const usersInitialState: IUser = {
     name: "",
   },
   active: false,
+};
+
+export const changeUserPasswordInitialState: IChangeUserPassword = {
+  _id: "",
+  name: "",
+  password: "",
+  password_confirmation: "",
 };

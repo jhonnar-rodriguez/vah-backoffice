@@ -7,6 +7,7 @@ export const SET_USER = 'SET_USER';
 export const CREATE_USER = 'CREATE_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 export const REMOVE_USER = 'REMOVE_USER';
+export const CHANGE_USER_PASSWORD = 'CHANGE_USER_PASSWORD';
 
 export interface GetUsersAction {
   type: typeof GET_USERS,
@@ -37,9 +38,15 @@ export interface RemoveUserAction {
   payload: string,
 };
 
-export type USER_ACTION_TYPES = GetUsersAction |
-  CreateUserAction |
-  SetUsersAction |
+export interface ChangeUserPasswordAction {
+  type: typeof CHANGE_USER_PASSWORD,
+};
+
+export type USER_ACTION_TYPES =
   SetUserAction |
+  GetUsersAction |
+  SetUsersAction |
+  CreateUserAction |
   UpdateUserAction |
-  RemoveUserAction;
+  RemoveUserAction |
+  ChangeUserPasswordAction;
