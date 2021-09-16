@@ -16,7 +16,6 @@ import {
 import IFormProps from "../../../../../contracts/form/IFormProps";
 import useResetModalForm from "../../../../../hooks/form/useResetModalForm";
 import FormErrors from "../../../../../components/Form/FormErrors";
-import IUser from "../../../../../contracts/security/user/IUser";
 import { usersInitialState } from "../../../../../data/security/user";
 import { AppState } from "../../../../../../store";
 import IChangeUserPassword from "../../../../../contracts/security/user/IChangeUserPassword";
