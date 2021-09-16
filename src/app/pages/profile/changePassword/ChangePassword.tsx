@@ -14,6 +14,7 @@ import {
 import { AppState } from '../../../../store';
 import IChangeUserPassword from "../../../contracts/security/user/IChangeUserPassword";
 import FormErrors from "../../../components/Form/FormErrors";
+import { startChangePasswordAction } from "../../../../store/actions/profile/ProfileActions";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -84,13 +85,13 @@ const ChangePassword = () => {
       _id: userId,
     };
 
-
+    const dispatcher = () => dispatch(startChangePasswordAction(userInfo));
+    dispatcher();
   };
 
   const { isLoading } = httpRequestReducer;
 
   const password = watch("password");
-
 
   return (
     <Paper className={classes.root}>
