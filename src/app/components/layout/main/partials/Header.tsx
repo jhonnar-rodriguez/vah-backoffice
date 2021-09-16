@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useHistory } from "react-router";
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -61,7 +62,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -96,6 +99,11 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
     dispatcher();
   }
 
+  const handleNavigation = (path: string) => {
+    handleMenuClose();
+    history.push(path);
+  }
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -106,7 +114,7 @@ const Header: FC<IHeader> = ({ open, handleDrawerOpen = Function }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
+      <MenuItem onClick={() => handleNavigation('/profile/change-password')}>Cambiar Contraseña</MenuItem>
       <MenuItem onClick={() => handleLogout()}>Cerrar Sesión</MenuItem>
     </Menu>
   );

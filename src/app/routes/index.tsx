@@ -15,6 +15,7 @@ import {
   UnauthorizedPage,
   AllowedClientPage,
   SalesByProductPage,
+  ChangePasswordPage,
   SalesByCustomerPage,
 } from "../pages"
 
@@ -108,6 +109,14 @@ const Routes = () => {
         component={SalesByCustomerPage}
         pageTitle="Ventas por cliente"
         forRoles={["admin"]}
+      />
+
+      <RouteWithLayout
+        path="/profile/change-password"
+        exact={true}
+        layout={MainLayout}
+        component={ChangePasswordPage}
+        pageTitle="Actualizar contraseña"
       />
 
       <RouteWithLayout
