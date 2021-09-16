@@ -8,6 +8,7 @@ class LocalStorageHelper {
 
   public static setUser(user: IUser): void {
     localStorage.setItem("user", JSON.stringify({
+      _id: user._id,
       name: user.name,
       role: typeof user.role === "string" ? user.role : user.role?.name || 'agent',
       email: user.email,

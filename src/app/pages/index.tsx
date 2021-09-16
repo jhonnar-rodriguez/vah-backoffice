@@ -11,6 +11,7 @@ import LoginPage from "./auth/login/Login";
 import UnauthorizedPage from "./errors/unauthorized";
 import SalesByProductPage from "./reports/salesByProduct";
 import SalesByCustomerPage from "./reports/salesByCustomer";
+import ChangePasswordPage from "./profile/changePassword/ChangePassword";
 
 export {
   LoginPage,
@@ -24,6 +25,7 @@ export {
   OrderDetailPage,
   UnauthorizedPage,
   AllowedClientPage,
-  SalesByCustomerPage,
+  ChangePasswordPage,
   SalesByProductPage,
+  SalesByCustomerPage,
 };
