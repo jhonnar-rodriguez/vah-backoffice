@@ -156,7 +156,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         >
           <ConfirmationDialog
             title={`Eliminar registro ${element.name}`}
-            content={`Estás seguro de eliminar el registro ${element.name}`}
+            content={`Estás seguro de eliminar el registro ${element.name ? element.name : element.code }`}
             handleOnConfirm={() => handleConfirmDeleteAction(element._id)}
           />
         </Grid>

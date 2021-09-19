@@ -35,7 +35,7 @@ export const documentTypes: IDocumentType[] = [
   },
   {
     name: "Pasaporte",
-    value: "TYPE_PPN",
+    value: "PPN",
     pattern: "^[a-zA-Z0-9_]{4,16}$",
   },
 ];
