@@ -102,6 +102,10 @@ const ChangeUserPasswordForm: FC<IFormProps> = memo(({ open, action, handleClose
                 value: 20,
                 message: "La contraseña no puede superar los 20 caracteres.",
               },
+              pattern: {
+                value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/i,
+                message: "la contraseña debe tener una letra minúscula, una mayúscula, un numero y un carácter especial."
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <Input
