@@ -27,7 +27,7 @@ const Dashboard = (): ReactElement => {
   return (
     <Paper className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <CustomChart
             chartType='doughnut'
             mainLabel='Productos más vendidos'
@@ -35,7 +35,7 @@ const Dashboard = (): ReactElement => {
           />
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           <CustomChart
             chartType='bar'
             mainLabel='Productos más vistos'
@@ -43,7 +43,7 @@ const Dashboard = (): ReactElement => {
           />
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           <CustomChart
             chartType='bar'
             mainLabel='Categorías más vistas'
