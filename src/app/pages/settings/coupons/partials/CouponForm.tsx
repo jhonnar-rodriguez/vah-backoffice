@@ -167,9 +167,17 @@ const CouponForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToU
             control={control}
             rules={{
               maxLength: {
-                value: 5,
-                message: 'El límite no debe ser mayor de 5 caracteres.',
+                value: 2,
+                message: 'El límite no debe ser mayor de 99 ni menor de 1.',
               },
+              pattern: {
+                value: /^([1-9]{1})([0-9]{1})?$/,
+                message: 'El límite no debe ser mayor de 99 ni menor de 1.',
+              },
+              required: {
+                value: true,
+                message: "El limite es requerido",
+              }
             }}
             render={({ field: { onChange, value } }) => (
               <Input
