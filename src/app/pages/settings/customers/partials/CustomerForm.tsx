@@ -291,7 +291,7 @@ const CustomerForm: FC<IFormProps> = memo(({ open, action, handleClose, elementT
             rules={documentRules}
             render={({ field: { onChange, value } }) => (
               <Input
-                type="number"
+                type="text"
                 value={value}
                 onChange={onChange}
                 autoComplete="off"
