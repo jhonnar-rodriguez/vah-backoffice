@@ -36,13 +36,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     height: '5vh',
     alignItems: 'center',
-    // justifyContent: 'space-between',
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
   background: {
     color: theme.palette.common.white,
-    height: 'calc(100vh - 5vh)',
+    height: '100%',
     backgroundColor: theme.palette.primary.main,
   },
 }));
