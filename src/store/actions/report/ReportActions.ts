@@ -6,6 +6,7 @@ import { DownloadSalesByProductReportAction, GetSalesByCustomerAction, GetSalesB
 import ISaleByProduct from '../../../app/contracts/report/ISaleByProduct';
 import ReportService from '../../../app/services/general/report/ReportService';
 import ISaleByCustomer from '../../../app/contracts/report/ISaleByCustomer';
+import IReportFilter from '../../../app/contracts/report/filters/IReportFilter';
 
 export const getSalesByProductDispatcher = (): GetSalesByProductAction => ({
   type: 'GET_SALES_BY_PRODUCT',
@@ -29,13 +30,13 @@ export const setDownloadSalesByProductReportDispatcher = (): DownloadSalesByProd
   type: 'DOWNLOAD_SALES_BY_PRODUCT_REPORT',
 });
 
-export const startGetSalesByProductAction = () => {
+export const startGetSalesByProductAction = (filters?: IReportFilter) => {
   return async (dispatch: Dispatch<REPORT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getSalesByProductDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const salesByProduct = await ReportService.getSalesByProduct();
+      const salesByProduct = await ReportService.getSalesByProduct(filters);
       dispatch(setSalesByProductDispatcher(salesByProduct));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
@@ -44,13 +45,13 @@ export const startGetSalesByProductAction = () => {
   }
 }
 
-export const startGetSalesByCustomerAction = () => {
+export const startGetSalesByCustomerAction = (filters?: IReportFilter) => {
   return async (dispatch: Dispatch<REPORT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getSalesByCustomerDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const salesByCustomer = await ReportService.getSalesByCustomer();
+      const salesByCustomer = await ReportService.getSalesByCustomer(filters);
 
       dispatch(setSalesByCustomerDispatcher(salesByCustomer));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));

@@ -9,6 +9,8 @@ import useLoadReports from "../../../hooks/general/reports/useLoadReports";
 import ISaleByProduct from "../../../contracts/report/ISaleByProduct";
 import { startDownloadSaleReportByName } from "../../../../store/actions/report/ReportActions";
 import SnackBar from "../../../components/snackBar/SnackBar";
+import ReportsSearchBar from "../../../components/reports/ReportsSearchBar";
+import IReportFilter from "../../../contracts/report/filters/IReportFilter";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -42,6 +44,10 @@ const SalesByProduct = (): ReactElement => {
     loadSalesByProduct();
   }, [loadSalesByProduct]);
 
+  const handleApplyFilters = (filters: IReportFilter): void => {
+    loadSalesByProduct(filters);
+  }
+
   const handleDownloadReportAction = (): void => {
     setDisplayEmailMessage(true);
     const dispatcher = () => dispatch(startDownloadSaleReportByName('product'));
@@ -64,6 +70,11 @@ const SalesByProduct = (): ReactElement => {
           Descargar
         </Button>
       </div>
+
+      <ReportsSearchBar
+        filterBy='products'
+        onSubmit={handleApplyFilters}
+      />
 
       <ApplicationTable
         columns={columns}
