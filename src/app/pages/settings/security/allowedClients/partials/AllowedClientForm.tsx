@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const urlRegExp = /^(?![^\n]*\.$)(?:https?:\/\/)?(?:(?:[2][1-4]\d|25[1-5]|1\d{2}|[1-9]\d|[1-9])(?:\.(?:[2][1-4]\d|25[1-5]|1\d{2}|[1-9]\d|[0-9])){3}(?::\d{4})?|[a-z-]+(?:\.[a-z-]+){2,})$/;
+const urlRegExp = /[(http(s)?)://(www.)?a-zA-Z0-9@:%._+\-~#=]{2,256}.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/;
 
 const AllowedClientForm: FC<IFormProps> = memo(({ open, action, handleClose, elementToUpdate }) => {
   const classes = useStyles();
