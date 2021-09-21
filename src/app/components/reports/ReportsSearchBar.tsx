@@ -4,6 +4,7 @@ import {
   Button,
   TextField,
   makeStyles,
+  Grid,
 } from '@material-ui/core';
 import SnackBar from '../snackBar/SnackBar';
 import esLocale from 'date-fns/locale/es';
@@ -17,14 +18,16 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    width: '100%',
     display: 'flex',
     margin: theme.spacing(3),
     justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
   },
   button: {
     marginTop: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
     marginBottom: theme.spacing(3),
   },
   datePicker: {
@@ -140,80 +143,93 @@ const ReportsSearchBar: FC<ReportsSearchBarProps> = ({ onSubmit, filterBy }): Re
   }
 
   return (
-    <form
-      onSubmit={handleSearchSubmit}
-      className={classes.root}
-    >
-      {
-        validationMessage.length > 0 &&
-        <SnackBar
-          message={validationMessage}
-          duration={8000}
-          severity='info'
-          onDismiss={() => setValidationMessage('')}
-        />
-      }
-
-      <MuiPickersUtilsProvider
-        utils={DateFnsUtils}
-        locale={esLocale}
+    <Grid container spacing={3}>
+      <form
+        onSubmit={handleSearchSubmit}
+        className={classes.root}
       >
-        <KeyboardDatePicker
-          id='date-start'
-          value={startDate}
-          label='Fecha Inicio'
-          format='dd/MM/yyyy'
-          onChange={(value) => handleDateChange('startDate', value)}
-          className={classes.formControl}
-          autoComplete='off'
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
+        {
+          validationMessage.length > 0 &&
+          <SnackBar
+            message={validationMessage}
+            duration={8000}
+            severity='info'
+            onDismiss={() => setValidationMessage('')}
+          />
+        }
 
-        <KeyboardDatePicker
-          id='date-end'
-          value={endDate}
-          label='Fecha Fin'
-          format='dd/MM/yyyy'
-          onChange={(value) => handleDateChange('endDate', value)}
-          className={classes.formControl}
-          autoComplete='off'
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-      </MuiPickersUtilsProvider>
+        <MuiPickersUtilsProvider
+          utils={DateFnsUtils}
+          locale={esLocale}
+        >
+          <Grid item xs={12} md={3}>
+            <KeyboardDatePicker
+              id='date-start'
+              value={startDate}
+              label='Fecha Inicio'
+              format='dd/MM/yyyy'
+              onChange={(value) => handleDateChange('startDate', value)}
+              className={classes.formControl}
+              autoComplete='off'
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </Grid>
 
-      <TextField
-        id='filterApplied'
-        name='filterApplied'
-        label={filterBy === 'products' ? 'SKU' : 'Celular'}
-        value={filterApplied}
-        variant='standard'
-        onChange={(event) => setFilterApplied(event?.target.value)}
-        className={classes.formControl}
-        autoComplete='off'
-      />
+          <Grid item xs={12} md={3}>
+            <KeyboardDatePicker
+              id='date-end'
+              value={endDate}
+              label='Fecha Fin'
+              format='dd/MM/yyyy'
+              onChange={(value) => handleDateChange('endDate', value)}
+              className={classes.formControl}
+              autoComplete='off'
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </Grid>
+        </MuiPickersUtilsProvider>
 
-      <Button
-        color='secondary'
-        variant='outlined'
-        onClick={() => handleResetFilters()}
-        className={classes.button}
-      >
-        Borrar filtros
-      </Button>
+        <Grid item xs={12} md={4}>
+          <TextField
+            id='filterApplied'
+            name='filterApplied'
+            label={filterBy === 'products' ? 'SKU' : 'Celular'}
+            value={filterApplied}
+            variant='standard'
+            style={{ width: '90%' }}
+            onChange={(event) => setFilterApplied(event?.target.value)}
+            className={classes.formControl}
+            autoComplete='off'
+          />
+        </Grid>
 
-      <Button
-        type='submit'
-        variant='outlined'
-        disabled={!formIsValid()}
-        className={classes.button}
-      >
-        Filtrar
-      </Button>
-    </form>
+        <Grid item xs={12} md={1}>
+          <Button
+            color='secondary'
+            variant='outlined'
+            onClick={() => handleResetFilters()}
+            className={classes.button}
+          >
+            Borrar
+          </Button>
+        </Grid>
+
+        <Grid item xs={12} md={1}>
+          <Button
+            type='submit'
+            variant='outlined'
+            disabled={!formIsValid()}
+            className={classes.button}
+          >
+            Filtrar
+          </Button>
+        </Grid>
+      </form>
+    </Grid>
   )
 }
 
