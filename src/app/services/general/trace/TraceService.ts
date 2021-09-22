@@ -12,6 +12,8 @@ class TraceService {
         
         if (useMock) {
           data = tracesMock;
+        } else {
+          data = data.traces;
         }
 
         return {

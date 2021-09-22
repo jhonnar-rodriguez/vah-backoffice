@@ -10,7 +10,7 @@ type CustomChartProps = {
 
 const CustomChart: FC<CustomChartProps> = ({ mainLabel, chartType, traces }): ReactElement => {
   let customData: number[] = [1];
-  let customLabels: string[] = ['Sin información'];
+  let customLabels: string[] = [mainLabel];
 
   if (traces.length > 0) {
     customData.splice(0, 1);
