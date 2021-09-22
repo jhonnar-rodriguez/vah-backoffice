@@ -8,7 +8,9 @@ class TraceService {
     const xhr = await httpClient
       .get('/trace')
       .then(({ data }) => {
-        if (USE_MOCK_FOR_TRACES) {
+        const useMock = typeof USE_MOCK_FOR_TRACES === 'string' ? USE_MOCK_FOR_TRACES === 'true' : USE_MOCK_FOR_TRACES;
+        
+        if (useMock) {
           data = tracesMock;
         }
 
