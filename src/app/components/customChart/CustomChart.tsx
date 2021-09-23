@@ -17,7 +17,7 @@ const CustomChart: FC<CustomChartProps> = ({ mainLabel, chartType, traces }): Re
     customLabels.splice(0, 1);
   }
 
-  for (const trace of traces) {
+  for (const trace of traces.slice(0, 10)) {
     customLabels = [
       ...customLabels,
       trace.name,
