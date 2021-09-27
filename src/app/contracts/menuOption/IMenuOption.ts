@@ -5,6 +5,7 @@ interface MenuOption {
   icon: SvgIconComponent,
   label: string,
   route: string,
+  forRoles?: string[],
 }
 
 export default MenuOption;

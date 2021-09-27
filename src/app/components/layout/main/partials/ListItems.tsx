@@ -18,17 +18,26 @@ import { generalMenuOptions, reportMenuOptions, securityMenuOptions, storeMenuOp
 import MenuOption from '../../../../contracts/menuOption/IMenuOption';
 
 type MainListItemsProps = {
+  roleName: string,
   hideIcons: boolean,
   openNestedReports: boolean,
   handleNestedReportClick: any,
 }
-export const MainListItems = ({ hideIcons,
+
+const checkIfUserHasRole = (roleToSearch: string, roles: any): boolean => {
+  return typeof roles === 'undefined' || (typeof roles === 'object' && roles.includes(roleToSearch.toLowerCase()));
+}
+
+export const MainListItems = ({
+  roleName,
+  hideIcons,
   openNestedReports,
   handleNestedReportClick,
 }: MainListItemsProps) => (
   <div>
     {
       generalMenuOptions
+        .filter((menu: MenuOption) => checkIfUserHasRole(roleName, menu.forRoles))
         .map((menu: MenuOption) => (
           <ListItem
             key={menu.id}
@@ -44,52 +53,59 @@ export const MainListItems = ({ hideIcons,
         ))
     }
 
-    <ListItem
-      button
-      onClick={handleNestedReportClick}
-    >
-      <ListItemIcon>
-        <SubjectIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-      <ListItemText
-        primary="Reportes"
-        style={{ marginRight: "0", paddingRight: "0" }}
-      />
-      {openNestedReports ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-    </ListItem>
+    {
+      ['admin'].includes(roleName) &&
+      <>
+        <ListItem
+          button
+          onClick={handleNestedReportClick}
+        >
+          <ListItemIcon>
+            <SubjectIcon style={{ color: 'white' }} />
+          </ListItemIcon>
+          <ListItemText
+            primary="Reportes"
+            style={{ marginRight: "0", paddingRight: "0" }}
+          />
+          {openNestedReports ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItem>
 
-    <Collapse
-      in={openNestedReports}
-      timeout="auto"
-      unmountOnExit
-    >
-      <Divider />
-      <List
-        component="div"
-        style={{ padding: !hideIcons ? "10px" : "5px" }}
-      >
-        {
-          reportMenuOptions
-            .map((menu: MenuOption) => (
-              <ListItem
-                key={menu.id}
-                to={menu.route}
-                button
-                component={Link}
-              >
-                <ListItemIcon>
-                  <SvgIcon component={menu.icon} style={{ color: 'white' }} />
-                </ListItemIcon>
-                <ListItemText primary={menu.label} />
-              </ListItem>
-            ))
-        }
-      </List>
-    </Collapse>
+        <Collapse
+          in={openNestedReports}
+          timeout="auto"
+          unmountOnExit
+        >
+          <Divider />
+          <List
+            component="div"
+            style={{ padding: !hideIcons ? "10px" : "5px" }}
+          >
+            {
+              reportMenuOptions
+                .filter((menu: MenuOption) => checkIfUserHasRole(roleName, menu.forRoles))
+                .map((menu: MenuOption) => (
+                  <ListItem
+                    key={menu.id}
+                    to={menu.route}
+                    button
+                    component={Link}
+                  >
+                    <ListItemIcon>
+                      <SvgIcon component={menu.icon} style={{ color: 'white' }} />
+                    </ListItemIcon>
+                    <ListItemText primary={menu.label} />
+                  </ListItem>
+                ))
+            }
+          </List>
+        </Collapse>
+      </>
+    }
   </div>
 );
 
 type SecondaryListItemsProps = {
+  roleName: string,
   hideIcons: boolean,
   openNestedStore: boolean,
   openNestedSecurity: boolean,
@@ -98,6 +114,7 @@ type SecondaryListItemsProps = {
 }
 
 export const SecondaryListItems = ({
+  roleName,
   hideIcons,
   openNestedStore,
   openNestedSecurity,
@@ -132,6 +149,7 @@ export const SecondaryListItems = ({
       >
         {
           storeMenuOptions
+            .filter((menu: MenuOption) => checkIfUserHasRole(roleName, menu.forRoles))
             .map((menu: MenuOption) => (
               <ListItem
                 key={menu.id}
@@ -149,44 +167,50 @@ export const SecondaryListItems = ({
       </List>
     </Collapse>
 
-    <ListItem
-      button
-      onClick={handleNestedSecurityClick}
-    >
-      <ListItemIcon>
-        <SecurityIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-      <ListItemText primary="Seguridad" style={{ marginRight: "0", paddingRight: "0" }} />
-      {openNestedSecurity ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-    </ListItem>
+    {
+      ['admin'].includes(roleName) &&
+      <>
+        <ListItem
+          button
+          onClick={handleNestedSecurityClick}
+        >
+          <ListItemIcon>
+            <SecurityIcon style={{ color: 'white' }} />
+          </ListItemIcon>
+          <ListItemText primary="Seguridad" style={{ marginRight: "0", paddingRight: "0" }} />
+          {openNestedSecurity ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItem>
 
-    <Collapse
-      in={openNestedSecurity}
-      timeout="auto"
-      unmountOnExit
-    >
-      <Divider />
-      <List
-        component="div"
-        style={{ padding: !hideIcons ? "10px" : "5px" }}
-      >
-        {
-          securityMenuOptions
-            .map((menu: MenuOption) => (
-              <ListItem
-                key={menu.id}
-                to={menu.route}
-                button
-                component={Link}
-              >
-                <ListItemIcon>
-                  <SvgIcon component={menu.icon} style={{ color: 'white' }} />
-                </ListItemIcon>
-                <ListItemText primary={menu.label} />
-              </ListItem>
-            ))
-        }
-      </List>
-    </Collapse>
+        <Collapse
+          in={openNestedSecurity}
+          timeout="auto"
+          unmountOnExit
+        >
+          <Divider />
+          <List
+            component="div"
+            style={{ padding: !hideIcons ? "10px" : "5px" }}
+          >
+            {
+              securityMenuOptions
+                .filter((menu: MenuOption) => checkIfUserHasRole(roleName, menu.forRoles))
+                .map((menu: MenuOption) => (
+                  <ListItem
+                    key={menu.id}
+                    to={menu.route}
+                    button
+                    component={Link}
+                  >
+                    <ListItemIcon>
+                      <SvgIcon component={menu.icon} style={{ color: 'white' }} />
+                    </ListItemIcon>
+                    <ListItemText primary={menu.label} />
+                  </ListItem>
+                ))
+            }
+          </List>
+        </Collapse>
+      </>
+    }
   </div >
 );

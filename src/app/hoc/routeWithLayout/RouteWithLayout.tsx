@@ -23,17 +23,18 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
   exact = true,
   forRoles = [],
 }) => {
+  useLoadAuthentication();
+
   const { httpRequestReducer, authReducer } = useSelector((state: AppState) => state);
 
   const { isAuthenticated, loadingUser, auth } = authReducer;
   const { isLoading } = httpRequestReducer;
 
-  useLoadAuthentication();
   useSetNavigation(pageTitle);
 
   const userCanViewPage = (): boolean => {
     if (forRoles.length > 0) {
-      const roleName = typeof auth.user.role === "string" ? auth.user.role : auth.user.role.name;
+      const roleName = typeof auth.user.role === 'string' ? auth.user.role : auth.user.role.name;
 
       return forRoles.includes(roleName.toLowerCase());
     }
@@ -47,11 +48,11 @@ const RouteWithLayout: FC<RouteWithLayoutProps> = ({
       exact={exact}
       render={(matchProps: any) => (
         !loadingUser && !isAuthenticated ?
-          <Redirect to="/auth/login" /> :
+          <Redirect to='/auth/login' /> :
           <>
             {
-              !userCanViewPage() ?
-                <Redirect to="/unauthorized" /> :
+              !loadingUser && !userCanViewPage() ?
+                <Redirect to={{ pathname: '/unauthorized', state: { from: path } }} /> :
                 <Layout>
                   {isLoading && <Loading />}
                   <Component {...matchProps} pageTitle={pageTitle} />

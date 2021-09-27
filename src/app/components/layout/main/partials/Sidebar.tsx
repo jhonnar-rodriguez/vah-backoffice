@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -9,6 +9,8 @@ import { MainListItems, SecondaryListItems } from './ListItems';
 import IHeader from '../../../../contracts/layouts/IHeader';
 import { makeStyles } from '@material-ui/core';
 import logo from '../../../../../assets/logo.png';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../../store';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -48,9 +50,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
   const classes = useStyles();
+  const { authReducer } = useSelector((state: AppState) => state);
   const [openNestedReports, setOpenNestedReports] = useState(false);
   const [openNestedStore, setOpenNestedStore] = useState(false);
   const [openNestedSecurity, setOpenNestedSecurity] = useState(false);
+  const [roleName, setRoleName] = useState<string>('');
+  const { auth } = authReducer;
 
   const handleNestedReportClick = () => {
     setOpenNestedReports(!openNestedReports)
@@ -63,6 +68,14 @@ const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
   const handleNestedSecurityClick = () => {
     setOpenNestedSecurity(!openNestedSecurity)
   }
+
+  useEffect(() => {
+    if (typeof auth.user.role === 'string') {
+      setRoleName(auth.user.role);
+    } else {
+      setRoleName(auth.user.role.name);
+    }
+  }, [auth]);
 
   return (
     <Drawer
@@ -91,6 +104,7 @@ const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
         <List>
           {
             MainListItems({
+              roleName,
               hideIcons: !open,
               openNestedReports,
               handleNestedReportClick,
@@ -101,6 +115,7 @@ const Sidebar: FC<IHeader> = ({ open, handleDrawerClose = Function }) => {
         <List>
           {
             SecondaryListItems({
+              roleName,
               hideIcons: !open,
               openNestedStore,
               openNestedSecurity,

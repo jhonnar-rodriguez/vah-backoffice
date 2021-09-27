@@ -31,12 +31,14 @@ export const reportMenuOptions: MenuOption[] = [
     route: "/reports/sales-by-product",
     icon: ExtensionIcon,
     label: "Ventas por producto",
+    forRoles: ['admin'],
   },
   {
     id: uuid(),
     route: "/reports/sales-by-customer",
     icon: PeopleIcon,
     label: "Ventas por cliente",
+    forRoles: ['admin'],
   },
 ];
 
@@ -67,11 +69,13 @@ export const securityMenuOptions: MenuOption[] = [
     route: "/settings/security/apps",
     icon: AppsIcon,
     label: "Aplicaciones",
+    forRoles: ['admin'],
   },
   {
     id: uuid(),
     route: "/settings/security/users",
     icon: VerifiedUserIcon,
     label: "Usuarios",
+    forRoles: ['admin'],
   },
 ];
