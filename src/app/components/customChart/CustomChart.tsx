@@ -8,9 +8,25 @@ type CustomChartProps = {
   mainLabel: string,
 }
 
+const availableColors: string[] = [
+  '#346751',
+  '#C84B31',
+  '#54E346',
+  '#3C8DAD',
+  '#D5BFBF',
+  '#664E88',
+  '#FCFFA6',
+  '#C1FFD7',
+  '#B5DEFF',
+  '#CAB8FF',
+  '#B5DEFF',
+];
+
 const CustomChart: FC<CustomChartProps> = ({ mainLabel, chartType, traces }): ReactElement => {
   let customData: number[] = [1];
   let customLabels: string[] = [mainLabel];
+  let colors: string[] = ['#A12568'];
+  let colorCounter: number = 0;
 
   if (traces.length > 0) {
     customData.splice(0, 1);
@@ -27,6 +43,13 @@ const CustomChart: FC<CustomChartProps> = ({ mainLabel, chartType, traces }): Re
       ...customData,
       trace.quantity,
     ];
+
+    colors = [
+      ...colors,
+      availableColors[colorCounter],
+    ];
+
+    colorCounter++;
   };
 
   const data = {
@@ -34,23 +57,9 @@ const CustomChart: FC<CustomChartProps> = ({ mainLabel, chartType, traces }): Re
     datasets: [{
       label: mainLabel,
       data: customData,
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
+      borderColor: colors,
       borderWidth: 1,
+      backgroundColor: colors,
     }],
   };
 
@@ -64,6 +73,12 @@ const CustomChart: FC<CustomChartProps> = ({ mainLabel, chartType, traces }): Re
         },
       ],
     },
+    plugins: {
+      legend: {
+        display: true,
+        onClick: () => false,
+      }
+    }
   };
 
   return (
