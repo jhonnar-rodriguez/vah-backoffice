@@ -9,6 +9,7 @@ import { AUTH_ACTION_TYPES } from "./auth/AuthTypes"
 import { TRACE_ACTION_TYPES } from "./general/trace/TraceTypes"
 import { REPORT_ACTION_TYPES } from './report/ReportTypes';
 import { PROFILE_ACTION_TYPES } from './profile/ProfileTypes';
+import { PROMOTION_ACTION_TYPES } from './promotion/PromotionTypes';
 
 export type AppTypes =
   AUTH_ACTION_TYPES |
@@ -21,4 +22,5 @@ export type AppTypes =
   PRODUCT_ACTION_TYPES |
   CUSTOMER_ACTION_TYPES |
   CATEGORY_ACTION_TYPES |
+  PROMOTION_ACTION_TYPES |
   ALLOWED_CLIENT_ACTION_TYPES;

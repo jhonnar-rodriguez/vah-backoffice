@@ -13,6 +13,7 @@ import authReducer from './auth/AuthReducer';
 import traceReducer from './general/trace/TraceReducer';
 import reportReducer from './report/ReportReducer';
 import profileReducer from './profile/ProfileReducer';
+import promotionReducer from './promotion/PromotionReducer';
 
 export default combineReducers({
   authReducer,
@@ -26,6 +27,7 @@ export default combineReducers({
   profileReducer,
   customerReducer,
   categoryReducer,
+  promotionReducer,
   navigationReducer,
   httpRequestReducer,
   allowedClientReducer,
