@@ -1,4 +1,5 @@
 import IProduct from '../../../app/contracts/product/IProduct';
+import IProductsPaginated from '../../../app/contracts/product/table/IProductsPaginated';
 
 export const GET_PRODUCT = 'GET_PRODUCT';
 export const SET_PRODUCT = 'SET_PRODUCT';
@@ -17,7 +18,7 @@ export interface GetProductsAction {
 
 export interface SetProductsAction {
   type: typeof SET_PRODUCTS,
-  payload: IProduct[],
+  payload: IProductsPaginated,
 }
 
 export interface GetProductAction {

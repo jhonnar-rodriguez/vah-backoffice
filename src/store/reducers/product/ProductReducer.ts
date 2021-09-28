@@ -10,14 +10,24 @@ import {
 } from './../../types/products/ProductTypes';
 import IProduct from "../../../app/contracts/product/IProduct";
 import { productInitialState } from '../../../app/data/products';
+import IPagination from '../../../app/contracts/table/IPagination';
 
-interface IProductList {
+interface IProductList extends IPagination {
   data: IProduct[],
   productToDisplay: IProduct,
 };
 
 const initialState: IProductList = {
   data: [],
+  page: 0,
+  limit: 0,
+  nextPage: 0,
+  prevPage: 0,
+  totalItems: 0,
+  totalPages: 0,
+  hasNextPage: false,
+  hasPrevPage: false,
+  pagingCounter: 0,
   productToDisplay: productInitialState,
 };
 
@@ -33,8 +43,9 @@ const productReducer = (state = initialState, action: PRODUCT_ACTION_TYPES): IPr
       return {
         ...state,
         data: [
-          ...action.payload
+          ...action.payload.products,
         ],
+        ...action.payload,
       }
 
     case SET_PRODUCT:

@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { TablePagination } from "@material-ui/core";
+import { FC } from 'react';
+import { TablePagination } from '@material-ui/core';
 
 type PaginationProps = {
   page: number,
@@ -22,8 +22,9 @@ const Pagination: FC<PaginationProps> = ({
       count={totalElements}
       component="div"
       rowsPerPage={rowsPerPage}
-      onPageChange={(event) => handleChangePage(event)}
-      rowsPerPageOptions={[2, 10, 25, 100]}
+      onPageChange={(event, page) => handleChangePage(event, page)}
+      labelRowsPerPage='Registros por página'
+      rowsPerPageOptions={[5, 10, 25, 100]}
       onRowsPerPageChange={(event) => handleChangeRowsPerPage(event)}
     />
   )

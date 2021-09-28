@@ -29,6 +29,7 @@ import IOrderTableColumns from "../../contracts/general/order/table/IOrderTableC
 import IUserTableColumns from "../../contracts/security/user/table/IUserTableColumns";
 import ISaleByProductTableColumn from "../../contracts/report/tables/ISaleByProductTable";
 import ISaleByCustomerTableColumn from "../../contracts/report/tables/ISaleByCustomerTableColumn";
+import { DEFAULT_ROWS_PER_PAGE } from "../../../config/app";
 
 
 const useStyles = makeStyles(() => ({
@@ -56,17 +57,21 @@ type ApplicationTableProps = {
   columns: IApplicationTableColumns,
   elementType?: any,
   elements: any,
+  totalElements?: number,
   actionButtons?: IBaseActionColumn[],
   handleViewAction?: any,
   handleEditAction?: any,
   handleConfirmDeleteAction?: any,
   handleChangePasswordAction?: any,
+  handlePageChange?: Function,
 }
 
 const ApplicationTable: FC<ApplicationTableProps> = ({
   columns,
   elements,
+  totalElements,
   actionButtons,
+  handlePageChange,
   handleEditAction,
   handleViewAction,
   handleConfirmDeleteAction,
@@ -74,15 +79,25 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
 }) => {
   const classes = useStyles();
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(DEFAULT_ROWS_PER_PAGE);
 
   const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
+
+    const goForward = newPage > page;
+
+    if (typeof handlePageChange !== 'undefined') {
+      handlePageChange(goForward, rowsPerPage);
+    }
   };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+
+    if (typeof handlePageChange !== 'undefined') {
+      handlePageChange(undefined, +event.target.value);
+    }
   };
 
   const generateActionButtons = (element: any): ReactElement => (
@@ -156,7 +171,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         >
           <ConfirmationDialog
             title={`Eliminar registro ${element.name}`}
-            content={`Estás seguro de eliminar el registro ${element.name ? element.name : element.code }`}
+            content={`Estás seguro de eliminar el registro ${element.name ? element.name : element.code}`}
             handleOnConfirm={() => handleConfirmDeleteAction(element._id)}
           />
         </Grid>
@@ -241,7 +256,6 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
               elements.length === 0 ?
                 displayNoProductsAvailable() :
                 elements
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((element: any) => (
                     <TableRow
                       key={element._id}
@@ -259,7 +273,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
       <Pagination
         page={page}
         rowsPerPage={rowsPerPage}
-        totalElements={elements.length}
+        totalElements={totalElements || 10}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />

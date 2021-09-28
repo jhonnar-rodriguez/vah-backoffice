@@ -36,14 +36,21 @@ const useStyles = makeStyles((theme) => ({
 const ProductList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const initialFilters: IProcessFilter = {
+    page: 1,
+    value: '',
+    limit: 10,
+    filterBy: '',
+  }
 
   const { productReducer, httpRequestReducer } = useSelector((state: AppState) => state)
-  const { data: products } = productReducer;
+  const { data: products, totalItems, nextPage, prevPage } = productReducer;
   const { success } = httpRequestReducer;
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createProduct, setCreateProduct] = useState<boolean>(true);
   const [productToUpdate, setProductToUpdate] = useState<IProduct>(productInitialState);
+  const [filtersApplied, setFiltersApplied] = useState<IProcessFilter>(initialFilters);
 
   const handleDeleteProductAction = (productId: string) => {
     const dispatcher = () => dispatch(startRemoveProductAction(productId));
@@ -91,6 +98,7 @@ const ProductList = () => {
   const handleSearchSubmit = (filter: IProcessFilter, event?: FormEvent<HTMLFormElement>, resetFilters: boolean = false): void => {
     if (resetFilters) {
       loadProducts();
+      setFiltersApplied(initialFilters);
 
       return;
     }
@@ -100,6 +108,15 @@ const ProductList = () => {
     }
 
     loadProducts(filter);
+    setFiltersApplied(filter);
+  }
+
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadProducts({
+      ...filtersApplied,
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
   }
 
   return (
@@ -128,6 +145,8 @@ const ProductList = () => {
         <ApplicationTable
           columns={columns}
           elements={products}
+          totalElements={totalItems}
+          handlePageChange={handlePageChange}
           handleEditAction={handleEditProductForm}
           handleConfirmDeleteAction={handleDeleteProductAction}
         />

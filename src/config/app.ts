@@ -4,6 +4,7 @@ const CLIENT_ID = process.env.REACT_APP_BACKEND_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.REACT_APP_BACKEND_CLIENT_SECRET || '';
 const GOOGLE_MAP_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY || '';
 const USE_MOCK_FOR_TRACES = process.env.REACT_APP_USE_MOCK_FOR_TRACES || true;
+const DEFAULT_ROWS_PER_PAGE = parseInt(process.env.REACT_APP_ENV_DEFAULT_ROWS_PER_PAGE || '10');
 
 export {
   APP_URL,
@@ -12,4 +13,5 @@ export {
   CLIENT_SECRET,
   GOOGLE_MAP_KEY,
   USE_MOCK_FOR_TRACES,
+  DEFAULT_ROWS_PER_PAGE,
 };

@@ -335,6 +335,40 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
           />
         </FormControl>
 
+        <FormControl className={classes.formControl} fullWidth>
+          <InputLabel id="bonusRules">Reglas de bonificación</InputLabel>
+          <Controller
+            name="bonusRules"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value}
+                onChange={onChange}
+                placeholder="[{quantity: 6, freeSku: ABCDE}, {quantity: 5, freeSku: ABCDG}]"
+                autoComplete="off"
+                aria-labelledby="bonusRules"
+              />
+            )}
+          />
+        </FormControl>
+
+        <FormControl className={classes.formControl} fullWidth>
+          <InputLabel id="discountRules">Reglas de descuento</InputLabel>
+          <Controller
+            name="discountRules"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value}
+                onChange={onChange}
+                placeholder="[{quantity: 6, discount: 10}, {quantity: 5, discount: 12}]"
+                autoComplete="off"
+                aria-labelledby="discountRules"
+              />
+            )}
+          />
+        </FormControl>
+
       </DialogContent>
 
       <DialogActions className={classes.formButtonContainer}>

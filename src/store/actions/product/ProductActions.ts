@@ -15,14 +15,15 @@ import {
   UpdateProductAction,
 } from '../../types/products/ProductTypes';
 import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
+import IProductsPaginated from '../../../app/contracts/product/table/IProductsPaginated';
 
 export const getProductsDispatcher = (): GetProductsAction => ({
   type: 'GET_PRODUCTS',
 });
 
-export const setProductsDispatcher = (products: IProduct[]): SetProductsAction => ({
+export const setProductsDispatcher = (records: IProductsPaginated): SetProductsAction => ({
   type: 'SET_PRODUCTS',
-  payload: products,
+  payload: records,
 });
 
 export const setProductDispatcher = (product: IProduct): SetProductAction => ({
@@ -106,6 +107,7 @@ export const startCreateProductAction = (product: IProduct) => {
       }
 
       dispatch(createProductDispatcher(productResponse));
+      dispatch(getProductsDispatcher());
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
     }
@@ -136,6 +138,7 @@ export const startRemoveProductAction = (productId: string) => {
       }
 
       dispatch(removeProductDispatcher(productId));
+      dispatch(getProductsDispatcher());
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
     }
