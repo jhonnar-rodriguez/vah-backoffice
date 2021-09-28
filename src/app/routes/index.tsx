@@ -14,6 +14,7 @@ import {
   OrderDetailPage,
   UnauthorizedPage,
   AllowedClientPage,
+  PromotionListPage,
   SalesByProductPage,
   ChangePasswordPage,
   SalesByCustomerPage,
@@ -57,6 +58,14 @@ const Routes = () => {
         layout={MainLayout}
         component={CouponsPage}
         pageTitle="Cupones"
+      />
+
+      <RouteWithLayout
+        path="/settings/promotions"
+        exact={true}
+        layout={MainLayout}
+        component={PromotionListPage}
+        pageTitle="Promociones"
       />
 
       <RouteWithLayout

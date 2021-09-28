@@ -9,6 +9,7 @@ import LocalMallIcon from '@material-ui/icons/LocalMallOutlined';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUserOutlined';
 import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import ExtensionIcon from '@material-ui/icons/ExtensionOutlined';
+import RedeemIcon from '@material-ui/icons/RedeemOutlined';
 
 export const generalMenuOptions: MenuOption[] = [
   {
@@ -60,6 +61,12 @@ export const storeMenuOptions: MenuOption[] = [
     route: "/settings/products",
     icon: NewReleasesIcon,
     label: "Productos",
+  },
+  {
+    id: uuid(),
+    route: "/settings/promotions",
+    icon: RedeemIcon,
+    label: "Promociones",
   },
 ];
 

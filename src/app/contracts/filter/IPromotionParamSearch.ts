@@ -3,7 +3,7 @@ import IBaseFilter from "./IBaseFilter";
 interface IPromotionParamSearch extends IBaseFilter {
   sku?: string,
   segment?: string,
-  price?: number,
+  value?: number,
   description?: string,
 }
 

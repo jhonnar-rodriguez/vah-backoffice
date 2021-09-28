@@ -30,7 +30,7 @@ import IUserTableColumns from "../../contracts/security/user/table/IUserTableCol
 import ISaleByProductTableColumn from "../../contracts/report/tables/ISaleByProductTable";
 import ISaleByCustomerTableColumn from "../../contracts/report/tables/ISaleByCustomerTableColumn";
 import { DEFAULT_ROWS_PER_PAGE } from "../../../config/app";
-
+import IPromotionTableColumns from "../../contracts/promotion/table/IPromotionTableColumns";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,13 +44,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type IApplicationTableColumns = IColumn[] |
+type IApplicationTableColumns =
+  IColumn[] |
   ICustomerColumns[] |
-  ICouponTableColumns[] |
-  IAllowedClientTableColumns[] |
-  IOrderTableColumns[] |
   IUserTableColumns[] |
+  IOrderTableColumns[] |
+  ICouponTableColumns[] |
+  IPromotionTableColumns[] |
   ISaleByProductTableColumn[] |
+  IAllowedClientTableColumns[] |
   ISaleByCustomerTableColumn[];
 
 type ApplicationTableProps = {
@@ -99,6 +101,20 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
       handlePageChange(undefined, +event.target.value);
     }
   };
+
+  const formatResourceNameToDelete = (element: any): string => {
+    let resourceDescription: string = 'Por definir';
+
+    if (typeof element.name == 'string' && element.name.length > 0) {
+      resourceDescription = element.name;
+    } else if (typeof element.code === 'string' && element.code.length > 0) {
+      resourceDescription = element.code;
+    } else if (typeof element.segment === 'string' && element.segment.length > 0) {
+      resourceDescription = element.segment;
+    }
+
+    return resourceDescription;
+  }
 
   const generateActionButtons = (element: any): ReactElement => (
     <Grid container>
@@ -170,8 +186,8 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
           className={classes.noFlexBasis}
         >
           <ConfirmationDialog
-            title={`Eliminar registro ${element.name}`}
-            content={`Estás seguro de eliminar el registro ${element.name ? element.name : element.code}`}
+            title={`Eliminar registro ${formatResourceNameToDelete(element)}`}
+            content={`Estás seguro de eliminar el registro ${formatResourceNameToDelete(element)}`}
             handleOnConfirm={() => handleConfirmDeleteAction(element._id)}
           />
         </Grid>
@@ -273,7 +289,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
       <Pagination
         page={page}
         rowsPerPage={rowsPerPage}
-        totalElements={totalElements || 10}
+        totalElements={totalElements || elements.length}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
       />

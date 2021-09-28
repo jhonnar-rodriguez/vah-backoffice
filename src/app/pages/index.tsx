@@ -12,6 +12,7 @@ import UnauthorizedPage from "./errors/unauthorized";
 import SalesByProductPage from "./reports/salesByProduct";
 import SalesByCustomerPage from "./reports/salesByCustomer";
 import ChangePasswordPage from "./profile/changePassword/ChangePassword";
+import PromotionListPage from "./settings/promotions/PromotionList";
 
 export {
   LoginPage,
@@ -25,6 +26,7 @@ export {
   OrderDetailPage,
   UnauthorizedPage,
   AllowedClientPage,
+  PromotionListPage,
   ChangePasswordPage,
   SalesByProductPage,
   SalesByCustomerPage,
