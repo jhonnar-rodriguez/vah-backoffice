@@ -14,6 +14,7 @@ interface IOrder {
   deliveryDate: string;
   createdAt: string;
   updatedAt: string;
+  additional?: any;
 }
 
 export default IOrder;

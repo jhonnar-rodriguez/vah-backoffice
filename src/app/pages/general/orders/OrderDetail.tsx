@@ -94,7 +94,7 @@ const OrderDetail: FC = (): ReactElement => {
                     <div className={classes.marginLeft}>
                       {GeneralHelper.getFullNameFromCustomer(orderToDisplay.customer)}
                       <Typography>
-                        Cédula de Identidad: {GeneralHelper.getDNIForCustomer(orderToDisplay.customer)}
+                        Documento: {GeneralHelper.getDNIForCustomer(orderToDisplay.customer)}
                       </Typography>
 
                       <Typography>
@@ -121,6 +121,12 @@ const OrderDetail: FC = (): ReactElement => {
                       <Typography>
                         Actualizada el: {moment(orderToDisplay.updatedAt).format("LL")}
                       </Typography>
+                      <Typography>
+                        Método de pago: {orderToDisplay.paymentMethod}
+                      </Typography>
+                      <Box display={orderToDisplay.additional?.cip ? 'block' : 'none'}>
+                        Código de Transacción: {orderToDisplay.additional?.cip}
+                      </Box>
                     </div>
                   </Box>
 
