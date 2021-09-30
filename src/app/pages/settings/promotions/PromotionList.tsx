@@ -19,6 +19,7 @@ import {
 import useLoadPromotions from '../../../hooks/settings/promotions/useLoadPromotions';
 import columns from './partials/TableColumns';
 import PromotionForm from './partials/PromotionForm';
+import { GeneralHelper } from '../../../helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,12 +43,11 @@ const ProductList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [loadPromotions] = useLoadPromotions();
-  // loadPromotions();
 
   const { promotionReducer, httpRequestReducer } = useSelector((state: AppState) => state)
   const { data: promotions, totalItems, nextPage, prevPage } = promotionReducer;
   const { success } = httpRequestReducer;
-  console.log('promotions', promotions);
+
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createPromotion, setCreatePromotion] = useState<boolean>(true);
   const [promotionToUpdate, setPromotionToUpdate] = useState<IPromotion>(promotionInitialState);
@@ -63,19 +63,18 @@ const ProductList = () => {
     dispatcher();
   };
 
-  const handleFormClose = (data?: IPromotion) => {
+  const handleFormClose = (promotion?: IPromotion) => {
     setOpenForm(false);
     setCreatePromotion(true);
     setPromotionToUpdate(promotionInitialState);
 
-    if (typeof data?.segment === 'undefined') {
+    if (typeof promotion?.segment === 'undefined') {
       return;
     }
 
     const formattedData: IPromotion = {
-      ...data,
-      sku: typeof data.sku === 'string' ? data.sku.split(',') : data.sku,
-      value: Number(data.value),
+      ...promotion,
+      details: typeof promotion.details === 'string' ? promotion.details.split(';') : promotion.details,
     }
 
     let dispatcher = () => dispatch(startCreatePromotionAction(formattedData));
@@ -89,7 +88,10 @@ const ProductList = () => {
 
   const handleEditPromotionForm = (promotion: IPromotion) => {
     setCreatePromotion(false);
-    setPromotionToUpdate(promotion);
+    setPromotionToUpdate({
+      ...promotion,
+      details: GeneralHelper.formatPromotionDetail(promotion.details),
+    });
     setOpenForm(true);
   }
 
@@ -159,12 +161,15 @@ const ProductList = () => {
         }
       </Paper>
 
-      <PromotionForm
-        open={openForm}
-        action={createPromotion ? 'Crear' : 'Actualizar'}
-        handleClose={handleFormClose}
-        promotionToUpdate={promotionToUpdate}
-      />
+      {
+        openForm &&
+        <PromotionForm
+          open={openForm}
+          action={createPromotion ? 'Crear' : 'Actualizar'}
+          handleClose={handleFormClose}
+          promotionToUpdate={promotionToUpdate}
+        />
+      }
     </>
   );
 };

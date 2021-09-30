@@ -93,6 +93,10 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
                 value: 100,
                 message: 'El segmento no puede superar los 100 caracteres.',
               },
+              pattern: {
+                value: /^[A-Za-z\s]+$/,
+                message: 'Por favor un segmento válido.',
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <Input
@@ -106,58 +110,31 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
         </FormControl>
 
         <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id='sku'>sku</InputLabel>
+          <InputLabel id='details'>Detalle</InputLabel>
           <Controller
-            name='sku'
+            name='details'
             control={control}
             rules={{
               required: {
                 value: true,
-                message: 'El sku es requerido.',
+                message: 'El detalle es requerido.',
               },
               maxLength: {
                 value: 200,
-                message: 'El sku no puede superar los 200 caracteres.',
+                message: 'El detalle no puede superar los 200 caracteres.',
               },
               pattern: {
-                value: /^[A-Za-z0-9,]$/,
-                message: 'Por favor introduzca un precio sku válido.',
+                value: /^[A-Za-z0-9,.;]+$/,
+                message: 'Por favor introduzca un detalle válido.',
               },
             }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
                 onChange={onChange}
-                placeholder='ABCDE, EFGHI, JKLMN'
+                placeholder='ASBCD,25.41;ASCJD,26.22'
                 autoComplete='off'
-                aria-labelledby='sku'
-              />
-            )}
-          />
-        </FormControl>
-
-        <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id='value'>Precio</InputLabel>
-          <Controller
-            name='value'
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: 'El precio es requerido.',
-              },
-              pattern: {
-                value: /^[0-9]+(\.[0-9]{2})?$/,
-                message: 'Por favor introduzca un precio válido.',
-              },
-            }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                type='number'
-                value={value}
-                onChange={onChange}
-                autoComplete='off'
-                aria-labelledby='value'
+                aria-labelledby='details'
               />
             )}
           />
@@ -176,6 +153,10 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
               maxLength: {
                 value: 100,
                 message: 'La descripción no puede superar los 100 caracteres.',
+              },
+              pattern: {
+                value: /^[A-Za-z0-9,\s]+$/,
+                message: 'Por favor introduzca una descripción válida.',
               },
             }}
             render={({ field: { onChange, value } }) => (

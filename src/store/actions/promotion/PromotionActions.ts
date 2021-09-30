@@ -87,7 +87,7 @@ export const startGetPromotionAction = (promotionId: string) => {
 }
 
 export const startCreatePromotionAction = (promotion: IPromotion) => {
-  return async (dispatch: Dispatch<PROMOTION_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+  return async (dispatch: Dispatch<any>) => {
     dispatch(setRunningRequestDispatcher());
 
     let requestFinishedPayload: IHttpRequest = {
@@ -100,14 +100,14 @@ export const startCreatePromotionAction = (promotion: IPromotion) => {
       requestFinishedPayload = {
         ...requestFinishedPayload,
         success: {
-          message: "La promoción ha sido creada satisfactoriamente.",
+          message: 'La promoción ha sido creada satisfactoriamente.',
           statusCode: 201,
-          statusText: "Created",
+          statusText: 'Created',
         }
       }
 
-      dispatch(createPromotionDispatcher(promotionResponse));
-      dispatch(getPromotionsDispatcher());
+      // dispatch(createPromotionDispatcher(promotionResponse));
+      dispatch(startGetPromotionsAction());
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
     }
@@ -131,14 +131,13 @@ export const startRemovePromotionAction = (promotionId: string) => {
       requestFinishedPayload = {
         ...requestFinishedPayload,
         success: {
-          message: "La promoción ha sido eliminada satisfactoriamente.",
+          message: 'La promoción ha sido eliminada satisfactoriamente.',
           statusCode: 200,
-          statusText: "Deleted",
+          statusText: 'Deleted',
         }
       }
 
       dispatch(removePromotionDispatcher(promotionId));
-      dispatch(getPromotionsDispatcher());
     } catch ({ response }) {
       requestFinishedPayload = HttpHelper.formatRequestFinishedResponse(response);
     }
@@ -148,7 +147,7 @@ export const startRemovePromotionAction = (promotionId: string) => {
 }
 
 export const startUpdatePromotionAction = (promotion: IPromotion) => {
-  return async (dispatch: Dispatch<PROMOTION_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+  return async (dispatch: Dispatch<any>) => {
     dispatch(setRunningRequestDispatcher());
 
     let requestFinishedPayload: IHttpRequest = {
@@ -161,9 +160,9 @@ export const startUpdatePromotionAction = (promotion: IPromotion) => {
       requestFinishedPayload = {
         ...requestFinishedPayload,
         success: {
-          message: "El producto ha sido actualizado satisfactoriamente.",
+          message: 'La promoción ha sido actualizada satisfactoriamente.',
           statusCode: 200,
-          statusText: "Created",
+          statusText: 'Created',
         }
       }
 

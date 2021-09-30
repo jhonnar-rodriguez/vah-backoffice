@@ -1,4 +1,5 @@
 import ICustomer from "../../contracts/customer/ICustomer";
+import IPromotionDetail from "../../contracts/promotion/IPromotionDetail";
 
 class GeneralHelper {
   public static strLimit(text: string, length: number = 30): string {
@@ -51,6 +52,25 @@ class GeneralHelper {
     }
 
     return `${documentType} ${document}`
+  }
+
+  public static formatPromotionDetail(details: any): string {
+    let formattedDetail: string = '';
+
+    if (typeof details !== 'object') {
+      return 'No disponible';
+    }
+
+    details
+      .forEach((detail: IPromotionDetail) => {
+        const formattedPromotion: string = typeof detail === 'string' ? detail : `${detail.sku},${detail.price}`;
+
+        formattedDetail = formattedDetail.length > 0 ?
+          `${formattedDetail};${formattedPromotion}` :
+          formattedPromotion;
+      });
+
+    return formattedDetail;
   }
 }
 

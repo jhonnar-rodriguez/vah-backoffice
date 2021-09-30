@@ -1,5 +1,5 @@
+import { GeneralHelper } from "../../../../helpers";
 import IPromotionTableColumns from "../../../../contracts/promotion/table/IPromotionTableColumns";
-import { CurrencyHelper, GeneralHelper } from "../../../../helpers";
 
 const columns: IPromotionTableColumns[] = [
   {
@@ -10,15 +10,10 @@ const columns: IPromotionTableColumns[] = [
     format: (value: string) => GeneralHelper.strLimit(value),
   },
   {
-    id: 'sku',
-    label: 'SKU',
+    id: 'details',
+    label: 'Detalle',
     minWidth: 100,
-  },
-  {
-    id: 'value',
-    label: 'Precio',
-    minWidth: 100,
-    format: (value: number) => CurrencyHelper.formatTotal(value),
+    format: (value: any) => GeneralHelper.formatPromotionDetail(value),
   },
   {
     id: 'description',

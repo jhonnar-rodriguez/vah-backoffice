@@ -26,7 +26,7 @@ class HttpHelper {
     };
   };
 
-  public static formatRequestFinishedResponse(response: IErrorResponse): IHttpRequest {
+  public static formatRequestFinishedResponse(response: any): IHttpRequest {
     if (typeof response === 'undefined') {
       return {
         isLoading: false,

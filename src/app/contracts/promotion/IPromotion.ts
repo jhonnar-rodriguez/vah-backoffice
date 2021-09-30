@@ -1,8 +1,7 @@
 interface IPromotion {
   _id: string;
-  sku: string | string[];
-  value: number;
   segment: string;
+  details: string | string[];
   description?: string;
 };
 
