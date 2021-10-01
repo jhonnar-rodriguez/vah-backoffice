@@ -47,7 +47,6 @@ const Login = (): ReactElement => {
 
   const { isAuthenticated } = authReducer;
   const { error, isLoading } = httpRequestReducer;
-
   const { handleSubmit, formState: { errors, isValid }, control } = useForm<ICredentials>({
     defaultValues: {
       username: "",
@@ -69,7 +68,14 @@ const Login = (): ReactElement => {
   };
 
   const checkForHttpErrors = (): ReactElement | void => {
-    if (!isLoading && typeof error?.message !== "undefined" && error.message.length > 0) {
+    if (error?.statusCode === 429) {
+      return <SnackBar
+        message= "Se ha alcanzado el número máximo de intentos, por favor intente más tarde."
+        severity="error"
+        onDismiss={resetHttpState}
+      />
+    }
+    else if (!isLoading && typeof error?.message !== "undefined" && error.message.length > 0) {
       return <SnackBar
         message="Las credenciales no coinciden con nuestros registros"
         severity="error"

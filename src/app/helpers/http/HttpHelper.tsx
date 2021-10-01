@@ -21,6 +21,7 @@ interface ISuccessResponse {
 
 class HttpHelper {
   private static UNPROCESSABLE_ENTITY_STATUS_CODE = 422;
+  private static IP_BLOCKED_ENTITY_STATUS_CODE = 429;
 
   public static generateBaseResponse(): IHttpRequest {
     return {
@@ -53,6 +54,9 @@ class HttpHelper {
           message = typeof resultMessages[0].msg !== 'undefined' ? resultMessages[0].msg : resultMessages[0];
         }
       }
+    }
+    else if (statusCode === HttpHelper.IP_BLOCKED_ENTITY_STATUS_CODE) {
+      message = 'Se ha alcanzado el número máximo de intentos, por favor intente mas tarde';
     } else {
       message = typeof data !== 'undefined' && (data.hasOwnProperty('status') && typeof data.status.message === 'string') ?
         data.status.message :
