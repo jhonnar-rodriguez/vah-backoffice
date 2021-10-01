@@ -1,13 +1,14 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { startGetUsersAction } from "../../../../../store/actions/settings/security/user/UserActions";
+import IProcessFilter from "../../../../contracts/filter/IProcessFilter";
 
 const useLoadUsers = () => {
   const dispatch = useDispatch();
 
   const loadUsers = useCallback(
-    () => {
-      const dispatcher = () => dispatch(startGetUsersAction());
+    (filter?: IProcessFilter) => {
+      const dispatcher = () => dispatch(startGetUsersAction(filter));
       dispatcher();
     },
     [dispatch],
@@ -17,7 +18,7 @@ const useLoadUsers = () => {
     loadUsers();
   }, [loadUsers]);
 
-  return [];
+  return [loadUsers];
 }
 
 export default useLoadUsers;

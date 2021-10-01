@@ -39,8 +39,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const UserList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [loadUsers] = useLoadUsers();
 
-  const { list: users } = useSelector((state: AppState) => state.userReducer)
+  const { list: users, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.userReducer)
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createUser, setCreateUser] = useState<boolean>(true);
@@ -104,6 +105,15 @@ const UserList = () => {
     setChangeUserPassword(true);
   }
 
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadUsers({
+      value: '',
+      filterBy: '',
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
+  }
+
   const handleChangePasswordClose = (user?: IChangeUserPassword) => {
     setUserToChangePassword(changeUserPasswordInitialState);
 
@@ -117,8 +127,6 @@ const UserList = () => {
     dispatcher();
     setChangeUserPassword(false);
   };
-
-  useLoadUsers();
 
   return (
     <>
@@ -141,6 +149,8 @@ const UserList = () => {
         <ApplicationTable
           columns={UserTableColumns}
           elements={users}
+          totalElements={totalItems}
+          handlePageChange={handlePageChange}
           handleEditAction={handleEditUser}
           handleConfirmDeleteAction={handleDeleteUser}
           handleChangePasswordAction={handleChangePasswordClick}

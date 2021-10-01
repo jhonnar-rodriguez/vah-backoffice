@@ -1,4 +1,6 @@
 import IUser from '../../../../../app/contracts/security/user/IUser';
+import IPagination from '../../../../../app/contracts/table/IPagination';
+import { paginationInitialState } from '../../../../../app/data/general/pagination';
 import { usersInitialState } from '../../../../../app/data/security/user';
 import {
   SET_USER,
@@ -11,7 +13,7 @@ import {
   CHANGE_USER_PASSWORD,
 } from '../../../../types/settings/security/user/UserTypes';
 
-interface IUserReducer {
+interface IUserReducer extends IPagination {
   list: IUser[],
   user: IUser,
 };
@@ -19,6 +21,7 @@ interface IUserReducer {
 const initialState: IUserReducer = {
   list: [],
   user: usersInitialState,
+  ...paginationInitialState,
 };
 
 const UserReducer = (state = initialState, action: USER_ACTION_TYPES): IUserReducer => {
@@ -33,8 +36,9 @@ const UserReducer = (state = initialState, action: USER_ACTION_TYPES): IUserRedu
       return {
         ...state,
         list: [
-          ...action.payload,
+          ...action.payload.users,
         ],
+        ...action.payload,
       }
 
     case SET_USER:

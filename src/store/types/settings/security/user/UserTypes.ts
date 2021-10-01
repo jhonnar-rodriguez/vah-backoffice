@@ -1,4 +1,5 @@
 import IUser from "../../../../../app/contracts/security/user/IUser";
+import IUsersPaginated from "../../../../../app/contracts/security/user/table/IUsersPaginated";
 
 export const GET_USERS = 'GET_USERS';
 export const SET_USERS = 'SET_USERS';
@@ -15,7 +16,7 @@ export interface GetUsersAction {
 
 export interface SetUsersAction {
   type: typeof SET_USERS,
-  payload: IUser[],
+  payload: IUsersPaginated,
 };
 
 export interface SetUserAction {

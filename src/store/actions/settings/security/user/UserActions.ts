@@ -18,12 +18,14 @@ import {
 } from '../../../../types/settings/security/user/UserTypes';
 import IHttpRequestHandler from '../../../../../app/contracts/httpRequest/IHttpRequest';
 import IChangeUserPassword from '../../../../../app/contracts/security/user/IChangeUserPassword';
+import IUsersPaginated from '../../../../../app/contracts/security/user/table/IUsersPaginated';
+import IProcessFilter from '../../../../../app/contracts/filter/IProcessFilter';
 
 export const getUsersDispatcher = (): GetUsersAction => ({
   type: 'GET_USERS',
 });
 
-export const setUsersDispatcher = (users: IUser[]): SetUsersAction => ({
+export const setUsersDispatcher = (users: IUsersPaginated): SetUsersAction => ({
   type: 'SET_USERS',
   payload: users,
 });
@@ -52,13 +54,13 @@ export const changeUserPasswordDispatcher = (): ChangeUserPasswordAction => ({
   type: 'CHANGE_USER_PASSWORD',
 });
 
-export const startGetUsersAction = () => {
+export const startGetUsersAction = (filter?: IProcessFilter) => {
   return async (dispatch: Dispatch<USER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getUsersDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const users = await UserService.getAll();
+      const users = await UserService.getAll(filter);
 
       dispatch(setUsersDispatcher(users));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));

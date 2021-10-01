@@ -1,11 +1,32 @@
+import { DEFAULT_ROWS_PER_PAGE } from "../../../../../config/app";
 import httpClient from "../../../../../config/axios";
+import IBaseFilter from "../../../../contracts/filter/IBaseFilter";
+import IProcessFilter from "../../../../contracts/filter/IProcessFilter";
 import IHttpResponseStatus from "../../../../contracts/httpRequest/IHttpResponseStatus";
 import IChangeUserPassword from "../../../../contracts/security/user/IChangeUserPassword";
 import IUser from "../../../../contracts/security/user/IUser";
+import IUsersPaginated from "../../../../contracts/security/user/table/IUsersPaginated";
 
 class UserService {
-  public static async getAll(): Promise<IUser[]> {
-    const xhr = await httpClient.get('/user').then(({ data }) => data.users);
+  public static async getAll(filter?: IProcessFilter): Promise<IUsersPaginated> {
+    const { page = 1, limit = DEFAULT_ROWS_PER_PAGE } = filter || {};
+    let params: IBaseFilter = { page, limit };
+
+    if (typeof filter?.value !== 'undefined' && filter.value?.length > 0) {
+      const query = filter.value.toLowerCase();
+
+      params = {
+        ...params,
+        [filter.filterBy]: query,
+      }
+    }
+
+    const xhr = await httpClient.get('/user', { params }).then(({ data }) => {
+      return {
+        users: data.users,
+        ...data,
+      }
+    });
 
     return xhr;
   }
