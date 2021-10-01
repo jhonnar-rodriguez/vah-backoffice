@@ -47,10 +47,10 @@ class HttpHelper {
     if (statusCode === HttpHelper.UNPROCESSABLE_ENTITY_STATUS_CODE) {
       message = 'No se pudo obtener el mensaje de validación de error, por favor intente de nuevo';
 
-      if (typeof data !== 'undefined' && typeof data.status.message === 'object') {
-        const arrayOfValidationMessages = Object.values(data.status.message);
-        if (arrayOfValidationMessages.length) {
-          message = arrayOfValidationMessages[0].msg;
+      if (typeof data !== 'undefined' && (typeof data.status.message === 'object' || 'details' in data)) {
+        const resultMessages = Object.values(data.status.message);
+        if (resultMessages.length) {
+          message = typeof resultMessages[0].msg !== 'undefined' ? resultMessages[0].msg : resultMessages[0];
         }
       }
     } else {
