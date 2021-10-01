@@ -11,6 +11,7 @@ import SnackBar from "../../../components/snackBar/SnackBar";
 import { startDownloadSaleReportByName } from "../../../../store/actions/report/ReportActions";
 import ReportsSearchBar from "../../../components/reports/ReportsSearchBar";
 import IReportFilter from "../../../contracts/report/filters/IReportFilter";
+import { initialFilters, reportFiltersInitialState } from "../../../data/filters";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,10 +34,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SalesByCustomer = (): ReactElement => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  const { salesByCustomer } = useSelector((state: AppState) => state.reportReducer);
-  const [displayEmailMessage, setDisplayEmailMessage] = useState<boolean>(false);
   const { loadSalesByCustomer } = useLoadReports();
+
+  const { salesByCustomer, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.reportReducer);
+  const [displayEmailMessage, setDisplayEmailMessage] = useState<boolean>(false);
+  const [filtersApplied, setFiltersApplied] = useState<IReportFilter>(reportFiltersInitialState);
 
   const handleViewOrderAction = (sale: ISaleByProduct): Window | null => window.open(`/orders/${sale.order}/detail`, '_blank');
 
@@ -46,12 +48,21 @@ const SalesByCustomer = (): ReactElement => {
 
   const handleApplyFilters = (filters: IReportFilter): void => {
     loadSalesByCustomer(filters);
+    setFiltersApplied(filters);
   }
 
   const handleDownloadReportAction = (): void => {
     setDisplayEmailMessage(true);
     const dispatcher = () => dispatch(startDownloadSaleReportByName('customer'));
     dispatcher();
+  }
+
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadSalesByCustomer({
+      ...filtersApplied,
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
   }
 
   return (
@@ -79,6 +90,8 @@ const SalesByCustomer = (): ReactElement => {
       <ApplicationTable
         columns={columns}
         elements={salesByCustomer}
+        totalElements={totalItems}
+        handlePageChange={handlePageChange}
         handleEditAction={handleViewOrderAction}
       />
 

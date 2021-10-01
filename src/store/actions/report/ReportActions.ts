@@ -7,6 +7,7 @@ import ISaleByProduct from '../../../app/contracts/report/ISaleByProduct';
 import ReportService from '../../../app/services/general/report/ReportService';
 import ISaleByCustomer from '../../../app/contracts/report/ISaleByCustomer';
 import IReportFilter from '../../../app/contracts/report/filters/IReportFilter';
+import ISalesByCustomersPaginated from '../../../app/contracts/report/tables/ISalesByCustomersPaginated';
 
 export const getSalesByProductDispatcher = (): GetSalesByProductAction => ({
   type: 'GET_SALES_BY_PRODUCT',
@@ -21,7 +22,7 @@ export const getSalesByCustomerDispatcher = (): GetSalesByCustomerAction => ({
   type: 'GET_SALES_BY_CUSTOMER',
 });
 
-export const setSalesByCustomerDispatcher = (sales: ISaleByCustomer[]): SetSalesByCustomerAction => ({
+export const setSalesByCustomerDispatcher = (sales: ISalesByCustomersPaginated): SetSalesByCustomerAction => ({
   type: 'SET_SALES_BY_CUSTOMER',
   payload: sales,
 });

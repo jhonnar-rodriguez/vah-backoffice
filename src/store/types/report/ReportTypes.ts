@@ -1,5 +1,5 @@
-import ISaleByCustomer from "../../../app/contracts/report/ISaleByCustomer";
 import ISaleByProduct from "../../../app/contracts/report/ISaleByProduct";
+import ISalesByCustomersPaginated from "../../../app/contracts/report/tables/ISalesByCustomersPaginated";
 
 export const GET_SALES_BY_PRODUCT = 'GET_SALES_BY_PRODUCT';
 export const SET_SALES_BY_PRODUCT = 'SET_SALES_BY_PRODUCT';
@@ -23,7 +23,7 @@ export interface GetSalesByCustomerAction {
 
 export interface SetSalesByCustomerAction {
   type: typeof SET_SALES_BY_CUSTOMER,
-  payload: ISaleByCustomer[],
+  payload: ISalesByCustomersPaginated,
 };
 
 export interface DownloadSalesByProductReportAction {

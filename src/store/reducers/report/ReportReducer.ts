@@ -1,5 +1,7 @@
 import ISaleByCustomer from '../../../app/contracts/report/ISaleByCustomer';
 import ISaleByProduct from '../../../app/contracts/report/ISaleByProduct';
+import IPagination from '../../../app/contracts/table/IPagination';
+import { paginationInitialState } from '../../../app/data/general/pagination';
 import {
   REPORT_ACTION_TYPES,
   GET_SALES_BY_PRODUCT,
@@ -9,7 +11,7 @@ import {
   DOWNLOAD_SALES_BY_PRODUCT_REPORT,
 } from '../../types/report/ReportTypes';
 
-interface IReportReducer {
+interface IReportReducer extends IPagination {
   salesByProduct: ISaleByProduct[],
   salesByCustomer: ISaleByCustomer[],
 };
@@ -17,6 +19,7 @@ interface IReportReducer {
 const initialState: IReportReducer = {
   salesByProduct: [],
   salesByCustomer: [],
+  ...paginationInitialState,
 };
 
 const ReportReducer = (state = initialState, action: REPORT_ACTION_TYPES): IReportReducer => {
@@ -40,8 +43,9 @@ const ReportReducer = (state = initialState, action: REPORT_ACTION_TYPES): IRepo
       return {
         ...state,
         salesByCustomer: [
-          ...action.payload,
+          ...action.payload.salesByCustomers,
         ],
+        ...action.payload,
       }
 
     default:
