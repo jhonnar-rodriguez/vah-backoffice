@@ -12,6 +12,7 @@ import CustomerForm from "./partials/CustomerForm";
 import { startCreateCustomerAction, startRemoveCustomerAction, startUpdateCustomerAction } from "../../../../store/actions/customer/CustomerActions";
 import SearchBar from "../../../components/searchBar/SearchBar";
 import IProcessFilter from "../../../contracts/filter/IProcessFilter";
+import { initialFilters } from "../../../data/filters";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,13 +35,15 @@ const useStyles = makeStyles((theme) => ({
 const CustomerList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [loadCustomers] = useLoadCustomers();
 
   const { customerReducer } = useSelector((state: AppState) => state)
-  const { list: customers } = customerReducer;
+  const { list: customers, totalItems, nextPage, prevPage } = customerReducer;
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createCustomer, setCreateCustomer] = useState<boolean>(true);
   const [customerToUpdate, setCustomerToUpdate] = useState<any>(customerInitialState);
+  const [filtersApplied, setFiltersApplied] = useState<IProcessFilter>(initialFilters);
 
   const handleFormClose = (customer?: ICustomer) => {
     setCreateCustomer(true);
@@ -83,20 +86,28 @@ const CustomerList = () => {
     setOpenForm(true);
   }
 
-  const [loadCustomers] = useLoadCustomers();
-
   const handleSearchSubmit = (filter: IProcessFilter, event?: FormEvent<HTMLFormElement>, resetFilters: boolean = false): void => {
     if (resetFilters) {
       loadCustomers();
+      setFiltersApplied(initialFilters);
 
       return;
     }
 
-    if (typeof event !== "undefined") {
+    if (typeof event !== 'undefined') {
       event.preventDefault();
     }
 
     loadCustomers(filter);
+    setFiltersApplied(filter);
+  }
+
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadCustomers({
+      ...filtersApplied,
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
   }
 
   return (
@@ -125,6 +136,8 @@ const CustomerList = () => {
         <ApplicationTable
           columns={columns}
           elements={customers}
+          totalElements={totalItems}
+          handlePageChange={handlePageChange}
           handleEditAction={handleEditCustomer}
           handleConfirmDeleteAction={handleDeleteCustomer}
         />

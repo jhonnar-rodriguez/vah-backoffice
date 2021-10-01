@@ -1,4 +1,5 @@
 import ICustomer from "../../../app/contracts/customer/ICustomer";
+import ICustomersPaginated from "../../../app/contracts/customer/table/ICustomersPaginated";
 
 export const GET_CUSTOMERS = 'GET_CUSTOMERS';
 export const SET_CUSTOMERS = 'SET_CUSTOMERS';
@@ -15,8 +16,9 @@ export interface GetCustomersAction {
 
 export interface SetCustomersAction {
   type: typeof SET_CUSTOMERS,
-  payload: ICustomer[],
+  payload: ICustomersPaginated,
 };
+
 export interface SetCustomerAction {
   type: typeof SET_CUSTOMER,
   payload: ICustomer,

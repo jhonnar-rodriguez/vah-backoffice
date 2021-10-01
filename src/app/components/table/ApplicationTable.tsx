@@ -85,7 +85,6 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
 
   const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
-
     const goForward = newPage > page;
 
     if (typeof handlePageChange !== 'undefined') {

@@ -1,4 +1,6 @@
 import ICustomer from '../../../app/contracts/customer/ICustomer';
+import IPagination from '../../../app/contracts/table/IPagination';
+import { paginationInitialState } from '../../../app/data/general/pagination';
 import {
   CREATE_CUSTOMER,
   GET_CUSTOMERS,
@@ -8,12 +10,13 @@ import {
   CUSTOMER_ACTION_TYPES,
 } from '../../types/customer/CustomerTypes';
 
-interface ICustomerReducer {
+interface ICustomerReducer extends IPagination {
   list: ICustomer[],
 };
 
 const initialState: ICustomerReducer = {
   list: [],
+  ...paginationInitialState,
 };
 
 const CustomerReducer = (state = initialState, action: CUSTOMER_ACTION_TYPES): ICustomerReducer => {
@@ -27,8 +30,9 @@ const CustomerReducer = (state = initialState, action: CUSTOMER_ACTION_TYPES): I
       return {
         ...state,
         list: [
-          ...action.payload,
+          ...action.payload.customers,
         ],
+        ...action.payload,
       }
 
     case CREATE_CUSTOMER:
@@ -55,7 +59,7 @@ const CustomerReducer = (state = initialState, action: CUSTOMER_ACTION_TYPES): I
     case REMOVE_CUSTOMER:
       return {
         ...state,
-        list: [ 
+        list: [
           ...state.list.filter((customer: ICustomer) => customer._id !== action.payload),
         ],
       }

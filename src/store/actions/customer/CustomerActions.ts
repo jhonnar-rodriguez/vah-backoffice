@@ -13,12 +13,13 @@ import {
 } from './../../types/customer/CustomerTypes';
 import CustomerService from '../../../app/services/customer/CustomerService';
 import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
+import ICustomersPaginated from '../../../app/contracts/customer/table/ICustomersPaginated';
 
 export const getCustomersDispatcher = (): GetCustomersAction => ({
   type: 'GET_CUSTOMERS',
 });
 
-export const setCustomersDispatcher = (customers: ICustomer[]): SetCustomersAction => ({
+export const setCustomersDispatcher = (customers: ICustomersPaginated): SetCustomersAction => ({
   type: 'SET_CUSTOMERS',
   payload: customers,
 });
