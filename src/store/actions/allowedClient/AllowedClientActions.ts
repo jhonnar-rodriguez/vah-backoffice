@@ -12,12 +12,14 @@ import {
   ALLOWED_CLIENT_ACTION_TYPES,
 } from '../../types/allowedClient/AllowedClientTypes';
 import AllowedClientService from '../../../app/services/allowedClient/AllowedClientService';
+import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
+import IAllowedClientsPaginated from '../../../app/contracts/security/allowedClient/table/IAllowedClientsPaginated';
 
 export const getClientsDispatcher = (): GetClientsAction => ({
   type: 'GET_CLIENTS',
 });
 
-export const setClientsDispatcher = (clients: IAllowedClient[]): SetClientsAction => ({
+export const setClientsDispatcher = (clients: IAllowedClientsPaginated): SetClientsAction => ({
   type: 'SET_CLIENTS',
   payload: clients,
 });
@@ -37,13 +39,13 @@ export const removeClientDispatcher = (clientId: string): RemoveClientAction => 
   payload: clientId,
 });
 
-export const startGetClientsAction = () => {
+export const startGetClientsAction = (filter?: IProcessFilter) => {
   return async (dispatch: Dispatch<ALLOWED_CLIENT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getClientsDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const clients = await AllowedClientService.getAll();
+      const clients = await AllowedClientService.getAll(filter);
 
       dispatch(setClientsDispatcher(clients));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));

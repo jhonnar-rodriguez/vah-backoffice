@@ -1,4 +1,5 @@
 import IAllowedClient from "../../../app/contracts/security/allowedClient/IAllowedClient";
+import IAllowedClientsPaginated from "../../../app/contracts/security/allowedClient/table/IAllowedClientsPaginated";
 
 export const GET_CLIENTS = 'GET_CLIENTS';
 export const SET_CLIENTS = 'SET_CLIENTS';
@@ -13,7 +14,7 @@ export interface GetClientsAction {
 
 export interface SetClientsAction {
   type: typeof SET_CLIENTS,
-  payload: IAllowedClient[],
+  payload: IAllowedClientsPaginated,
 };
 
 export interface CreateClientAction {

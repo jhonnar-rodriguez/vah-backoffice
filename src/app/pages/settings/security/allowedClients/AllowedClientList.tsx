@@ -36,8 +36,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AllowedClientList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [loadAllowedClients] = useLoadAllowedClients();
 
-  const { list: allowedClients } = useSelector((state: AppState) => state.allowedClientReducer)
+  const { list: allowedClients, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.allowedClientReducer)
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createAllowedClient, setCreateAllowedClient] = useState<boolean>(true);
@@ -73,7 +74,14 @@ const AllowedClientList = () => {
     setOpenForm(true);
   }
 
-  useLoadAllowedClients();
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadAllowedClients({
+      value: '',
+      filterBy: '',
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
+  }
 
   return (
     <>
@@ -96,6 +104,8 @@ const AllowedClientList = () => {
         <ApplicationTable
           columns={AllowedClientTableColumns}
           elements={allowedClients}
+          totalElements={totalItems}
+          handlePageChange={handlePageChange}
           handleEditAction={handleEditAllowedClient}
           handleConfirmDeleteAction={handleDeleteAllowedClient}
         />

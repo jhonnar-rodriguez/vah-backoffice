@@ -1,4 +1,6 @@
 import IAllowedClient from '../../../app/contracts/security/allowedClient/IAllowedClient';
+import IPagination from '../../../app/contracts/table/IPagination';
+import { paginationInitialState } from '../../../app/data/general/pagination';
 import {
   SET_CLIENTS,
   GET_CLIENTS,
@@ -8,12 +10,13 @@ import {
   ALLOWED_CLIENT_ACTION_TYPES,
 } from '../../types/allowedClient/AllowedClientTypes';
 
-interface IAllowedClientReducer {
+interface IAllowedClientReducer extends IPagination {
   list: IAllowedClient[],
 };
 
 const initialState: IAllowedClientReducer = {
   list: [],
+  ...paginationInitialState,
 };
 
 const AllowedClientReducer = (state = initialState, action: ALLOWED_CLIENT_ACTION_TYPES): IAllowedClientReducer => {
@@ -27,8 +30,9 @@ const AllowedClientReducer = (state = initialState, action: ALLOWED_CLIENT_ACTIO
       return {
         ...state,
         list: [
-          ...action.payload,
+          ...action.payload.clients,
         ],
+        ...action.payload,
       }
 
     case CREATE_CLIENT:
