@@ -11,6 +11,7 @@ import { startDownloadSaleReportByName } from "../../../../store/actions/report/
 import SnackBar from "../../../components/snackBar/SnackBar";
 import ReportsSearchBar from "../../../components/reports/ReportsSearchBar";
 import IReportFilter from "../../../contracts/report/filters/IReportFilter";
+import { reportFiltersInitialState } from "../../../data/filters";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,10 +34,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SalesByProduct = (): ReactElement => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  const { salesByProduct } = useSelector((state: AppState) => state.reportReducer);
-  const [displayEmailMessage, setDisplayEmailMessage] = useState<boolean>(false);
   const { loadSalesByProduct } = useLoadReports();
+
+  const { salesByProduct, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.reportReducer);
+  const [displayEmailMessage, setDisplayEmailMessage] = useState<boolean>(false);
+  const [filtersApplied, setFiltersApplied] = useState<IReportFilter>(reportFiltersInitialState);
 
   const handleViewOrderAction = (sale: ISaleByProduct): Window | null => window.open(`/orders/${sale.order}/detail`, '_blank');
 
@@ -46,12 +48,21 @@ const SalesByProduct = (): ReactElement => {
 
   const handleApplyFilters = (filters: IReportFilter): void => {
     loadSalesByProduct(filters);
+    setFiltersApplied(filters);
   }
 
   const handleDownloadReportAction = (): void => {
     setDisplayEmailMessage(true);
     const dispatcher = () => dispatch(startDownloadSaleReportByName('product'));
     dispatcher();
+  }
+
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadSalesByProduct({
+      ...filtersApplied,
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
   }
 
   return (
@@ -79,6 +90,8 @@ const SalesByProduct = (): ReactElement => {
       <ApplicationTable
         columns={columns}
         elements={salesByProduct}
+        totalElements={totalItems}
+        handlePageChange={handlePageChange}
         handleEditAction={handleViewOrderAction}
       />
 

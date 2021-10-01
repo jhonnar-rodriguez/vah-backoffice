@@ -35,8 +35,9 @@ const ReportReducer = (state = initialState, action: REPORT_ACTION_TYPES): IRepo
       return {
         ...state,
         salesByProduct: [
-          ...action.payload,
+          ...action.payload.salesByProducts,
         ],
+        ...action.payload,
       }
 
     case SET_SALES_BY_CUSTOMER:

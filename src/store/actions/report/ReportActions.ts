@@ -2,18 +2,24 @@ import { Dispatch } from 'redux';
 import { HTTP_REQUEST_ACTION_TYPES } from '../../types/httpRequest/HttpRequestTypes';
 import { setRunningRequestDispatcher, setFinishedRequestDispatcher } from '../httpRequest/HttpRequestActions';
 import { HttpHelper } from '../../../app/helpers';
-import { DownloadSalesByProductReportAction, GetSalesByCustomerAction, GetSalesByProductAction, REPORT_ACTION_TYPES, SetSalesByCustomerAction, SetSalesByProductAction } from '../../types/report/ReportTypes';
-import ISaleByProduct from '../../../app/contracts/report/ISaleByProduct';
 import ReportService from '../../../app/services/general/report/ReportService';
-import ISaleByCustomer from '../../../app/contracts/report/ISaleByCustomer';
 import IReportFilter from '../../../app/contracts/report/filters/IReportFilter';
 import ISalesByCustomersPaginated from '../../../app/contracts/report/tables/ISalesByCustomersPaginated';
+import ISalesByProductsPaginated from '../../../app/contracts/report/tables/ISalesByProductsPaginated';
+import {
+  REPORT_ACTION_TYPES,
+  GetSalesByProductAction,
+  SetSalesByProductAction,
+  GetSalesByCustomerAction,
+  SetSalesByCustomerAction,
+  DownloadSalesByProductReportAction,
+} from '../../types/report/ReportTypes';
 
 export const getSalesByProductDispatcher = (): GetSalesByProductAction => ({
   type: 'GET_SALES_BY_PRODUCT',
 });
 
-export const setSalesByProductDispatcher = (sales: ISaleByProduct[]): SetSalesByProductAction => ({
+export const setSalesByProductDispatcher = (sales: ISalesByProductsPaginated): SetSalesByProductAction => ({
   type: 'SET_SALES_BY_PRODUCT',
   payload: sales,
 });

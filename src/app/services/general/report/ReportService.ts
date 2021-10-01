@@ -1,18 +1,13 @@
 import { DEFAULT_ROWS_PER_PAGE } from "../../../../config/app";
 import httpClient from "../../../../config/axios";
-import IBaseFilter from "../../../contracts/filter/IBaseFilter";
 import IReportFilter from "../../../contracts/report/filters/IReportFilter";
-import ISaleByCustomer from "../../../contracts/report/ISaleByCustomer";
-import ISaleByProduct from "../../../contracts/report/ISaleByProduct";
 import ISalesByCustomersPaginated from "../../../contracts/report/tables/ISalesByCustomersPaginated";
-
-interface IReportParamSearch extends IBaseFilter {
-  products?: [],
-  customers?: [],
-}
+import ISalesByProductsPaginated from "../../../contracts/report/tables/ISalesByProductsPaginated";
 
 class ReportService {
-  public static async getSalesByProduct(filters?: IReportFilter): Promise<ISaleByProduct[]> {
+  public static async getSalesByProduct(filters?: IReportFilter): Promise<ISalesByProductsPaginated> {
+    const { page = 1, limit = DEFAULT_ROWS_PER_PAGE } = filters || {};
+
     let filtersToApply: any = {
       products: [],
     };
@@ -28,7 +23,12 @@ class ReportService {
       filtersToApply = this.addDateRangeToFilters(filters, filtersToApply);
     }
 
-    const xhr = await httpClient.post('/report/sales/product', { ...filtersToApply }).then(({ data }) => data.data);
+    const xhr = await httpClient.post(`/report/sales/product?page=${page}&limit=${limit}`, { ...filtersToApply }).then(({ data }) => {
+      return {
+        salesByProducts: data.data,
+        ...data,
+      }
+    });
 
     return xhr;
   }
