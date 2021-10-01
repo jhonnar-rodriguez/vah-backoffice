@@ -13,12 +13,14 @@ import {
   UpdateCouponAction,
   COUPON_ACTION_TYPES,
 } from '../../types/coupon/CouponTypes';
+import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
+import ICouponsPaginated from '../../../app/contracts/coupon/table/ICouponsPaginated';
 
 export const getCouponsDispatcher = (): GetCouponsAction => ({
   type: 'GET_COUPONS',
 });
 
-export const setCouponsDispatcher = (coupons: ICoupon[]): SetCouponsAction => ({
+export const setCouponsDispatcher = (coupons: ICouponsPaginated): SetCouponsAction => ({
   type: 'SET_COUPONS',
   payload: coupons,
 });
@@ -38,13 +40,13 @@ export const removeCouponDispatcher = (couponId: string): RemoveCouponAction => 
   payload: couponId,
 });
 
-export const startGetCouponsAction = () => {
+export const startGetCouponsAction = (filter?: IProcessFilter) => {
   return async (dispatch: Dispatch<COUPON_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getCouponsDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const coupons = await CouponService.getAll();
+      const coupons = await CouponService.getAll(filter);
 
       dispatch(setCouponsDispatcher(coupons));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));

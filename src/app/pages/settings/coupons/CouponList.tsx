@@ -36,8 +36,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CouponList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [loadCoupons] = useLoadCoupons();
 
-  const { list: coupons } = useSelector((state: AppState) => state.couponReducer)
+  const { list: coupons, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.couponReducer)
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createCoupon, setCreateCoupon] = useState<boolean>(true);
@@ -73,7 +74,14 @@ const CouponList = () => {
     setOpenForm(true);
   }
 
-  useLoadCoupons();
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadCoupons({
+      value: '',
+      filterBy: '',
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
+  }
 
   return (
     <>
@@ -96,6 +104,8 @@ const CouponList = () => {
         <ApplicationTable
           columns={CouponTableColumns}
           elements={coupons}
+          totalElements={totalItems}
+          handlePageChange={handlePageChange}
           handleEditAction={handleEditCoupon}
           handleConfirmDeleteAction={handleDeleteCoupon}
         />

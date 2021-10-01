@@ -1,4 +1,6 @@
 import ICoupon from '../../../app/contracts/coupon/ICoupon';
+import IPagination from '../../../app/contracts/table/IPagination';
+import { paginationInitialState } from '../../../app/data/general/pagination';
 import {
   SET_COUPONS,
   GET_COUPONS,
@@ -8,12 +10,13 @@ import {
   COUPON_ACTION_TYPES,
 } from './../../types/coupon/CouponTypes';
 
-interface ICouponReducer {
+interface ICouponReducer extends IPagination {
   list: ICoupon[],
 };
 
 const initialState: ICouponReducer = {
   list: [],
+  ...paginationInitialState,
 };
 
 const CouponReducer = (state = initialState, action: COUPON_ACTION_TYPES): ICouponReducer => {
@@ -27,8 +30,9 @@ const CouponReducer = (state = initialState, action: COUPON_ACTION_TYPES): ICoup
       return {
         ...state,
         list: [
-          ...action.payload,
+          ...action.payload.coupons,
         ],
+        ...action.payload,
       }
 
     case CREATE_COUPON:

@@ -1,4 +1,5 @@
 import ICoupon from "../../../app/contracts/coupon/ICoupon";
+import ICouponsPaginated from "../../../app/contracts/coupon/table/ICouponsPaginated";
 
 export const GET_COUPONS = 'GET_COUPONS';
 export const SET_COUPONS = 'SET_COUPONS';
@@ -14,7 +15,7 @@ export interface GetCouponsAction {
 
 export interface SetCouponsAction {
   type: typeof SET_COUPONS,
-  payload: ICoupon[],
+  payload: ICouponsPaginated,
 };
 
 export interface CreateCouponAction {
