@@ -1,5 +1,7 @@
 import IOrder from '../../../../app/contracts/general/order/IOrder';
 import { orderInitialState } from '../../../../app/data/general/orders';
+import IPagination from '../../../../app/contracts/table/IPagination';
+import { paginationInitialState } from '../../../../app/data/general/pagination';
 import {
   SET_ORDER,
   SET_ORDERS,
@@ -8,7 +10,7 @@ import {
   UPDATE_ORDER,
 } from '../../../types/general/order/OrderTypes';
 
-interface IOrderReducer {
+interface IOrderReducer extends IPagination{
   list: IOrder[],
   orderToDisplay: IOrder,
 };
@@ -16,6 +18,7 @@ interface IOrderReducer {
 const initialState: IOrderReducer = {
   list: [],
   orderToDisplay: orderInitialState,
+  ...paginationInitialState,
 };
 
 const OrderReducer = (state = initialState, action: ORDER_ACTION_TYPES): IOrderReducer => {

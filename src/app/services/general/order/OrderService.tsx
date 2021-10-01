@@ -1,10 +1,13 @@
 import httpClient from "../../../../config/axios";
 import IOrder from "../../../contracts/general/order/IOrder";
 import IOrderChangeStatus from "../../../contracts/general/order/IOrderChangeStatus";
+import IBaseFilter from "../../../contracts/filter/IBaseFilter";
+import { DEFAULT_ROWS_PER_PAGE } from "../../../../config/app";
 
 class OrderService {
-  public static async getAll(): Promise<IOrder[]> {
-    const xhr = await httpClient.get('/order').then(({ data }) => data.orders);
+  public static async getAll(filters?: IBaseFilter): Promise<IOrder[]> {
+    const { page = 1, limit = DEFAULT_ROWS_PER_PAGE } = filters || {};
+    const xhr = await httpClient.get(`/order?page=${page}&limit=${limit}`).then(({ data }) => data.orders);
 
     return xhr;
   }

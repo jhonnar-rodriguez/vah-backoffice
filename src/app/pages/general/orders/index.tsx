@@ -5,7 +5,7 @@ import { AppState } from '../../../../store';
 import ApplicationTable from "../../../components/table/ApplicationTable";
 import useLoadOrders from "../../../hooks/general/orders/useLoadOrders";
 import OrderTableColumns from "./partials/OrderTableColumns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { orderStatusInitialState } from "../../../data/general/orders";
 import ChangeOrderStatusForm from "./partials/ChangeOrderStatusForm";
 import IOrderChangeStatus from "../../../contracts/general/order/IOrderChangeStatus";
@@ -35,8 +35,13 @@ const OrderList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { loadOrders } = useLoadOrders();
+  
+  useEffect(() => {
+    loadOrders();
+  }, [loadOrders]);
 
-  const { list: orders } = useSelector((state: AppState) => state.orderReducer);
+  const { list: orders, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.orderReducer);
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [orderToUpdate, setOrderToUpdate] = useState<IOrderChangeStatus>(orderStatusInitialState);
@@ -71,7 +76,14 @@ const OrderList = () => {
     history.push(`/orders/${order._id}/detail`);
   }
 
-  useLoadOrders();
+  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+    loadOrders({
+      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      limit,
+    });
+  }
+
+
 
   return (
     <>
@@ -85,6 +97,8 @@ const OrderList = () => {
         <ApplicationTable
           columns={OrderTableColumns}
           elements={orders}
+          totalElements={totalItems}
+          handlePageChange={handlePageChange}
           handleViewAction={handleViewOrderAction}
           handleEditAction={handleEditOrderAction}
         />

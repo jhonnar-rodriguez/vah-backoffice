@@ -1,13 +1,14 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { startGetOrdersAction } from "../../../../store/actions/general/order/OrderAction";
+import IBaseFilter from "../../../contracts/filter/IBaseFilter";
 
 const useLoadOrders = () => {
   const dispatch = useDispatch();
 
   const loadOrders = useCallback(
-    () => {
-      const dispatcher = () => dispatch(startGetOrdersAction());
+    (filters?: IBaseFilter) => {
+      const dispatcher = () => dispatch(startGetOrdersAction(filters));
       dispatcher();
     },
     [dispatch],
@@ -17,7 +18,9 @@ const useLoadOrders = () => {
     loadOrders();
   }, [loadOrders]);
 
-  return [];
+  return {
+    loadOrders
+  };
 }
 
 export default useLoadOrders;
