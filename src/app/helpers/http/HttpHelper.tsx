@@ -4,7 +4,7 @@ interface IErrorResponse {
   data?: {
     status: {
       date: string,
-      message: string,
+      message: string | object,
       reason: string,
       status: string,
     },
@@ -20,13 +20,15 @@ interface ISuccessResponse {
 }
 
 class HttpHelper {
+  private static UNPROCESSABLE_ENTITY_STATUS_CODE = 422;
+
   public static generateBaseResponse(): IHttpRequest {
     return {
       isLoading: false,
     };
   };
 
-  public static formatRequestFinishedResponse(response: any): IHttpRequest {
+  public static formatRequestFinishedResponse(response: IErrorResponse): IHttpRequest {
     if (typeof response === 'undefined') {
       return {
         isLoading: false,
@@ -40,9 +42,22 @@ class HttpHelper {
     }
     const { data, status: statusCode, statusText } = response;
 
-    const message = typeof data !== 'undefined' && data.hasOwnProperty('status') ?
-      'Ha ocurrido un error al procesar la petición, por favor intenta de nuevo más tarde' :
-      'Ha ocurrido un error al procesar la petición, por favor intenta de nuevo más tarde';
+    let message = '';
+
+    if (statusCode === HttpHelper.UNPROCESSABLE_ENTITY_STATUS_CODE) {
+      message = 'No se pudo obtener el mensaje de validación de error, por favor intente de nuevo';
+
+      if (typeof data !== 'undefined' && typeof data.status.message === 'object') {
+        const arrayOfValidationMessages = Object.values(data.status.message);
+        if (arrayOfValidationMessages.length) {
+          message = arrayOfValidationMessages[0].msg;
+        }
+      }
+    } else {
+      message = typeof data !== 'undefined' && (data.hasOwnProperty('status') && typeof data.status.message === 'string') ?
+        data.status.message :
+        'Ha ocurrido un error al procesar la petición.';
+    }
 
     return {
       isLoading: false,
