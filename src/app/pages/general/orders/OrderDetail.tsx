@@ -60,7 +60,7 @@ const OrderDetail: FC = (): ReactElement => {
 
   const orderNotFound = (): ReactElement => {
     if (!isLoading && orderToDisplay._id.length === 0) {
-      return <SnackBar severity="error" message="La orden solicitada no pudo sido encontrada" />
+      return <SnackBar severity="error" message="La orden solicitada no pudo ser encontrada" />
     }
 
     return <></>

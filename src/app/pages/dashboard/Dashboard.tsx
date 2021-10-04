@@ -46,7 +46,7 @@ const Dashboard = (): ReactElement => {
         <Grid item xs={12} md={8}>
           <CustomChart
             chartType='bar'
-            mainLabel='Categorías más vistas'
+            mainLabel='Categorías más visitadas'
             traces={categoriesMostSeen}
           />
         </Grid>

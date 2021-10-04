@@ -10,17 +10,17 @@ const columns: ISaleByProductTableColumn[] = [
   },
   {
     id: 'paymentMethod',
-    label: 'Método de Pago',
+    label: 'Método pago',
     minWidth: 100,
   },
   {
     id: 'name',
-    label: 'Nombre del producto',
+    label: 'Nombre producto',
     minWidth: 170,
   },
   {
     id: 'price',
-    label: 'Precio del producto',
+    label: 'Precio producto',
     minWidth: 170,
     format: (value: number) => CurrencyHelper.formatTotal(value),
   },

@@ -72,22 +72,27 @@ export const orderStatusInitialState: IOrderChangeStatus = {
 export const orderAvailableStatuses: IOrderAvailableStatus[] = [
   {
     id: uuid(),
-    label: "Exitosa",
+    label: "Exitoso",
     value: "success",
   },
   {
     id: uuid(),
-    label: "Pending",
+    label: "Pagado",
+    value: "paid",
+  },
+  {
+    id: uuid(),
+    label: "Pendiente",
     value: "pending",
   },
   {
     id: uuid(),
-    label: "Cancelada",
+    label: "Cancelado",
     value: "cancelled",
   },
   {
     id: uuid(),
-    label: "Rechazada",
+    label: "Rechazado",
     value: "rejected",
   },
 ];

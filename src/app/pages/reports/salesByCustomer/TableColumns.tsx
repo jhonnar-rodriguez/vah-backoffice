@@ -11,17 +11,17 @@ const columns: ISaleByCustomerTableColumn[] = [
   },
   {
     id: 'paymentMethod',
-    label: 'Método de Pago',
+    label: 'Método pago',
     minWidth: 100,
   },
   {
     id: 'name',
-    label: 'Nombre del cliente',
+    label: 'Nombre cliente',
     minWidth: 170,
   },
   {
     id: 'surname',
-    label: 'Apellido del client',
+    label: 'Apellido cliente',
     minWidth: 170,
   },
   {

@@ -11,7 +11,7 @@ class GeneralHelper {
 
     switch (baseStatus) {
       case "success":
-        translation = "Exitosa";
+        translation = "Exitoso";
         break;
 
       case "pending":
@@ -19,11 +19,11 @@ class GeneralHelper {
         break;
 
       case "cancelled":
-        translation = "Cancelada";
+        translation = "Cancelado";
         break;
 
       case "rejected":
-        translation = "Rechazada";
+        translation = "Rechazado";
         break;
 
       default:
@@ -38,7 +38,7 @@ class GeneralHelper {
     const { name, surname } = customer;
 
     if (!name || !surname) {
-      return "Inválido";
+      return "Indefinido";
     }
 
     return `${name} ${surname}`;
@@ -48,7 +48,7 @@ class GeneralHelper {
     const { document, documentType } = customer;
 
     if (!document || !documentType) {
-      return "Inválido";
+      return "Indefinido";
     }
 
     return `${documentType} ${document}`
