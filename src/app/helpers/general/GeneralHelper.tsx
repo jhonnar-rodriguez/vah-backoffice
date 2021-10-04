@@ -17,6 +17,10 @@ class GeneralHelper {
       case "pending":
         translation = "Pendiente";
         break;
+      
+      case "invoiced":
+        translation = "Facturado";
+        break;
 
       case "cancelled":
         translation = "Cancelado";

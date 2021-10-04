@@ -77,8 +77,8 @@ export const orderAvailableStatuses: IOrderAvailableStatus[] = [
   },
   {
     id: uuid(),
-    label: "Pagado",
-    value: "paid",
+    label: "Facturado",
+    value: "invoiced",
   },
   {
     id: uuid(),
