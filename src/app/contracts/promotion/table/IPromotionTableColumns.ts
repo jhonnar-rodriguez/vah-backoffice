@@ -1,7 +1,7 @@
 import IBaseTableColumns from '../../table/IBaseTableColumns';
 
 interface IPromotionTableColumns extends IBaseTableColumns {
-  id: 'segment' | 'details' | 'description' | 'actions';
+  id: 'name' | 'rules' | 'description' | 'actions';
 }
 
 export default IPromotionTableColumns;

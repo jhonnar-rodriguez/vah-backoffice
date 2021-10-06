@@ -3,15 +3,15 @@ import IPromotionTableColumns from "../../../../contracts/promotion/table/IPromo
 
 const columns: IPromotionTableColumns[] = [
   {
-    id: 'segment',
+    id: 'name',
     label: 'Segmento',
     minWidth: 170,
     generateLink: true,
     format: (value: string) => GeneralHelper.strLimit(value),
   },
   {
-    id: 'details',
-    label: 'Detalle',
+    id: 'rules',
+    label: 'Reglas',
     minWidth: 100,
     format: (value: any) => GeneralHelper.formatPromotionDetail(value),
   },

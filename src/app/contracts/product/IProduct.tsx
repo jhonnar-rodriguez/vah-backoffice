@@ -14,8 +14,7 @@ interface IProduct {
   stockStatus: boolean,
   totalDiscount: number,
   description?: string,
-  bonusRules?: string,
-  discountRules?: string,
+  rules?: string,
 }
 
 export default IProduct;

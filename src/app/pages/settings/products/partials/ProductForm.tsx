@@ -41,11 +41,12 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
   const classes = useStyles();
   const [creatingProduct] = useState<boolean>(action === "Crear");
   const { categoryReducer, httpRequestReducer } = useSelector((state: AppState) => state);
-
+  console.log(productToUpdate)
   const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control } = useForm<IProduct>({
     defaultValues: useMemo(() => {
       return {
         ...productToUpdate,
+        rules: JSON.stringify(productToUpdate.rules)
       };
     }, [productToUpdate]),
     mode: 'all',
@@ -73,7 +74,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
 
   useEffect(() => {
     if (productToUpdate.name.length > 0 && categories.length > 0) {
-      reset({ ...productToUpdate });
+      reset({ ...productToUpdate, rules: JSON.stringify(productToUpdate.rules) });
     };
   }, [reset, categories, productToUpdate]);
 
@@ -336,34 +337,17 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
         </FormControl>
 
         <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id="bonusRules">Reglas de bonificación</InputLabel>
+          <InputLabel id="rules">Reglas</InputLabel>
           <Controller
-            name="bonusRules"
+            name="rules"
             control={control}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
                 onChange={onChange}
-                placeholder="[{quantity: 6, freeSku: ABCDE}, {quantity: 5, freeSku: ABCDG}]"
+                placeholder="{'promotions': [{'sku': 'ABCDDE', 'quantity': 5}], 'discounts': [{'quantity': 10, fixedPrice: 2.5}]}"
                 autoComplete="off"
-                aria-labelledby="bonusRules"
-              />
-            )}
-          />
-        </FormControl>
-
-        <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id="discountRules">Reglas de descuento</InputLabel>
-          <Controller
-            name="discountRules"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                value={value}
-                onChange={onChange}
-                placeholder="[{quantity: 6, discount: 10}, {quantity: 5, discount: 12}]"
-                autoComplete="off"
-                aria-labelledby="discountRules"
+                aria-labelledby="rules"
               />
             )}
           />

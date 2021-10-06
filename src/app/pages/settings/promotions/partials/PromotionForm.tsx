@@ -44,6 +44,7 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
     defaultValues: useMemo(() => {
       return {
         ...promotionToUpdate,
+        rules: JSON.stringify(promotionToUpdate.rules)
       };
     }, [promotionToUpdate]),
     mode: 'all',
@@ -80,9 +81,9 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
 
       <DialogContent>
         <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id='segment'>Segmento</InputLabel>
+          <InputLabel id='name'>Segmento</InputLabel>
           <Controller
-            name='segment'
+            name='name'
             control={control}
             rules={{
               required: {
@@ -94,7 +95,7 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
                 message: 'El segmento no puede superar los 100 caracteres.',
               },
               pattern: {
-                value: /^[A-Za-z\s]+$/,
+                value: /^[A-Za-z_\s]+$/,
                 message: 'Por favor un segmento válido.',
               },
             }}
@@ -110,29 +111,25 @@ const PromotionForm: FC<PromotionFormProps> = ({ open, action, handleClose, prom
         </FormControl>
 
         <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id='details'>Detalle</InputLabel>
+          <InputLabel id='rules'>Reglas</InputLabel>
           <Controller
-            name='details'
+            name='rules'
             control={control}
             rules={{
               required: {
                 value: true,
-                message: 'El detalle es requerido.',
+                message: 'Las reglas son requerido.',
               },
               maxLength: {
-                value: 200,
-                message: 'El detalle no puede superar los 200 caracteres.',
-              },
-              pattern: {
-                value: /^[A-Za-z0-9,.;]+$/,
-                message: 'Por favor introduzca un detalle válido.',
+                value: 500,
+                message: 'Las reglas no pueden superar los 500 caracteres.',
               },
             }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
                 onChange={onChange}
-                placeholder='ASBCD,25.41;ASCJD,26.22'
+                placeholder=' { "discounts": [ { "sku": "BA012484", "quantity": 5, "fixedPrice": 1 }, { "sku": "BA007094", "quantity": 5, "fixedPrice": 1 } ], "promotions": [ { "sku": "BA012489", "quantity": 100, "fixedPrice": 0, "gift": 2 }, { "sku": "BA012490", "quantity": 100, "fixedPrice": 0, "gift": 2 } ] } '
                 autoComplete='off'
                 aria-labelledby='details'
               />

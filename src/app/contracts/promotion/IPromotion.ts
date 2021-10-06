@@ -1,7 +1,7 @@
 interface IPromotion {
   _id: string;
-  segment: string;
-  details: string | string[];
+  name: string;
+  rules: string;
   description?: string;
 };
 

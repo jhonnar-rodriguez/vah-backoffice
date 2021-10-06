@@ -20,8 +20,7 @@ export const productInitialState: IProduct = {
   discount: 0,
   stockStatus: true,
   totalDiscount: 0,
-  bonusRules: '',
-  discountRules: '',
+  rules: '{"promotions":[],"discounts":[]}',
 };
 
 export const productsFilterableOptions: IFilter[] = [

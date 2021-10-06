@@ -65,14 +65,7 @@ class GeneralHelper {
       return 'No disponible';
     }
 
-    details
-      .forEach((detail: IPromotionDetail) => {
-        const formattedPromotion: string = typeof detail === 'string' ? detail : `${detail.sku},${detail.price}`;
-
-        formattedDetail = formattedDetail.length > 0 ?
-          `${formattedDetail};${formattedPromotion}` :
-          formattedPromotion;
-      });
+    formattedDetail = JSON.stringify(details);
 
     return formattedDetail;
   }

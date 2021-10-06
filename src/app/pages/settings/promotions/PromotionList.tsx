@@ -68,19 +68,19 @@ const ProductList = () => {
     setCreatePromotion(true);
     setPromotionToUpdate(promotionInitialState);
 
-    if (typeof promotion?.segment === 'undefined') {
+    if (typeof promotion?.name === 'undefined') {
       return;
     }
 
-    const formattedData: IPromotion = {
-      ...promotion,
-      details: typeof promotion.details === 'string' ? promotion.details.split(';') : promotion.details,
-    }
+    // const formattedData: IPromotion = {
+    //   ...promotion,
+    //   details: typeof promotion.details === 'string' ? promotion.details.split(';') : promotion.details,
+    // }
 
-    let dispatcher = () => dispatch(startCreatePromotionAction(formattedData));
+    let dispatcher = () => dispatch(startCreatePromotionAction(promotion));
 
     if (!createPromotion) {
-      dispatcher = () => dispatch(startUpdatePromotionAction(formattedData));
+      dispatcher = () => dispatch(startUpdatePromotionAction(promotion));
     }
 
     dispatcher();
@@ -88,10 +88,7 @@ const ProductList = () => {
 
   const handleEditPromotionForm = (promotion: IPromotion) => {
     setCreatePromotion(false);
-    setPromotionToUpdate({
-      ...promotion,
-      details: GeneralHelper.formatPromotionDetail(promotion.details),
-    });
+    setPromotionToUpdate(promotion);
     setOpenForm(true);
   }
 
