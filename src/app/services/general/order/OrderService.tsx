@@ -1,14 +1,19 @@
 import httpClient from "../../../../config/axios";
 import IOrder from "../../../contracts/general/order/IOrder";
+import IOrdersPaginated from "../../../contracts/general/order/table/IOrdersPaginated";
 import IOrderChangeStatus from "../../../contracts/general/order/IOrderChangeStatus";
 import IBaseFilter from "../../../contracts/filter/IBaseFilter";
 import { DEFAULT_ROWS_PER_PAGE } from "../../../../config/app";
 
 class OrderService {
-  public static async getAll(filters?: IBaseFilter): Promise<IOrder[]> {
+  public static async getAll(filters?: IBaseFilter): Promise<IOrdersPaginated> {
     const { page = 1, limit = DEFAULT_ROWS_PER_PAGE } = filters || {};
-    const xhr = await httpClient.get(`/order?page=${page}&limit=${limit}`).then(({ data }) => data.orders);
-
+    const xhr = await httpClient.get(`/order?page=${page}&limit=${limit}`).then(({ data }) => { 
+      return {
+        orders: data.orders, 
+        ...data,
+      } 
+      });
     return xhr;
   }
 

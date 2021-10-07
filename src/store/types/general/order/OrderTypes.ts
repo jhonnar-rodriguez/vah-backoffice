@@ -1,4 +1,5 @@
 import IOrder from "../../../../app/contracts/general/order/IOrder";
+import IOrdersPaginated from "../../../../app/contracts/general/order/table/IOrdersPaginated";
 
 export const GET_ORDERS = 'GET_ORDERS';
 export const SET_ORDERS = 'SET_ORDERS';
@@ -12,7 +13,7 @@ export interface GetOrdersAction {
 
 export interface SetOrdersAction {
   type: typeof SET_ORDERS,
-  payload: IOrder[],
+  payload: IOrdersPaginated,
 };
 
 export interface SetOrderAction {

@@ -10,13 +10,13 @@ import {
   UPDATE_ORDER,
 } from '../../../types/general/order/OrderTypes';
 
-interface IOrderReducer extends IPagination{
-  list: IOrder[],
+interface IOrderReducer extends IPagination {
+  orders: IOrder[],
   orderToDisplay: IOrder,
 };
 
 const initialState: IOrderReducer = {
-  list: [],
+  orders: [],
   orderToDisplay: orderInitialState,
   ...paginationInitialState,
 };
@@ -31,9 +31,7 @@ const OrderReducer = (state = initialState, action: ORDER_ACTION_TYPES): IOrderR
     case SET_ORDERS:
       return {
         ...state,
-        list: [
-          ...action.payload,
-        ],
+        ...action.payload,
       }
 
     case SET_ORDER:
@@ -43,13 +41,13 @@ const OrderReducer = (state = initialState, action: ORDER_ACTION_TYPES): IOrderR
       }
 
     case UPDATE_ORDER:
-      let updatedElementIndex = state.list.findIndex((order: IOrder) => order._id === action.payload._id);
-      let updatedOrder = [...state.list];
+      let updatedElementIndex = state.orders.findIndex((order: IOrder) => order._id === action.payload._id);
+      let updatedOrder = [...state.orders];
       updatedOrder[updatedElementIndex] = { ...action.payload };
 
       return {
         ...state,
-        list: updatedOrder,
+        orders: updatedOrder,
       }
 
     default:

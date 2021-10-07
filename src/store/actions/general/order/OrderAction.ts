@@ -8,12 +8,13 @@ import { GetOrdersAction, ORDER_ACTION_TYPES, SetOrderAction, SetOrdersAction, U
 import { HTTP_REQUEST_ACTION_TYPES } from '../../../types/httpRequest/HttpRequestTypes';
 import { setFinishedRequestDispatcher, setRunningRequestDispatcher } from '../../httpRequest/HttpRequestActions';
 import IBaseFilter from '../../../../app/contracts/filter/IBaseFilter';
+import IOrdersPaginated from '../../../../app/contracts/general/order/table/IOrdersPaginated';
 
 export const getOrdersDispatcher = (): GetOrdersAction => ({
   type: 'GET_ORDERS',
 });
 
-export const setOrdersDispatcher = (orders: IOrder[]): SetOrdersAction => ({
+export const setOrdersDispatcher = (orders: IOrdersPaginated): SetOrdersAction => ({
   type: 'SET_ORDERS',
   payload: orders,
 });
@@ -34,9 +35,8 @@ export const startGetOrdersAction = (filters?: IBaseFilter) => {
     dispatch(setRunningRequestDispatcher());
 
     try {
-      const orders = await OrderService.getAll(filters);
-
-      dispatch(setOrdersDispatcher(orders.filter((order: IOrder) => order.status.toLowerCase() === 'pending')));
+      const data = await OrderService.getAll(filters);
+      dispatch(setOrdersDispatcher(data));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));

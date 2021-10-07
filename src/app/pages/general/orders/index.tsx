@@ -41,11 +41,9 @@ const OrderList = () => {
     loadOrders();
   }, [loadOrders]);
 
-  const { list: orders, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.orderReducer);
-
+  const { orders, totalItems, nextPage, prevPage } = useSelector((state: AppState) => state.orderReducer);
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [orderToUpdate, setOrderToUpdate] = useState<IOrderChangeStatus>(orderStatusInitialState);
-
   const handleFormClose = (order?: IOrderChangeStatus) => {
     setOrderToUpdate(orderStatusInitialState);
     setOpenForm(false);
