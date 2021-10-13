@@ -217,7 +217,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
                 onChange={onChange}
                 autoComplete="off"
                 aria-labelledby="price"
-                type="number"
+                type="text"
               />
             )}
           />
