@@ -139,7 +139,6 @@ const CustomerList = () => {
           totalElements={totalItems}
           handlePageChange={handlePageChange}
           handleEditAction={handleEditCustomer}
-          handleConfirmDeleteAction={handleDeleteCustomer}
         />
       </Paper>
 
