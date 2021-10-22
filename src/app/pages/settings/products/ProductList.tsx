@@ -75,6 +75,7 @@ const ProductList = () => {
       ...data,
       price: Number(data.price),
       discount: Number(data.discount),
+      position: Number(data.position),
       quantity: Number(data.quantity),
     }
 
