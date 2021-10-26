@@ -41,7 +41,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
   const classes = useStyles();
   const [creatingProduct] = useState<boolean>(action === "Crear");
   const { categoryReducer, httpRequestReducer } = useSelector((state: AppState) => state);
-  console.log(productToUpdate)
+
   const { handleSubmit, formState: { errors, isValid, isDirty }, reset, clearErrors, control } = useForm<IProduct>({
     defaultValues: useMemo(() => {
       return {
@@ -348,6 +348,33 @@ const ProductForm: FC<ProductFormProps> = ({ open, action, handleClose, productT
                 placeholder="{'promotions': [{'sku': 'ABCDDE', 'quantity': 5}], 'discounts': [{'quantity': 10, fixedPrice: 2.5}]}"
                 autoComplete="off"
                 aria-labelledby="rules"
+              />
+            )}
+          />
+        </FormControl>
+
+        <FormControl className={classes.formControl} fullWidth>
+          <InputLabel id="position">Posición</InputLabel>
+          <Controller
+            name="position"
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'La position es requerida.',
+              },
+              pattern: {
+                value: /^[0-9]+$/,
+                message: 'Por favor introduzca una position válida.',
+              },
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                type="number"
+                value={value}
+                onChange={onChange}
+                autoComplete="off"
+                aria-labelledby="position"
               />
             )}
           />

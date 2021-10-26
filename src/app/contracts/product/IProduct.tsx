@@ -15,6 +15,7 @@ interface IProduct {
   totalDiscount: number,
   description?: string,
   rules?: string,
+  position?: number,
 }
 
 export default IProduct;

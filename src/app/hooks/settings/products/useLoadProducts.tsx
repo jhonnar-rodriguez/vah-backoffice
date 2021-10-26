@@ -11,7 +11,7 @@ const useLoadProducts = () => {
       const productsDispatcher = () => dispatch(startGetProductsAction(filter));
       productsDispatcher();
     },
-    [dispatch],
+    [],
   );
 
   useEffect(() => {

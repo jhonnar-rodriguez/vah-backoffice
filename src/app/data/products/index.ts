@@ -19,6 +19,7 @@ export const productInitialState: IProduct = {
   image: '',
   discount: 0,
   stockStatus: true,
+  position: 0,
   totalDiscount: 0,
   rules: '{"promotions":[],"discounts":[]}',
 };
