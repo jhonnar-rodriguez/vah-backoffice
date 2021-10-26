@@ -1,18 +1,27 @@
 import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import { Button, Paper, Typography } from "@material-ui/core";
-import { AppState } from '../../../../store';
+import { AppState } from "../../../../store";
 import columns from "./TableColumns";
 import ApplicationTable from "../../../components/table/ApplicationTable";
 import useLoadCustomers from "../../../hooks/settings/customers/useLoadCustomers";
 import ICustomer from "../../../contracts/customer/ICustomer";
-import { customerInitialState, customersFilterableOptions } from "../../../data/customers";
+import {
+  customerInitialState,
+  customersFilterableOptions,
+} from "../../../data/customers";
 import CustomerForm from "./partials/CustomerForm";
-import { startCreateCustomerAction, startRemoveCustomerAction, startUpdateCustomerAction } from "../../../../store/actions/customer/CustomerActions";
+import {
+  startCreateCustomerAction,
+  startRemoveCustomerAction,
+  startUpdateCustomerAction,
+  startDownloadCustomersAction,
+} from "../../../../store/actions/customer/CustomerActions";
 import SearchBar from "../../../components/searchBar/SearchBar";
 import IProcessFilter from "../../../contracts/filter/IProcessFilter";
 import { initialFilters } from "../../../data/filters";
+import SnackBar from "../../../components/snackBar/SnackBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,13 +46,17 @@ const CustomerList = () => {
   const dispatch = useDispatch();
   const [loadCustomers] = useLoadCustomers();
 
-  const { customerReducer } = useSelector((state: AppState) => state)
+  const { customerReducer } = useSelector((state: AppState) => state);
   const { list: customers, totalItems, nextPage, prevPage } = customerReducer;
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [createCustomer, setCreateCustomer] = useState<boolean>(true);
-  const [customerToUpdate, setCustomerToUpdate] = useState<any>(customerInitialState);
-  const [filtersApplied, setFiltersApplied] = useState<IProcessFilter>(initialFilters);
+  const [customerToUpdate, setCustomerToUpdate] =
+    useState<any>(customerInitialState);
+  const [filtersApplied, setFiltersApplied] =
+    useState<IProcessFilter>(initialFilters);
+  const [displayEmailMessage, setDisplayEmailMessage] =
+    useState<boolean>(false);
 
   const handleFormClose = (customer?: ICustomer) => {
     setCreateCustomer(true);
@@ -64,6 +77,13 @@ const CustomerList = () => {
     setOpenForm(false);
   };
 
+  const handleDownloadReportAction = (): void => {
+    setDisplayEmailMessage(true);
+    const dispatcher = () =>
+      dispatch(startDownloadCustomersAction(filtersApplied));
+    dispatcher();
+  };
+
   const handleDeleteCustomer = (customerId: string) => {
     const dispatcher = () => dispatch(startRemoveCustomerAction(customerId));
     dispatcher();
@@ -78,15 +98,22 @@ const CustomerList = () => {
       mobile: customer.mobile || "",
       document: customer.document || "",
       surname: customer.surname || "",
-      documentType: typeof customer.documentType !== "undefined" ? String(customer.documentType) : " ",
+      documentType:
+        typeof customer.documentType !== "undefined"
+          ? String(customer.documentType)
+          : " ",
     };
 
     setCreateCustomer(false);
     setCustomerToUpdate(customerToUpdate);
     setOpenForm(true);
-  }
+  };
 
-  const handleSearchSubmit = (filter: IProcessFilter, event?: FormEvent<HTMLFormElement>, resetFilters: boolean = false): void => {
+  const handleSearchSubmit = (
+    filter: IProcessFilter,
+    event?: FormEvent<HTMLFormElement>,
+    resetFilters: boolean = false
+  ): void => {
     if (resetFilters) {
       loadCustomers();
       setFiltersApplied(initialFilters);
@@ -94,21 +121,29 @@ const CustomerList = () => {
       return;
     }
 
-    if (typeof event !== 'undefined') {
+    if (typeof event !== "undefined") {
       event.preventDefault();
     }
 
     loadCustomers(filter);
     setFiltersApplied(filter);
-  }
+  };
 
-  const handlePageChange = (gotForward: boolean | undefined, limit: number): void => {
+  const handlePageChange = (
+    gotForward: boolean | undefined,
+    limit: number
+  ): void => {
     loadCustomers({
       ...filtersApplied,
-      page: typeof gotForward === 'undefined' ? 1 : gotForward ? nextPage : prevPage,
+      page:
+        typeof gotForward === "undefined"
+          ? 1
+          : gotForward
+          ? nextPage
+          : prevPage,
       limit,
     });
-  }
+  };
 
   return (
     <>
@@ -118,6 +153,14 @@ const CustomerList = () => {
             Listado de clientes
           </Typography>
 
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleDownloadReportAction()}
+            className={classes.button}
+          >
+            Descargar
+          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -142,15 +185,20 @@ const CustomerList = () => {
         />
       </Paper>
 
-      {
-        openForm &&
+      {openForm && (
         <CustomerForm
           open={true}
           action={createCustomer ? "Crear" : "Actualizar"}
           handleClose={handleFormClose}
           elementToUpdate={customerToUpdate}
         />
-      }
+      )}
+      {displayEmailMessage && (
+        <SnackBar
+          message="El reporte será enviado a tu correo electrónico en unos minutos, por favor espera..."
+          onDismiss={() => setDisplayEmailMessage(false)}
+        />
+      )}
     </>
   );
 };

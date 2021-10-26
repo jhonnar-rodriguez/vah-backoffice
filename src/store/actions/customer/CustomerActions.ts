@@ -10,6 +10,7 @@ import {
   RemoveCustomerAction,
   SetCustomersAction,
   UpdateCustomerAction,
+  DownloadCustomersAction,
 } from './../../types/customer/CustomerTypes';
 import CustomerService from '../../../app/services/customer/CustomerService';
 import IProcessFilter from '../../../app/contracts/filter/IProcessFilter';
@@ -17,6 +18,10 @@ import ICustomersPaginated from '../../../app/contracts/customer/table/ICustomer
 
 export const getCustomersDispatcher = (): GetCustomersAction => ({
   type: 'GET_CUSTOMERS',
+});
+
+export const downloadCustomersDispatcher = (): DownloadCustomersAction => ({
+  type: 'DOWNLOAD_CUSTOMERS',
 });
 
 export const setCustomersDispatcher = (customers: ICustomersPaginated): SetCustomersAction => ({
@@ -94,6 +99,20 @@ export const startRemoveCustomerAction = (customerId: string) => {
 
       dispatch(removeCustomerDispatcher(customerId));
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateSuccessResponse({ action: "eliminado" })));
+    } catch ({ response }) {
+      dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
+    }
+  }
+}
+
+export const startDownloadCustomersAction = (filter?: IProcessFilter) => {
+  return async (dispatch: Dispatch<CUSTOMER_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
+    dispatch(downloadCustomersDispatcher());
+    dispatch(setRunningRequestDispatcher());
+
+    try {
+      await CustomerService.downloadAll(filter);
+      dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));
     }

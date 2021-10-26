@@ -72,4 +72,19 @@ export const customersFilterableOptions: IFilter[] = [
     value: "document",
     label: "Documento",
   },
+  {
+    id: uuid(),
+    value: "segment",
+    label: "Segmento",
+  },
+  {
+    id: uuid(),
+    value: "last_date",
+    label: "Fecha ultima compra",
+  },
+  {
+    id: uuid(),
+    value: "amount_average",
+    label: "Monto promedio",
+  },
 ];

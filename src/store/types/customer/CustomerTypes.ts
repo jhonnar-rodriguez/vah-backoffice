@@ -2,6 +2,7 @@ import ICustomer from "../../../app/contracts/customer/ICustomer";
 import ICustomersPaginated from "../../../app/contracts/customer/table/ICustomersPaginated";
 
 export const GET_CUSTOMERS = 'GET_CUSTOMERS';
+export const DOWNLOAD_CUSTOMERS = 'DOWNLOAD_CUSTOMERS';
 export const SET_CUSTOMERS = 'SET_CUSTOMERS';
 export const SET_CUSTOMER = 'SET_CUSTOMER';
 
@@ -12,6 +13,10 @@ export const REMOVE_CUSTOMER = 'REMOVE_CUSTOMER';
 
 export interface GetCustomersAction {
   type: typeof GET_CUSTOMERS,
+};
+
+export interface DownloadCustomersAction {
+  type: typeof DOWNLOAD_CUSTOMERS,
 };
 
 export interface SetCustomersAction {
@@ -49,4 +54,5 @@ export type CUSTOMER_ACTION_TYPES = GetCustomersAction |
   ReadCustomerAction |
   RemoveCustomerAction |
   CreateCustomerAction |
+  DownloadCustomersAction |
   UpdateCustomerAction;
