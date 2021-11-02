@@ -61,8 +61,22 @@ class ReportService {
     return xhr;
   }
 
-  public static async downloadSalesReportByName(reportName: string): Promise<void> {
-    await httpClient.post(`/report/sales/${reportName}/generate`).then(({ data }) => data);
+  public static async downloadSalesReportByName(reportName: string, filters?: IReportFilter): Promise<void> {
+    let filtersToApply: any = {
+      customers: [],
+    };
+    if (typeof filters !== 'undefined') {
+      if (typeof filters.mobiles !== 'undefined' && filters.mobiles.length) {
+        filtersToApply = {
+          ...filtersToApply,
+          customers: filters.mobiles,
+        }
+      }
+
+      filtersToApply = this.addDateRangeToFilters(filters, filtersToApply);
+    }
+
+    await httpClient.post(`/report/sales/${reportName}/generate`, { ...filtersToApply }).then(({ data }) => data);
   }
 
   private static addDateRangeToFilters(filters: IReportFilter, previousFilters: any): any {

@@ -68,13 +68,13 @@ export const startGetSalesByCustomerAction = (filters?: IReportFilter) => {
   }
 }
 
-export const startDownloadSaleReportByName = (reportName: string) => {
+export const startDownloadSaleReportByName = (reportName: string, filters?: IReportFilter) => {
   return async (dispatch: Dispatch<REPORT_ACTION_TYPES | HTTP_REQUEST_ACTION_TYPES>) => {
     dispatch(getSalesByProductDispatcher());
     dispatch(setRunningRequestDispatcher());
 
     try {
-      await ReportService.downloadSalesReportByName(reportName);
+      await ReportService.downloadSalesReportByName(reportName, filters);
       dispatch(setFinishedRequestDispatcher(HttpHelper.generateBaseResponse()));
     } catch ({ response }) {
       dispatch(setFinishedRequestDispatcher(HttpHelper.formatRequestFinishedResponse(response)));

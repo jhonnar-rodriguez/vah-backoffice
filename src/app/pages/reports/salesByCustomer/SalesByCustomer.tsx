@@ -53,7 +53,7 @@ const SalesByCustomer = (): ReactElement => {
 
   const handleDownloadReportAction = (): void => {
     setDisplayEmailMessage(true);
-    const dispatcher = () => dispatch(startDownloadSaleReportByName('customer'));
+    const dispatcher = () => dispatch(startDownloadSaleReportByName('customer', filtersApplied));
     dispatcher();
   }
 
