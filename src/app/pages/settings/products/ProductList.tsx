@@ -149,7 +149,6 @@ const ProductList = () => {
           totalElements={totalItems}
           handlePageChange={handlePageChange}
           handleEditAction={handleEditProductForm}
-          handleConfirmDeleteAction={handleDeleteProductAction}
         />
 
         {

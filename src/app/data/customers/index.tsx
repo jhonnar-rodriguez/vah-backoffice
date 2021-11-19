@@ -80,11 +80,11 @@ export const customersFilterableOptions: IFilter[] = [
   {
     id: uuid(),
     value: "last_date",
-    label: "Fecha ultima compra",
+    label: "Fecha compra",
   },
-  {
-    id: uuid(),
-    value: "amount_average",
-    label: "Monto promedio",
-  },
+  // {
+  //   id: uuid(),
+  //   value: "amount_average",
+  //   label: "Monto promedio",
+  // },
 ];
