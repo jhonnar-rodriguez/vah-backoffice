@@ -21,7 +21,7 @@ class CustomerService {
     const { page = 1, limit = DEFAULT_ROWS_PER_PAGE } = filter || {};
     let params: ICustomerParamSearch = { page, limit };
 
-    if (typeof filter?.value !== "undefined" && filter.value?.length > 0) {
+    if (typeof filter?.value !== 'undefined' && filter.value?.length > 0) {
       const query = filter.value.toLowerCase();
 
       params = {

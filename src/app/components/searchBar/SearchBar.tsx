@@ -2,6 +2,14 @@ import { FC, FormEvent, ReactElement, useState } from "react";
 import { Button, makeStyles, MenuItem, Select, TextField, Theme } from "@material-ui/core";
 import IFilter from "../../contracts/filter/IFilter";
 import SnackBar from "../snackBar/SnackBar";
+import moment from '../../../config/moment';
+import esLocale from 'date-fns/locale/es';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -15,6 +23,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(3),
   },
+  datePicker: {
+    flexGrow: .6,
+    margin: theme.spacing(2),
+  },
 }));
 
 type SearchBarProps = {
@@ -25,14 +37,16 @@ type SearchBarProps = {
 const SearchBar: FC<SearchBarProps> = ({ onSubmit, optionsToFilter }): ReactElement => {
   const classes = useStyles();
 
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string | MaterialUiPickersDate>("");
+  const [date, setDate] = useState<Date | null>(null);
+  const [enableInputDate, setEnableInputDate] = useState<boolean>(false);
   const [filterBy, setFilterBy] = useState<string>("default");
   const [displayValidation, setDisplayValidation] = useState<boolean>(false);
 
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    if (filterBy === "default") {
+    if (filterBy === 'default') {
       setDisplayValidation(true);
 
       return;
@@ -45,9 +59,67 @@ const SearchBar: FC<SearchBarProps> = ({ onSubmit, optionsToFilter }): ReactElem
   }
 
   const handleResetFilters = (): void => {
-    setFilterBy("default");
-    setSearch("");
+    setFilterBy('default');
+    setSearch('');
+    setDate(null);
+    setEnableInputDate(false);
     onSubmit(search, undefined, true);
+  }
+
+  const handleDateChange = (date: MaterialUiPickersDate): void => {
+    const selectedDate = moment(date);
+
+    if (selectedDate.isValid()) {
+      setSearch(selectedDate.format('YYYY/MM/D'));
+      setDate(date);
+    }
+  }
+
+  const handleSetFilterBy = (event: any): void => {
+    setSearch('');
+    setDate(null);
+    const selectedValue = event.target.value;
+    setFilterBy(selectedValue);
+
+    const filterIsForDate = optionsToFilter.filter((option: IFilter) => option.value === selectedValue && option.forDate === true);
+    if (filterIsForDate.length) {
+      setEnableInputDate(true);
+    } else {
+      setEnableInputDate(false);
+    }
+  }
+
+  const displaySearchField = (): ReactElement => {
+    if (enableInputDate) {
+      return <MuiPickersUtilsProvider
+        utils={DateFnsUtils}
+        locale={esLocale}
+      >
+        <KeyboardDatePicker
+          id='date-start'
+          value={date}
+          label='Fecha'
+          format='dd/MM/yyyy'
+          onChange={handleDateChange}
+          className={classes.datePicker}
+          autoComplete='off'
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+      </MuiPickersUtilsProvider>
+    }
+
+    return <TextField
+      value={search}
+      onChange={(event) => setSearch(event?.target.value)}
+      variant="outlined"
+      id="search"
+      label="Buscar"
+      name="search"
+      autoComplete="off"
+      style={{ flexGrow: .6 }}
+    />
   }
 
   return (
@@ -64,7 +136,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSubmit, optionsToFilter }): ReactElem
       <Select
         name="filterBy"
         value={filterBy}
-        onChange={(event: any) => setFilterBy(event.target.value)}
+        onChange={handleSetFilterBy}
       >
         <MenuItem value="default">
           <em>Filtrar por:</em>
@@ -83,16 +155,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSubmit, optionsToFilter }): ReactElem
         }
       </Select>
 
-      <TextField
-        value={search}
-        onChange={(event) => setSearch(event?.target.value)}
-        variant="outlined"
-        id="search"
-        label="Buscar"
-        name="search"
-        autoComplete="off"
-        style={{ flexGrow: .6 }}
-      />
+      {displaySearchField()}
 
       <Button
         color="secondary"
@@ -110,7 +173,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSubmit, optionsToFilter }): ReactElem
       >
         Filtrar
       </Button>
-    </form>
+    </form >
   )
 }
 

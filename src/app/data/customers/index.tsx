@@ -81,6 +81,7 @@ export const customersFilterableOptions: IFilter[] = [
     id: uuid(),
     value: "last_date",
     label: "Fecha compra",
+    forDate: true,
   },
   // {
   //   id: uuid(),
